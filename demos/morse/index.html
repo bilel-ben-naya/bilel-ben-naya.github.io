@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Communication Morse entre deux STM32</title>
+<style>
+:root{--bg:#F4F7FB;--panel:#fff;--ink:#13233A;--muted:#566A85;--line:#D8E1EE;--accent:#2F5BFF;--onaccent:#fff;--soft:#E8EEFF;--sig:#2F5BFF;--adc:#0FA89A;--thr:#E07A1F;--ok:#0A7D55;--ko:#C62828}
+:root[data-theme="dark"]{--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A;--sig:#7F9DFF;--adc:#3DD6C6;--thr:#FFA24A;--ok:#4BD6A0;--ko:#FF8A80}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A;--sig:#7F9DFF;--adc:#3DD6C6;--thr:#FFA24A;--ok:#4BD6A0;--ko:#FF8A80}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+main{max-width:900px;margin:0 auto;padding:16px}
+h1{margin:0 0 4px;font-size:1.25rem}.lead{margin:0 0 12px;color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+label{display:block;font-weight:600;font-size:.88rem;margin-bottom:5px}
+input[type=text],select{width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:inherit;font:inherit}
+.row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;align-items:end}
+@media(max-width:620px){.row{grid-template-columns:1fr}}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+button{padding:9px 16px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-weight:600;cursor:pointer}
+button.p{background:var(--accent);color:var(--onaccent);border-color:var(--accent)}
+button:hover{border-color:var(--accent)}
+.chk{display:flex;gap:6px;align-items:center;font-size:.88rem;font-weight:500;margin:0}
+.dev{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:620px){.dev{grid-template-columns:1fr}}
+.dev h2{font-size:.95rem;margin:0 0 6px}
+.term{font:13px/1.5 ui-monospace,Consolas,Menlo,monospace;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-height:96px;max-height:150px;overflow:auto;white-space:pre-wrap;word-break:break-all}
+.term .last{color:var(--accent);font-weight:700}
+canvas{width:100%;height:210px;display:block;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.leg{display:flex;flex-wrap:wrap;gap:14px;font-size:.82rem;color:var(--muted);margin-top:6px}
+.leg i{display:inline-block;width:18px;height:3px;vertical-align:middle;margin-right:5px;border-radius:2px}
+.res{font-weight:700}.ok{color:var(--ok)}.ko{color:var(--ko)}
+.note{font-size:.88rem;color:var(--muted)}
+.cmp{font:13px/1.6 ui-monospace,Consolas,Menlo,monospace}
+</style>
+</head>
+<body>
+<main>
+<h1>Communication Morse entre deux STM32</h1>
+<p class="lead">Un message part d'un PC vers la première carte, qui le transforme en bips. La seconde carte écoute, mesure la durée des sons et reconstruit le texte.</p>
+
+<section class="card">
+  <div class="row">
+    <div><label for="msg">Message envoyé par PuTTY (lettres, chiffres, espaces)</label><input id="msg" type="text" value="hello world" maxlength="40" autocomplete="off"></div>
+    <div><label for="noise">Bruit sur le micro : <span id="nv">0 %</span></label><input id="noise" type="range" min="0" max="60" value="0"></div>
+    <div><label for="spd">Vitesse</label><select id="spd"><option value="1">Temps réel (avec son)</option><option value="5" selected>x5</option><option value="20">x20</option><option value="0">Instantané</option></select></div>
+  </div>
+  <div class="btns">
+    <button class="p" id="go" type="button">Envoyer</button>
+    <button id="again" type="button">Même message, autre bruit</button>
+    <label class="chk"><input type="checkbox" id="snd"> Jouer le son</label>
+  </div>
+</section>
+
+<section class="card">
+  <div class="dev">
+    <div><h2>MC1, émetteur (sortie UART vers PuTTY)</h2><div class="term" id="t1" aria-live="off"></div></div>
+    <div><h2>MC2, récepteur (sortie UART vers le PC)</h2><div class="term" id="t2" aria-live="polite"></div></div>
+  </div>
+  <p class="res" id="res" style="margin:10px 0 0"></p>
+</section>
+
+<section class="card">
+  <canvas id="cv" role="img" aria-label="Signal émis et valeur lue par le convertisseur analogique-numérique"></canvas>
+  <div class="leg"><span><i style="background:var(--sig)"></i>Buzzer (émis par MC1)</span><span><i style="background:var(--adc)"></i>Valeur lue par l'ADC de MC2 (0 à 4095)</span><span><i style="background:var(--thr)"></i>Seuil de détection (2000)</span></div>
+</section>
+
+<section class="card note">
+  <strong>Les règles du programme.</strong> Un point dure 200 ms et un trait 600 ms, séparés par 200 ms de silence. Entre deux lettres le silence atteint 600 ms, entre deux mots 2 000 ms. Le récepteur lit l'ADC à chaque milliseconde : au-dessus de 2000 il y a du son, un son de moins de 350 ms est un point, sinon un trait. Un silence de plus de 450 ms termine la lettre, de plus de 1 200 ms le mot. Le programme est celui de mon projet (fichiers <code>main.c</code> des deux cartes), repris tel quel en JavaScript.
+  <p style="margin:6px 0 0">Le bruit est simulé : il ajoute du hasard à la valeur lue et fait parfois chuter le signal quelques millisecondes pendant un bip. Un seul échantillon sous le seuil coupe le bip en deux, ce qui produit des erreurs, d'où la sensibilité au bruit signalée dans le rapport.</p>
+</section>
+</main>
+<script src="morse.js"></script>
+<script>
+(function(){
+"use strict";
+var $=function(i){return document.getElementById(i);};
+var cv=$("cv"),ctx=cv.getContext("2d"),R=null,seed=1,raf=0,audio=null,startReal=0,speed=5,shown=0,playing=false;
+function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+function size(){var d=window.devicePixelRatio||1,w=cv.clientWidth,h=cv.clientHeight;cv.width=w*d;cv.height=h*d;ctx.setTransform(d,0,0,d,0,0);}
+function draw(t){
+  var w=cv.clientWidth,h=cv.clientHeight;ctx.clearRect(0,0,w,h);
+  if(!R){ctx.fillStyle=css("--muted");ctx.font="14px system-ui";ctx.fillText("Appuyez sur Envoyer pour lancer la transmission.",14,h/2);return;}
+  var span=7000,t0=Math.max(0,t-span*0.7),x=function(ms){return (ms-t0)/span*w;};
+  var h1=h*0.42,y1=h*0.06,y2=h*0.56,h2=h*0.38;
+  ctx.font="11px system-ui";ctx.fillStyle=css("--muted");
+  var g0=Math.ceil(t0/1000)*1000;ctx.strokeStyle=css("--line");ctx.lineWidth=1;
+  for(var g=g0;g<t0+span;g+=1000){ctx.beginPath();ctx.moveTo(x(g),0);ctx.lineTo(x(g),h);ctx.stroke();ctx.fillText((g/1000)+" s",x(g)+3,h-3);}
+  ctx.strokeStyle=css("--sig");ctx.lineWidth=2.5;ctx.beginPath();
+  var lvl=function(ms){for(var i=0;i<R.on.length;i++){if(ms>=R.on[i][0]&&ms<R.on[i][1])return 1;}return 0;};
+  var px=Math.max(1,Math.floor(span/w)),first=true;
+  for(var ms=Math.floor(t0);ms<=Math.min(t,t0+span);ms+=px){var X=x(ms),Y=lvl(ms)?y1+4:y1+h1*0.7;if(first){ctx.moveTo(X,Y);first=false;}else{ctx.lineTo(X,Y);}}
+  ctx.stroke();
+  var thrY=y2+h2*(1-2000/4095);ctx.strokeStyle=css("--thr");ctx.setLineDash([5,4]);ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(0,thrY);ctx.lineTo(w,thrY);ctx.stroke();ctx.setLineDash([]);
+  ctx.strokeStyle=css("--adc");ctx.lineWidth=1.3;ctx.beginPath();first=true;
+  for(ms=Math.floor(t0);ms<=Math.min(t,t0+span,R.adc.length-1);ms+=px){X=x(ms);Y=y2+h2*(1-R.adc[ms]/4095);if(first){ctx.moveTo(X,Y);first=false;}else{ctx.lineTo(X,Y);}}
+  ctx.stroke();
+  ctx.strokeStyle=css("--ink");ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x(t),0);ctx.lineTo(x(t),h);ctx.stroke();
+}
+function term(){
+  var t=shown?R.uart.filter(function(u){return u.t<=shown;}):[];
+  $("t2").innerHTML=t.length?t.map(function(u,i){return i===t.length-1?'<span class="last">'+u.line.replace(/ /g,"&nbsp;")+'</span>':u.line.replace(/ /g,"&nbsp;");}).join("\n"):"Recepteur Morse pret.";
+  $("t2").scrollTop=1e6;
+}
+function t1(upTo){
+  var s="Tape un texte dans PuTTY :\r\n"+(R?R.typed:"");
+  $("t1").textContent=s;
+}
+function end(){
+  playing=false;shown=R.total;term();
+  var ok=R.texte===R.sent,wrong=0,n=Math.max(R.sent.length,R.texte.length);
+  for(var i=0;i<n;i++)if(R.sent[i]!==R.texte[i])wrong++;
+  $("res").innerHTML=ok?'<span class="ok">Message reçu sans erreur.</span>':'<span class="ko">Message altéré.</span> <span class="cmp">envoyé : « '+esc(R.sent)+' »<br>reçu&nbsp;&nbsp;: « '+esc(R.texte)+' »</span>';
+  draw(R.total);
+}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function frame(){
+  if(!playing)return;
+  var el=(performance.now()-startReal)*speed;shown=Math.min(el,R.total);
+  draw(shown);term();
+  if(el>=R.total){end();return;}
+  raf=requestAnimationFrame(frame);
+}
+function beeps(){
+  if(!$("snd").checked||speed===0)return;
+  try{
+    audio=audio||new (window.AudioContext||window.webkitAudioContext)();
+    var now=audio.currentTime+0.05;
+    R.on.forEach(function(iv){
+      var o=audio.createOscillator(),g=audio.createGain();o.frequency.value=700;o.type="sine";
+      g.gain.setValueAtTime(0,now+iv[0]/1000/speed);g.gain.linearRampToValueAtTime(0.15,now+iv[0]/1000/speed+0.004);
+      g.gain.setValueAtTime(0.15,now+iv[1]/1000/speed-0.004);g.gain.linearRampToValueAtTime(0,now+iv[1]/1000/speed);
+      o.connect(g);g.connect(audio.destination);o.start(now+iv[0]/1000/speed);o.stop(now+iv[1]/1000/speed+0.01);
+    });
+  }catch(e){}
+}
+function go(){
+  cancelAnimationFrame(raf);
+  var txt=$("msg").value;
+  R=Morse.run(txt,(+$("noise").value)/100,seed);
+  R.typed=txt.replace(/[^A-Za-z0-9 ]/g,"");$("t1").textContent="Tape un texte dans PuTTY :\r\n"+R.typed;
+  speed=+$("spd").value;$("res").textContent="";shown=0;
+  if(speed===0){end();return;}
+  playing=true;startReal=performance.now();beeps();frame();
+}
+$("go").onclick=function(){seed=1+Math.floor(Math.random()*1e6);go();};
+$("again").onclick=function(){seed=1+Math.floor(Math.random()*1e6);go();};
+$("noise").oninput=function(){$("nv").textContent=this.value+" %";};
+$("msg").addEventListener("keydown",function(e){if(e.key==="Enter")$("go").click();});
+window.addEventListener("resize",function(){size();if(R)draw(playing?shown:R.total);else draw(0);});
+try{var th=localStorage.getItem("sky_theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
+size();draw(0);$("t2").textContent="Recepteur Morse pret.";$("t1").textContent="Tape un texte dans PuTTY :";
+})();
+</script>
+</body>
+</html>

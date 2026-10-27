@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <corners android:radius="6dp" />
+
+    <!--
+      Palette très contrastée (lisible sur carte) : bleu -> indigo -> violet -> fuchsia -> rose -> rouge.
+      Doit rester cohérente avec MapActivity.altitudeToColor().
+    -->
+    <gradient android:angle="0">
+        <item android:color="#1D4ED8" android:offset="0.00" />
+        <item android:color="#4F46E5" android:offset="0.20" />
+        <item android:color="#7C3AED" android:offset="0.40" />
+        <item android:color="#C026D3" android:offset="0.60" />
+        <item android:color="#E11D48" android:offset="0.80" />
+        <item android:color="#B91C1C" android:offset="1.00" />
+    </gradient>
+</shape>

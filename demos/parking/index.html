@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parking connecté</title>
+<style>
+:root{--bg:#F4F7FB;--panel:#fff;--ink:#13233A;--muted:#566A85;--line:#D8E1EE;--accent:#2F5BFF;--onaccent:#fff;--soft:#E8EEFF;--red:#D32F2F;--green:#1B9A5B;--car:#3B5BA9;--road:#CDD6E4;--lot:#E3E9F3}
+:root[data-theme="dark"]{--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A;--red:#FF6B6B;--green:#4BD6A0;--car:#7F9DFF;--road:#2A3A55;--lot:#1B2A44}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A;--red:#FF6B6B;--green:#4BD6A0;--car:#7F9DFF;--road:#2A3A55;--lot:#1B2A44}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+main{max-width:940px;margin:0 auto;padding:16px}
+h1{margin:0 0 4px;font-size:1.25rem}.lead{margin:0 0 12px;color:var(--muted)}
+h2{font-size:.98rem;margin:0 0 8px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+svg{width:100%;height:auto;display:block}
+.ctl{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:12px}
+@media(max-width:760px){.ctl{grid-template-columns:1fr 1fr}}
+.c{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.c label{display:block;font-size:.8rem;font-weight:700;margin-bottom:2px}
+.c output{font-variant-numeric:tabular-nums;font-size:.8rem;color:var(--muted)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+button{padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:.84rem;font-weight:600;cursor:pointer}
+button:hover{border-color:var(--accent)}button.p{background:var(--accent);color:var(--onaccent);border-color:var(--accent)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:760px){.two{grid-template-columns:1fr}}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.t{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+.t small{display:block;color:var(--muted);font-size:.72rem}.t b{font-size:1.05rem}
+.sw{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:.88rem;font-weight:600}
+.mono{font:12px/1.5 ui-monospace,Consolas,Menlo,monospace;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px;height:150px;overflow:auto;white-space:pre-wrap;word-break:break-all}
+table{width:100%;border-collapse:collapse;font-size:.84rem;font-variant-numeric:tabular-nums}
+th,td{padding:4px 6px;text-align:left;border-bottom:1px solid var(--line)}
+.note{font-size:.88rem;color:var(--muted)}
+input[type=text]{padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:inherit;font:inherit;width:140px}
+.arm{transition:none}
+</style>
+</head>
+<body>
+<main>
+<h1>Parking connecté intelligent</h1>
+<p class="lead">La maquette de mon projet IoT : trois places surveillées par des capteurs à ultrasons, une barrière commandée par un servomoteur et un tableau de bord Blynk. Déplacez les curseurs pour approcher un obstacle d'un capteur.</p>
+
+<section class="card">
+  <svg id="sv" viewBox="0 0 660 250" role="img" aria-label="Plan du parking : barrière, capteurs et trois places"></svg>
+  <div class="ctl" id="ctl"></div>
+</section>
+
+<div class="two">
+  <section class="card">
+    <h2>Tableau de bord Blynk</h2>
+    <div class="tiles" id="tiles"></div>
+    <div class="sw"><input type="checkbox" id="man"><label for="man" style="margin:0">Ouverture manuelle de la barrière (V8)</label></div>
+    <h2 style="margin-top:14px">Moniteur série (Arduino)</h2>
+    <div class="mono" id="ser"></div>
+  </section>
+  <section class="card">
+    <h2>Serveur du dépôt (FastAPI + SQLite)</h2>
+    <p class="note" style="margin:0 0 8px">Ici, les changements d'état des places sont envoyés à <code>POST /iot/slot</code>. Temps accéléré : 1 seconde = 1 minute de stationnement, à 0,05 € la minute.</p>
+    <div style="margin-bottom:8px"><label for="plate" style="font-size:.8rem;font-weight:700">Plaque du prochain véhicule </label><input id="plate" type="text" value="AA-123-AA" maxlength="12"></div>
+    <table><thead><tr><th>#</th><th>Plaque</th><th>Place</th><th>Durée</th><th>Montant</th></tr></thead><tbody id="sess"></tbody></table>
+    <h2 style="margin-top:12px">Journal (<code>GET /events</code>)</h2>
+    <div class="mono" id="ev" style="height:110px"></div>
+  </section>
+</div>
+
+<section class="card note"><strong>Ce qui est fidèle au projet.</strong> Les seuils (5 cm pour une place, 6 cm pour la barrière), les périodes de lecture (100, 200 et 500 ms), le maintien de la barrière ouverte pendant 2 secondes après la dernière détection, les LED et les valeurs envoyées à Blynk sont ceux du programme <code>codes_parking_2.ino</code>. La partie serveur reprend <code>backend/main.py</code>. Dans le rapport, la supervision passe par Blynk sans base de données durable ; relier la carte au serveur est la suite logique et c'est ce que montre le panneau de droite.</p>
+</main>
+<script src="firmware.js"></script>
+<script>
+(function(){
+"use strict";
+var $=function(i){return document.getElementById(i);};
+var F=new Parking.Firmware(),B=new Parking.Backend(),T0=performance.now(),seq=null,arm=180;
+var NS="http://www.w3.org/2000/svg";
+function el(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+var sv=$("sv"),slotEls=[],ledEls=[],carEls=[],sensEls={};
+function build(){
+  el("rect",{x:0,y:0,width:660,height:250,fill:"var(--lot)"},sv);
+  el("rect",{x:0,y:100,width:250,height:70,fill:"var(--road)"},sv);
+  for(var x=10;x<240;x+=30)el("rect",{x:x,y:133,width:16,height:4,fill:"var(--bg)",opacity:.8},sv);
+  el("text",{x:8,y:188,fill:"var(--muted)","font-size":12},sv).textContent="Entrée / sortie";
+  el("rect",{x:150,y:92,width:12,height:12,rx:2,fill:"var(--ink)"},sv);
+  sensEls.avant=el("rect",{x:92,y:176,width:26,height:14,rx:3,fill:"var(--muted)"},sv);
+  sensEls.apres=el("rect",{x:196,y:176,width:26,height:14,rx:3,fill:"var(--muted)"},sv);
+  el("text",{x:80,y:206,fill:"var(--muted)","font-size":11},sv).textContent="capteur avant";
+  el("text",{x:185,y:206,fill:"var(--muted)","font-size":11},sv).textContent="capteur après";
+  sensEls.arm=el("rect",{x:0,y:-4,width:70,height:8,rx:3,fill:"var(--red)"},sv);
+  sensEls.lbl=el("text",{x:150,y:80,"text-anchor":"middle","font-size":13,"font-weight":700,fill:"var(--ink)"},sv);
+  sensEls.srv=el("text",{x:150,y:230,"text-anchor":"middle","font-size":11,fill:"var(--muted)"},sv);
+  el("rect",{x:290,y:40,width:350,height:170,rx:8,fill:"none",stroke:"var(--muted)","stroke-dasharray":"6 5"},sv);
+  for(var i=0;i<3;i++){
+    var sx=300+i*114;
+    slotEls.push(el("rect",{x:sx,y:96,width:100,height:106,rx:6,fill:"var(--bg)",stroke:"var(--muted)"},sv));
+    carEls.push(el("g",{transform:"translate("+sx+",96)",opacity:0},sv));
+    var g=carEls[i];el("rect",{x:14,y:10,width:72,height:86,rx:14,fill:"var(--car)"},g);el("rect",{x:24,y:24,width:52,height:20,rx:5,fill:"var(--bg)",opacity:.8},g);el("rect",{x:24,y:68,width:52,height:14,rx:4,fill:"var(--bg)",opacity:.6},g);
+    el("text",{x:sx+50,y:222,"text-anchor":"middle","font-size":12,fill:"var(--muted)"},sv).textContent="Place "+(i+1);
+    var lr=el("circle",{cx:sx+30,cy:66,r:9},sv),lv=el("circle",{cx:sx+70,cy:66,r:9},sv);ledEls.push([lr,lv]);
+    el("rect",{x:sx+42,y:50,width:16,height:10,rx:2,fill:"var(--ink)",opacity:.7},sv);
+    el("text",{x:sx+50,y:36,"text-anchor":"middle","font-size":11,fill:"var(--muted)"},sv).textContent="HC-SR04";
+  }
+}
+var defs=[["p0","Place 1",25,0],["p1","Place 2",25,1],["p2","Place 3",25,2],["av","Capteur avant",40],["ap","Capteur après",40]];
+function controls(){
+  var c=$("ctl");
+  defs.forEach(function(d){
+    var w=document.createElement("div");w.className="c";
+    w.innerHTML='<label for="'+d[0]+'">'+d[1]+'</label><input type="range" id="'+d[0]+'" min="1" max="40" value="'+d[2]+'"><output id="o'+d[0]+'">'+d[2]+' cm</output>';
+    if(d[3]!==undefined){var b=document.createElement("button");b.type="button";b.textContent="Garer / libérer";b.style.marginTop="6px";b.onclick=function(){var r=$(d[0]);r.value=(+r.value<5)?25:3;r.oninput();};w.appendChild(b);}
+    else if(d[0]==="av"){var b2=document.createElement("button");b2.type="button";b2.className="p";b2.textContent="Faire passer une voiture";b2.style.marginTop="6px";b2.onclick=passage;w.appendChild(b2);}
+    c.appendChild(w);
+    var r=w.querySelector("input");r.oninput=function(){$("o"+d[0]).textContent=r.value+(+r.value>=40?" cm (rien)":" cm");read();};
+  });
+}
+function read(){
+  F.dist=[+$("p0").value,+$("p1").value,+$("p2").value];F.dAvant=+$("av").value;F.dApres=+$("ap").value;
+  sensEls.avant.setAttribute("fill",F.dAvant<6?"var(--green)":"var(--muted)");sensEls.apres.setAttribute("fill",F.dApres<6?"var(--green)":"var(--muted)");
+}
+function setR(id,v){var r=$(id);r.value=v;r.oninput();}
+function passage(){
+  if(seq)return;setR("av",4);var n=0;
+  seq=setInterval(function(){n++;if(n===8){setR("av",40);setR("ap",4);}if(n===16){setR("ap",40);clearInterval(seq);seq=null;}},100);
+}
+function fmtMin(m){return m.toFixed(1).replace(".",",")+" min";}
+function vmin(){return (performance.now()-T0)/1000;}
+function renderServer(){
+  var st=B.status(),now=vmin();
+  $("sess").innerHTML=B.sessions.length?B.sessions.slice().reverse().map(function(s){
+    var end=s.end_time===null?now:s.end_time,m=Math.max(end-s.start_time,0),amt=s.paid_amount!==null?s.paid_amount:Math.round(m*B.ppm*100)/100;
+    var act=s.end_time===null?"en cours":(s.paid_amount!==null?"payé":'<button type="button" data-id="'+s.id+'">Payer</button>');
+    return "<tr><td>"+s.id+"</td><td>"+s.plate+"</td><td>"+s.slot_id+"</td><td>"+fmtMin(m)+"</td><td>"+amt.toFixed(2).replace(".",",")+" € "+act+"</td></tr>";
+  }).join(""):'<tr><td colspan="5" style="color:var(--muted)">Aucune session. Garez un véhicule.</td></tr>';
+  Array.prototype.forEach.call($("sess").querySelectorAll("button"),function(b){b.onclick=function(){var r=B.pay(+b.getAttribute("data-id"));if(r.error)B.log("erreur",r.msg||r.error,vmin());};});
+  $("ev").textContent=B.events.map(function(e){return "#"+e.id+" "+e.type+" : "+e.payload;}).join("\n")||"(vide)";
+}
+function render(){
+  for(var i=0;i<3;i++){
+    var o=F.occ(i);carEls[i].setAttribute("opacity",o?1:0);
+    ledEls[i][0].setAttribute("fill",F.leds[i][0]?"var(--red)":"var(--muted)");ledEls[i][0].setAttribute("opacity",F.leds[i][0]?1:.25);
+    ledEls[i][1].setAttribute("fill",F.leds[i][1]?"var(--green)":"var(--muted)");ledEls[i][1].setAttribute("opacity",F.leds[i][1]?1:.25);
+  }
+  var target=F.servo;arm+=(target-arm)*0.25;if(Math.abs(target-arm)<0.5)arm=target;
+  var rot=180-(arm-90); // servo 180 : bras en travers de la voie ; servo 90 : bras le long du bord
+  sensEls.arm.setAttribute("transform","translate(156,98) rotate("+rot+")");
+  sensEls.lbl.textContent="Barrière : "+(F.barriereOuverte?"OUVERTE":"FERMÉE");
+  sensEls.srv.textContent="servo "+Math.round(arm)+"°";
+  var b=F.blynk(),keys=[["V0","Places libres"],["V1","Barrière"],["V2","Distance 1"],["V3","Distance 2"],["V4","Distance 3"],["V5","Place 1"],["V6","Place 2"],["V7","Place 3"]];
+  $("tiles").innerHTML=keys.map(function(k){return '<div class="t"><small>'+k[0]+" · "+k[1]+"</small><b>"+b[k[0]]+"</b></div>";}).join("");
+  var s=F.serial;$("ser").textContent=s.slice(-8).join("\n");
+  renderServer();
+}
+function loop(){
+  var ch=F.loop(Math.round(performance.now()));
+  ch.forEach(function(c){B.updateSlot(c.slot,c.occupied,c.occupied?$("plate").value.trim():null,vmin());});
+}
+$("man").onchange=function(){F.setManuel(this.checked);};
+build();controls();read();
+setInterval(loop,10);
+(function frame(){render();requestAnimationFrame(frame);})();
+try{var th=localStorage.getItem("sky_theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
+window.__P={F:F,B:B,setR:setR};
+})();
+</script>
+</body>
+</html>

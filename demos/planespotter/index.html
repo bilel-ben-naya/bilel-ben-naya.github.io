@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aperçu de PlaneSpotter</title>
+<link rel="stylesheet" href="vendor/leaflet.css">
+<style>
+:root{--bg:#F4F7FB;--panel:#fff;--ink:#13233A;--muted:#566A85;--line:#D8E1EE;--accent:#2F5BFF;--onaccent:#fff;--soft:#E8EEFF}
+:root[data-theme="dark"]{--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+main{max-width:900px;margin:0 auto;padding:16px;display:grid;grid-template-columns:372px 1fr;gap:22px;align-items:start}
+@media(max-width:760px){main{grid-template-columns:1fr;justify-items:center}}
+h1{margin:0 0 4px;font-size:1.25rem}.lead{margin:0 0 12px;color:var(--muted)}
+.phone{width:372px;height:700px;border-radius:34px;border:10px solid #1b1f2a;background:#fff;overflow:hidden;position:relative;display:flex;flex-direction:column;box-shadow:0 10px 30px rgba(0,0,0,.25);color:#1b1b1f;font-family:Roboto,system-ui,sans-serif}
+.scr{flex:1;position:relative;overflow:auto;display:none}.scr.on{display:block}
+#sMap.on{display:flex;flex-direction:column;overflow:hidden}
+.bar{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#fff;border-bottom:1px solid #e3e3e8;font-size:.82rem}
+.bar .st{flex:1;font-weight:600}
+.bt{padding:6px 14px;border-radius:18px;border:0;background:#2F5BFF;color:#fff;font:600 .8rem Roboto,system-ui,sans-serif;cursor:pointer}
+.bt.g{background:#e8e8ee;color:#1b1b1f}.bt:disabled{opacity:.45;cursor:default}
+#map{flex:1;min-height:0;background:#ddd}
+.leg{position:absolute;left:10px;right:10px;top:50px;z-index:500;background:rgba(255,255,255,.92);border-radius:10px;padding:6px 8px;font-size:.68rem;color:#444;pointer-events:none}
+.leg .b{display:flex;height:10px;border-radius:6px;overflow:hidden;margin:3px 0}.leg .b i{flex:1}
+.leg .l{display:flex;justify-content:space-between}
+.nav{display:flex;border-top:1px solid #e3e3e8;background:#f6f6fb}
+.nav button{flex:1;border:0;background:none;padding:9px 0 8px;font:600 .72rem Roboto,system-ui,sans-serif;color:#555;cursor:pointer}
+.nav button.on{color:#2F5BFF;box-shadow:inset 0 3px 0 #2F5BFF}
+.pad{padding:14px}.pad h2{margin:0 0 10px;font-size:1.15rem}
+.pad label{display:block;font-weight:700;font-size:.82rem;margin:12px 0 2px}.pad p{margin:0 0 4px;font-size:.76rem;color:#666}
+.pad input[type=text],.pad input[type=password],.pad input[type=number]{width:100%;padding:9px 10px;border:1px solid #bbb;border-radius:6px;font:inherit;font-size:.9rem;background:#fff;color:#111}
+.pad input:disabled{background:#f1f1f4}
+.tb{display:flex;align-items:center;gap:8px;padding:10px 8px;background:#2F5BFF;color:#fff;font-weight:700}
+.tb button{background:none;border:0;color:#fff;font-size:1.3rem;cursor:pointer;padding:0 8px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:.86rem;margin:8px 0}.kv b{color:#555;font-weight:600}
+.card{border:1px solid #e3e3e8;border-radius:10px;padding:10px;margin:10px 0;font-size:.84rem;white-space:pre-wrap}
+.pl{filter:drop-shadow(0 1px 1px rgba(0,0,0,.5))}
+.side .c{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px;font-size:.9rem}
+.side .c h2{margin:0 0 6px;font-size:1rem}.side label{font-weight:600;font-size:.88rem}
+.side select{padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+.muted{color:var(--muted)}
+.apk{display:inline-block;margin-top:6px;padding:8px 14px;border-radius:8px;background:var(--accent);color:var(--onaccent);text-decoration:none;font-weight:600;font-size:.88rem}
+.leaflet-container{font:inherit}
+</style>
+</head>
+<body>
+<main>
+<div class="phone" id="ph">
+  <section class="scr on" id="sMap">
+    <div class="bar"><span class="st" id="st">Idle</span><button class="bt" id="start" type="button">Start</button><button class="bt g" id="stop" type="button">Stop</button></div>
+    <div id="map"></div>
+    <div class="leg"><div class="l"><span>0 m</span><span>6 000 m</span><span>12 000 m</span></div><div class="b" id="lg"></div></div>
+  </section>
+  <section class="scr" id="sDet">
+    <div class="tb"><button id="back" type="button" aria-label="Retour">←</button>Détails de l'avion</div>
+    <div class="pad" id="detBody"></div>
+  </section>
+  <section class="scr" id="sCon"><div class="pad"><h2>Connection</h2>
+    <p style="font-size:.84rem">Status: unknown</p>
+    <label>OpenSky Username / Client ID</label><input type="text" disabled placeholder="désactivé dans l'aperçu">
+    <label>OpenSky Password / Client Secret</label><input type="password" disabled placeholder="désactivé dans l'aperçu">
+    <div style="display:flex;gap:8px;margin-top:14px"><button class="bt" disabled>Save</button><button class="bt g" disabled>Test OpenSky API</button></div>
+    <p style="margin-top:14px">Dans l'application, les identifiants OpenSky sont enregistrés sur le téléphone pour éviter l'erreur 429 (trop de requêtes). Cet aperçu n'en demande pas.</p></div></section>
+  <section class="scr" id="sSet"><div class="pad"><h2>Paramètres</h2>
+    <label for="iv">Intervalle de mise à jour (secondes)</label><p>Temps entre deux rafraîchissements des positions sur la carte (5 à 120).</p><input id="iv" type="number" value="12">
+    <label for="dl">Zone de recherche (degrés)</label><p>Taille de la zone autour du centre de la carte. Plus la valeur est grande, plus vous récupérez d'avions (0,05 à 5).</p><input id="dl" type="number" step="0.05" value="0.4">
+    <label for="mx">Limite d'avions affichés</label><p>Nombre maximum d'avions affichés en même temps (25 à 2000).</p><input id="mx" type="number" value="250">
+    <div style="display:flex;gap:8px;margin-top:14px"><button class="bt" id="save">Enregistrer</button><button class="bt g" id="rst">Restaurer valeurs par défaut</button></div>
+    <p id="setMsg" style="margin-top:10px"></p></div></section>
+  <nav class="nav"><button class="on" data-s="sMap">Map</button><button data-s="sCon">Connection</button><button data-s="sSet">Settings</button></nav>
+</div>
+
+<div class="side">
+  <h1>PlaneSpotter</h1>
+  <p class="lead">Mon application Android de suivi des avions autour de Paris. Cet aperçu reproduit ses écrans dans le navigateur, avec un relevé réel d'OpenSky pris le 27 octobre 2026.</p>
+  <div class="c"><h2>Essayer</h2>Appuyez sur Start, puis touchez un avion pour ouvrir sa fiche. Les avions sont colorés selon leur altitude, orientés selon leur cap, et laissent une trace de 25 positions au plus.
+    <p style="margin:10px 0 0"><label for="warp">Vitesse de l'aperçu</label> <select id="warp"><option value="1">Temps réel</option><option value="20" selected>x20</option><option value="60">x60</option></select></p></div>
+  <div class="c"><h2>Sur un vrai téléphone</h2>L'application tourne en Java avec osmdroid et l'API OpenSky. Le fichier APK de test et les sources sont dans le dépôt.<br><a class="apk" href="https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/planespotter" rel="noopener">Voir le code et l'APK</a></div>
+  <div class="c muted">Aperçu web : les données sont figées, l'écran de connexion est désactivé et les informations de vol (endpoint <code>/flights/aircraft</code>) ne sont pas disponibles.</div>
+</div>
+</main>
+<script src="vendor/leaflet.js"></script>
+<script>
+(function(){
+"use strict";
+var $=function(i){return document.getElementById(i);};
+var PAL=["#1D4ED8","#4F46E5","#7C3AED","#C026D3","#E11D48","#B91C1C"];
+var DEF={iv:12,dl:0.4,mx:250},P={iv:12,dl:0.4,mx:250};
+var CENTER=[48.8566,2.3522],snap=null,planes=[],marks={},trails={},lines={},running=false,tim=0,t0=0,map,tiles;
+function color(a){if(a==null)return "#888";return PAL[a<2000?0:a<4000?1:a<6000?2:a<8000?3:a<10000?4:5];}
+$("lg").innerHTML=PAL.map(function(c){return '<i style="background:'+c+'"></i>';}).join("");
+function icon(c,rot){return L.divIcon({className:"",iconSize:[28,28],iconAnchor:[14,14],html:'<svg class="pl" width="28" height="28" viewBox="0 0 24 24" style="transform:rotate('+rot+'deg)"><path fill="'+c+'" stroke="#fff" stroke-width="1" d="M12 1.5c.9 0 1.5.8 1.5 1.8v6.2l8 4.6v2.1l-8-2.2v4.7l2.2 1.7v1.7L12 20.4 8.3 22.1v-1.7l2.2-1.7v-4.7l-8 2.2v-2.1l8-4.6V3.3c0-1 .6-1.8 1.5-1.8z"/></svg>'});}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function show(id){Array.prototype.forEach.call(document.querySelectorAll(".scr"),function(s){s.classList.toggle("on",s.id===id);});
+  Array.prototype.forEach.call(document.querySelectorAll(".nav button"),function(b){b.classList.toggle("on",b.getAttribute("data-s")===id||(id==="sDet"&&b.getAttribute("data-s")==="sMap"));});
+  if(id==="sMap"&&map)setTimeout(function(){map.invalidateSize();},50);}
+Array.prototype.forEach.call(document.querySelectorAll(".nav button"),function(b){b.onclick=function(){show(b.getAttribute("data-s"));};});
+$("back").onclick=function(){show("sMap");};
+/* Un relevé OpenSky : mêmes indices que Plane.fromOpenSkyRow */
+function parse(r){if(r[5]==null||r[6]==null)return null;return {icao:r[0],cs:(r[1]||"").trim(),pays:r[2],last:r[4],lon0:r[5],lat0:r[6],baro:r[7],ground:!!r[8],v:r[9]||0,trk:r[10]||0,vr:r[11],geo:r[13],lon:r[5],lat:r[6]};}
+function position(p,dt){var h=p.trk*Math.PI/180;p.lat=p.lat0+p.v*Math.cos(h)*dt/111320;p.lon=p.lon0+p.v*Math.sin(h)*dt/(111320*Math.cos(p.lat0*Math.PI/180));}
+function refresh(){
+  var dt=(Date.now()-t0)/1000*(+$("warp").value),c=startCenter,d=P.dl,keep={},n=0;
+  var list=planes.filter(function(p){position(p,dt);return p.lat>=c[0]-d&&p.lat<=c[0]+d&&p.lon>=c[1]-d&&p.lon<=c[1]+d;});
+  var cnt=Math.min(list.length,Math.max(1,P.mx));
+  for(var i=0;i<cnt;i++){
+    var p=list[i],k=p.icao;keep[k]=1;var alt=p.geo!=null?p.geo:p.baro,col=color(alt),pos=[p.lat,p.lon];
+    if(!marks[k]){marks[k]=L.marker(pos,{icon:icon(col,p.trk),keyboard:false}).addTo(map);(function(q){marks[q.icao].on("click",function(){detail(q);});})(p);}
+    marks[k].setLatLng(pos).setIcon(icon(col,p.trk));
+    var pts=trails[k]||(trails[k]=[]),last=pts[pts.length-1];
+    if(!last||map.distance(last,pos)>20){pts.push(pos);while(pts.length>25)pts.shift();}
+    if(!lines[k])lines[k]=L.polyline(pts,{color:col,weight:3,opacity:.63}).addTo(map);else lines[k].setLatLngs(pts).setStyle({color:col});
+    n++;
+  }
+  Object.keys(marks).forEach(function(k){if(!keep[k]){map.removeLayer(marks[k]);delete marks[k];if(lines[k]){map.removeLayer(lines[k]);delete lines[k];}delete trails[k];}});
+  $("st").textContent="Running — planes: "+n;
+}
+var startCenter=CENTER;
+function start(){
+  if(running)return;running=true;t0=Date.now();var c=map.getCenter();startCenter=[c.lat,c.lng];
+  planes.forEach(function(p){p.lat=p.lat0;p.lon=p.lon0;});
+  $("st").textContent="Running";$("start").disabled=true;refresh();
+  tim=setInterval(refresh,P.iv*1000/ (+$("warp").value>1?1:1));
+}
+function stop(){
+  running=false;clearInterval(tim);$("start").disabled=false;
+  Object.keys(marks).forEach(function(k){map.removeLayer(marks[k]);});Object.keys(lines).forEach(function(k){map.removeLayer(lines[k]);});
+  marks={};lines={};trails={};$("st").textContent="Idle";
+}
+function f0(x,u){return x==null?"—":Math.round(x).toLocaleString("fr-FR")+" "+u;}
+function detail(p){
+  var d=new Date(p.last*1000);
+  $("detBody").innerHTML='<div style="font-size:1.4rem;font-weight:700">'+(p.cs||"—")+'</div><div class="kv"><b>ICAO24</b><span>'+p.icao+'</span><b>Pays</b><span>'+(p.pays||"—")+'</span></div>'
+   +'<div class="card">Position: '+p.lat.toFixed(5).replace(".",",")+', '+p.lon.toFixed(5).replace(".",",")+'\nAltitude: '+f0(p.baro,"m")+'\nVitesse: '+Math.round(p.v*3.6)+' km/h\nCap: '+Math.round(p.trk)+'°\nVario: '+(p.vr==null?"—":p.vr.toFixed(1).replace(".",",")+" m/s")+'\nAu sol: '+(p.ground?"Oui":"Non")+'</div>'
+   +'<div style="font-size:.8rem;color:#666">Dernière mise à jour: '+d.toLocaleDateString("fr-FR")+" "+d.toLocaleTimeString("fr-FR")+'</div>'
+   +'<div class="card">Non disponible dans l\'aperçu web (requête de l\'historique de vol réservée aux comptes OpenSky).</div>';
+  show("sDet");
+}
+$("start").onclick=start;$("stop").onclick=stop;
+function load(){$("iv").value=P.iv;$("dl").value=P.dl;$("mx").value=P.mx;}
+$("save").onclick=function(){P.iv=clamp(parseInt($("iv").value,10)||DEF.iv,5,120);P.dl=clamp(parseFloat($("dl").value)||DEF.dl,0.05,5);P.mx=clamp(parseInt($("mx").value,10)||DEF.mx,25,2000);load();$("setMsg").textContent="Enregistré.";if(running){clearInterval(tim);tim=setInterval(refresh,P.iv*1000);}};
+$("rst").onclick=function(){P={iv:DEF.iv,dl:DEF.dl,mx:DEF.mx};load();$("setMsg").textContent="Valeurs par défaut restaurées.";};
+function init(){
+  map=L.map("map",{zoomControl:false,attributionControl:false}).setView(CENTER,10);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:14}).addTo(map);
+  L.control.attribution({prefix:false}).addAttribution("© OpenStreetMap").addTo(map);
+  fetch("paris.json").then(function(r){return r.json();}).then(function(d){snap=d;planes=(d.states||[]).map(parse).filter(Boolean);$("st").textContent="Idle";}).catch(function(){$("st").textContent="Données indisponibles";});
+}
+try{var th=localStorage.getItem("sky_theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
+init();window.__PS={start:start,stop:stop,P:function(){return P;},refresh:refresh};
+})();
+</script>
+</body>
+</html>

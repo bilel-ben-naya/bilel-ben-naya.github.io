@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aperçu de LinkUp</title>
+<style>
+:root{--bg:#F4F7FB;--panel:#fff;--ink:#13233A;--muted:#566A85;--line:#D8E1EE;--accent:#2F5BFF;--onaccent:#fff;--soft:#E8EEFF}
+:root[data-theme="dark"]{--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+main{max-width:900px;margin:0 auto;padding:16px;display:grid;grid-template-columns:372px 1fr;gap:22px;align-items:start}
+@media(max-width:760px){main{grid-template-columns:1fr;justify-items:center}}
+h1{margin:0 0 4px;font-size:1.25rem}.lead{margin:0 0 12px;color:var(--muted)}
+.phone{width:372px;height:640px;border-radius:34px;border:10px solid #1b1f2a;background:#fff;overflow:hidden;position:relative;box-shadow:0 10px 30px rgba(0,0,0,.25);color:#1b1b1f;font-family:Roboto,system-ui,sans-serif}
+.scr{position:absolute;inset:0;display:none;padding:22px 20px;overflow:auto}.scr.on{display:block}
+.scr h2{margin:6px 0 14px;font-size:1.2rem}
+.scr input{width:100%;padding:11px 12px;margin:0 0 12px;border:1px solid #b9bcc6;border-radius:6px;font:inherit;background:#fff;color:#111}
+.b{display:block;width:100%;padding:11px;border:0;border-radius:22px;background:#2F5BFF;color:#fff;font:600 .9rem Roboto,system-ui,sans-serif;cursor:pointer;margin-top:8px}
+.b.g{background:#e8e8ee;color:#1b1b1f}
+.li{padding:14px 4px;border-bottom:1px solid #e3e3e8;cursor:pointer;font-size:1rem}
+.empty{color:#777;font-size:.9rem;padding:16px 4px}
+.dlg{position:absolute;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:24px;z-index:5}.dlg.on{display:flex}
+.dlg>div{background:#fff;border-radius:16px;padding:20px;width:100%;white-space:pre-line}
+.dlg h3{margin:0 0 10px}.dlg button{float:right;border:0;background:none;color:#2F5BFF;font-weight:700;font-size:.95rem;cursor:pointer;margin-top:8px}
+.toast{position:absolute;left:20px;right:20px;bottom:18px;background:#323232;color:#fff;padding:10px 14px;border-radius:8px;font-size:.84rem;display:none;z-index:6}
+.side .c{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px;font-size:.9rem}
+.side .c h2{margin:0 0 6px;font-size:1rem}
+.side select{padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;width:100%}
+.muted{color:var(--muted)}
+.apk{display:inline-block;margin-top:6px;padding:8px 14px;border-radius:8px;background:var(--accent);color:var(--onaccent);text-decoration:none;font-weight:600;font-size:.88rem}
+</style>
+</head>
+<body>
+<main>
+<div class="phone">
+  <section class="scr on" id="s1"><h2 style="white-space:pre-line">Welcome
+Please enter your details</h2><input id="nm" placeholder="Entrez votre nom" autocomplete="off"><input id="em" placeholder="Entrez votre email" autocomplete="off"><button class="b" id="ok" type="button">Valider</button></section>
+  <section class="scr" id="s2"><h2 id="hi" style="white-space:pre-line"></h2><div style="height:150px;border-radius:12px;background:var(--soft,#E8EEFF);display:flex;align-items:center;justify-content:center;color:#667;font-size:.85rem;margin:10px 0">(image de l'écran d'accueil)</div><button class="b" id="nx" type="button">NEXT</button></section>
+  <section class="scr" id="s3"><h2>Événements</h2><div id="ls"></div><button class="b g" id="pv" type="button">Retour</button></section>
+  <section class="scr" id="s4"><h2>Ajouter un événement</h2><input id="en" placeholder="Event Name"><input id="et" placeholder="Event Type"><button class="b" id="sv" type="button">Save Event</button><p class="muted" style="font-size:.78rem">Position enregistrée : 48.8583, 2.2944 (valeur fixe dans le code).</p></section>
+  <section class="scr" id="s5"><h2>Importer des événements</h2><button class="b" id="dl" type="button">Télécharger les événements</button><button class="b g" id="im" type="button">Importer en base</button></section>
+  <div class="dlg" id="dg"><div><h3 id="dt"></h3><div id="db"></div><button id="dk" type="button">OK</button><div style="clear:both"></div></div></div>
+  <div class="toast" id="ts"></div>
+</div>
+<div class="side">
+  <h1>LinkUp</h1>
+  <p class="lead">Une application Android d'événements écrite en Java : formulaire d'accueil, préférences, base SQLite, liste d'événements et service de téléchargement.</p>
+  <div class="c"><h2>Parcours de l'application</h2>Remplissez le formulaire, passez à l'écran suivant puis à la liste. Elle se remplit avec les écrans d'ajout et d'import, qui ne sont pas reliés au menu dans le code et se lancent à part.
+    <p style="margin:10px 0 0"><label for="go" style="font-weight:600">Aller directement à</label><select id="go"><option value="">Parcours normal</option><option value="s4">Ajouter un événement</option><option value="s5">Importer des événements</option><option value="s3">Liste des événements</option></select></p></div>
+  <div class="c"><h2>Code</h2><a class="apk" href="https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/linkup" rel="noopener">Voir le code et l'APK</a></div>
+  <div class="c muted">Aperçu web. Le téléchargement réel récupère un fichier sur Google Drive ; ici il charge trois événements d'exemple, inventés pour la démonstration. L'écran de carte (position GPS) n'est pas reproduit.</div>
+</div>
+</main>
+<script>
+(function(){
+"use strict";
+var $=function(i){return document.getElementById(i);};
+var mem={name:"",email:"",ev:[]},KEY="linkup_demo";
+function save(){try{localStorage.setItem(KEY,JSON.stringify(mem));}catch(e){}}
+try{var s=JSON.parse(localStorage.getItem(KEY)||"null");if(s&&s.ev)mem=s;}catch(e){}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function show(id){Array.prototype.forEach.call(document.querySelectorAll(".scr"),function(x){x.classList.toggle("on",x.id===id);});if(id==="s3")list();}
+function toast(t){var e=$("ts");e.textContent=t;e.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(function(){e.style.display="none";},2200);}
+function list(){
+  $("ls").innerHTML=mem.ev.length?mem.ev.map(function(e,i){return '<div class="li" data-i="'+i+'" tabindex="0">'+esc(e.name)+'</div>';}).join(""):'<div class="empty">Aucun événement pour le moment.</div>';
+  Array.prototype.forEach.call($("ls").querySelectorAll(".li"),function(d){var f=function(){var e=mem.ev[+d.getAttribute("data-i")];$("dt").textContent=e.name;$("db").textContent="Latitude : "+e.lat+"\nLongitude : "+e.lng+"\nType : "+e.type;$("dg").classList.add("on");};d.onclick=f;d.onkeydown=function(k){if(k.key==="Enter")f();};});
+}
+function welcome(){$("hi").textContent="Bienvenue "+mem.name+"\n("+mem.email+")";}
+$("ok").onclick=function(){mem.name=$("nm").value;mem.email=$("em").value;save();welcome();show("s2");};
+$("nx").onclick=function(){show("s3");};$("pv").onclick=function(){show("s2");};$("dk").onclick=function(){$("dg").classList.remove("on");};
+$("sv").onclick=function(){mem.ev.push({name:$("en").value,lat:"48.8583",lng:"2.2944",type:$("et").value});save();$("en").value="";$("et").value="";toast("Événement enregistré");};
+var got=false;
+$("dl").onclick=function(){got=true;toast("Téléchargement terminé ✅");};
+$("im").onclick=function(){if(!got){toast("Fichier introuvable ❌");return;}
+  var sample=[["Soirée jeux de société","48.8606","2.3376","Loisirs"],["Tournoi de football","48.8450","2.2530","Sport"],["Conférence sur l'IA","48.8566","2.3522","Étude"]];
+  sample.forEach(function(r){mem.ev.push({name:r[0],lat:r[1],lng:r[2],type:r[3]});});save();toast(sample.length+" événements importés ✅");};
+$("go").onchange=function(){if(this.value)show(this.value);else{show(mem.name?"s2":"s1");}};
+if(mem.name){welcome();show("s2");}
+try{var th=localStorage.getItem("sky_theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
+})();
+</script>
+</body>
+</html>

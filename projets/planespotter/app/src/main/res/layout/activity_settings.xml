@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.SettingsActivity">
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:padding="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Paramètres"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:paddingBottom="12dp" />
+
+            <!--
+                Champs ajoutés pour correspondre à SettingsActivity.java (ancien comportement attendu).
+                L'ancien écran "Unités" reste présent plus bas pour ne pas casser l'UI.
+            -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rafraîchissement"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Intervalle de mise à jour (secondes)"
+                android:textStyle="bold"
+                android:paddingTop="4dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Temps entre deux rafraîchissements des positions sur la carte."
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray"
+                android:paddingBottom="4dp" />
+
+            <EditText
+                android:id="@+id/etIntervalSec"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ex : 12"
+                android:inputType="number" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Zone de recherche (degrés)"
+                android:textStyle="bold"
+                android:paddingTop="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Taille de la zone autour du centre de la carte. Plus la valeur est grande, plus vous récupérez d’avions."
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray"
+                android:paddingBottom="4dp" />
+
+            <EditText
+                android:id="@+id/etDeltaDeg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ex : 0.4"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Limite d’avions affichés"
+                android:textStyle="bold"
+                android:paddingTop="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nombre maximum d’avions affichés en même temps (utile pour les performances)."
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray"
+                android:paddingBottom="4dp" />
+
+            <EditText
+                android:id="@+id/etMaxPlanes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ex : 250"
+                android:inputType="number" />
+
+            <Button
+                android:id="@+id/btnReset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Restaurer valeurs par défaut" />
+
+            <TextView
+                android:id="@+id/tvSaved"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text=""
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unités" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Choisissez le système d’unités utilisé pour l’altitude et la vitesse."
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray"
+                android:paddingBottom="6dp" />
+
+            <RadioGroup
+                android:id="@+id/rgUnits"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp">
+
+                <RadioButton
+                    android:id="@+id/rbMetric"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Métrique (m, km/h)" />
+
+                <RadioButton
+                    android:id="@+id/rbImperial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Impérial (ft, knots)" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filtrage"
+                android:textStyle="bold"
+                android:paddingBottom="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Masquez certains avions pour rendre la carte plus lisible."
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray"
+                android:paddingBottom="6dp" />
+
+            <CheckBox
+                android:id="@+id/cbHideOnGround"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Masquer les avions au sol" />
+
+            <CheckBox
+                android:id="@+id/cbHideNoCallsign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Masquer les avions sans callsign" />
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enregistrer"
+                android:layout_marginTop="24dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        app:menu="@menu/bottom_nav_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

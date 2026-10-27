@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+#
+# Simplified Gradle wrapper script placeholder.
+# Android Studio can regenerate the wrapper if needed.
+#
+exec gradle "$@"
