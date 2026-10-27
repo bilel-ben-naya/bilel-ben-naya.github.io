@@ -69,7 +69,7 @@ canvas{width:100%;height:210px;display:block;border:1px solid var(--line);border
 </section>
 
 <section class="card note">
-  <strong>Les règles du programme.</strong> Un point dure 200 ms et un trait 600 ms, séparés par 200 ms de silence. Entre deux lettres le silence atteint 600 ms, entre deux mots 2 000 ms. Le récepteur lit l'ADC à chaque milliseconde : au-dessus de 2000 il y a du son, un son de moins de 350 ms est un point, sinon un trait. Un silence de plus de 450 ms termine la lettre, de plus de 1 200 ms le mot. Le programme est celui de mon projet (fichiers <code>main.c</code> des deux cartes), repris tel quel en JavaScript.
+  <strong>Les règles du programme.</strong> Un point dure 200 ms et un trait 600 ms, séparés par 200 ms de silence. Entre deux lettres le silence atteint 600 ms, entre deux mots 2 000 ms. Le récepteur lit l'ADC à chaque milliseconde : au-dessus de 2000 il y a du son, un son de moins de 350 ms est un point, sinon un trait. Un silence de plus de 450 ms termine la lettre, de plus de 1 200 ms le mot. Le programme est celui de mon projet (fichiers <code>main.c</code> des deux cartes), repris tel quel en JavaScript. Sur la maquette, la transmission par le son fonctionne sur environ un mètre. La version infrarouge, prévue au départ, n'a pas été réalisée faute de temps.
   <p style="margin:6px 0 0">Le bruit est simulé : il ajoute du hasard à la valeur lue et fait parfois chuter le signal quelques millisecondes pendant un bip. Un seul échantillon sous le seuil coupe le bip en deux, ce qui produit des erreurs, d'où la sensibilité au bruit signalée dans le rapport.</p>
 </section>
 </main>
@@ -151,9 +151,10 @@ $("again").onclick=function(){seed=1+Math.floor(Math.random()*1e6);go();};
 $("noise").oninput=function(){$("nv").textContent=this.value+" %";};
 $("msg").addEventListener("keydown",function(e){if(e.key==="Enter")$("go").click();});
 window.addEventListener("resize",function(){size();if(R)draw(playing?shown:R.total);else draw(0);});
-try{var th=localStorage.getItem("sky_theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
+try{var th=localStorage.getItem("theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
 size();draw(0);$("t2").textContent="Recepteur Morse pret.";$("t1").textContent="Tape un texte dans PuTTY :";
 })();
+window.addEventListener("storage",function(e){if(e.key==="theme"&&e.newValue)document.documentElement.setAttribute("data-theme",e.newValue);});
 </script>
 </body>
 </html>

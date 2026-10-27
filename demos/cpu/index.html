@@ -192,9 +192,10 @@ Array.prototype.forEach.call($("pre").children,function(b,i){b.onclick=function(
 $("go").onclick=run; $("all").onclick=compare;
 $("replay").onclick=play; $("skip").onclick=function(){clearInterval(timer);if(cur)setCursor(cur.fin,cur);};
 $("algo").onchange=run; $("q").onchange=run;
-try{var th=localStorage.getItem("sky_theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
+try{var th=localStorage.getItem("theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
 $("in").value=SETS["Jeu du rapport"]; run();
 })();
+window.addEventListener("storage",function(e){if(e.key==="theme"&&e.newValue)document.documentElement.setAttribute("data-theme",e.newValue);});
 </script>
 </body>
 </html>

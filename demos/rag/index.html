@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assistant documentaire RAG et UNITE</title>
+<style>
+:root{--bg:#F4F7FB;--panel:#fff;--ink:#13233A;--muted:#566A85;--line:#D8E1EE;--accent:#2F5BFF;--onaccent:#fff;--soft:#E8EEFF;--warn:#E07A1F;--ok:#0A7D55}
+:root[data-theme="dark"]{--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A;--warn:#FFA24A;--ok:#4BD6A0}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A;--warn:#FFA24A;--ok:#4BD6A0}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+main{max-width:860px;margin:0 auto;padding:16px}
+h1{margin:0 0 4px;font-size:1.25rem}.lead{margin:0 0 12px;color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tabs button{padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:.9rem;font-weight:600;cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--accent);color:var(--onaccent);border-color:var(--accent)}
+label{display:block;font-weight:600;font-size:.88rem;margin:10px 0 5px}
+textarea,input[type=text]{width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:inherit;font:inherit}
+textarea{min-height:120px;resize:vertical}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+button.p{padding:9px 18px;border-radius:8px;border:0;background:var(--accent);color:var(--onaccent);font:inherit;font-weight:600;cursor:pointer}
+button.p:disabled{opacity:.5;cursor:default}
+button.g{padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:.85rem;cursor:pointer}
+.chk{display:flex;gap:6px;align-items:center;font-weight:500;font-size:.88rem;margin:0}
+.note{font-size:.88rem;color:var(--muted)}
+.ans{white-space:pre-wrap}
+.pass{border-left:3px solid var(--accent);padding:6px 12px;margin:8px 0;background:var(--bg);border-radius:0 8px 8px 0;font-size:.88rem;white-space:pre-wrap}
+.pass b{display:block;color:var(--muted);font-weight:600;font-size:.78rem;margin-bottom:2px}
+.warn{padding:9px 12px;border-radius:8px;background:var(--soft);border-left:4px solid var(--warn);font-size:.88rem;margin-top:10px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px}.kv b{color:var(--muted);font-weight:600}
+.hide{display:none}
+</style>
+</head>
+<body>
+<main>
+<h1>Assistant documentaire (RAG) et UNITE</h1>
+<p class="lead">Les deux outils que j'ai écrits pendant mon stage chez DRÄXLMAIER : poser une question à un document, résumer un texte, classer un ticket. Le texte est découpé et recherché dans votre navigateur, puis un modèle de langage rédige la réponse.</p>
+
+<div class="tabs" role="tablist">
+  <button role="tab" aria-selected="true" data-t="q">Question sur un document</button>
+  <button role="tab" aria-selected="false" data-t="r">Résumer un texte</button>
+  <button role="tab" aria-selected="false" data-t="c">Classer un ticket</button>
+</div>
+
+<section class="card" id="pq">
+  <label for="doc">Document (collez un texte ou chargez un fichier .txt)</label>
+  <textarea id="doc"></textarea>
+  <div class="row"><input type="file" id="file" accept=".txt,text/plain" aria-label="Charger un fichier texte"><button class="g" id="sample" type="button">Remettre l'exemple</button><span class="note" id="info"></span></div>
+  <label for="q">Question</label>
+  <input type="text" id="q" value="Combien de jours de télétravail par semaine ?" autocomplete="off">
+  <div class="row"><button class="p" id="askq" type="button">Poser la question</button>
+    <label class="chk"><input type="checkbox" id="sem"> Recherche sémantique (télécharge un modèle d'environ 120 Mo)</label></div>
+  <div id="outq"></div>
+</section>
+
+<section class="card hide" id="pr">
+  <label for="txr">Texte à résumer</label><textarea id="txr"></textarea>
+  <div class="row"><button class="p" id="askr" type="button">Résumer en 3 points</button></div>
+  <div id="outr"></div>
+</section>
+
+<section class="card hide" id="pc">
+  <label for="tt">Titre du ticket</label><input type="text" id="tt" value="Impossible de me connecter au VPN" autocomplete="off">
+  <label for="td">Description du problème</label><textarea id="td" style="min-height:80px">Depuis ce matin, le client VPN affiche une erreur de délai dépassé quand je suis à la maison. Le wifi fonctionne pour le reste.</textarea>
+  <div class="row"><button class="p" id="askc" type="button">Classer le ticket</button></div>
+  <div id="outc"></div>
+</section>
+
+<section class="card note">
+  <strong>Comment ça marche.</strong> Le document est découpé en passages de 500 caractères avec 50 de recouvrement, comme avec <code>RecursiveCharacterTextSplitter</code> de langchain (le découpage est identique). Les deux passages les plus proches de la question sont retenus, puis envoyés à Llama 3.1 (via l'API Groq) avec la consigne de ne répondre que d'après le texte. Dans mon programme Python la recherche utilise des embeddings multilingues et FAISS ; ici elle utilise par défaut une recherche par mots (BM25), et la recherche sémantique est disponible en option.
+  <p style="margin:6px 0 0">Ma clé d'API n'est jamais dans cette page : les appels passent par un petit relais qui n'accepte que ces trois usages et limite le volume.</p>
+</section>
+</main>
+<script src="rag.js"></script>
+<script src="config.js"></script>
+<script>
+(function(){
+"use strict";
+var $=function(i){return document.getElementById(i);};
+var SAMPLE="Politique de télétravail (exemple fictif)\n\nObjet\nCette note décrit les règles de télétravail applicables aux équipes du service informatique d'une entreprise imaginaire.\n\nRythme\nChaque collaborateur peut télétravailler deux jours par semaine, à condition d'être présent au bureau le mardi et le jeudi pour les réunions d'équipe. Un troisième jour est possible sur demande, avec l'accord écrit du responsable.\n\nMatériel\nL'entreprise fournit un ordinateur portable et un casque. Le collaborateur reste responsable de sa connexion internet. Un forfait de 20 euros par mois est versé pour couvrir les frais.\n\nSécurité\nLa connexion au réseau de l'entreprise se fait obligatoirement par le VPN. Le mot de passe doit être changé tous les trois mois et il est interdit de le partager. Tout vol ou perte du matériel doit être signalé au service informatique dans les 24 heures.\n\nCongés et absences\nLes jours de télétravail ne remplacent pas un congé. Une absence imprévue est signalée au responsable avant 9 heures.\n\nContact\nPour toute question, écrire au service des ressources humaines.";
+var DOC=$("doc");DOC.value=SAMPLE;
+$("txr").value="Le télétravail s'est généralisé dans de nombreuses entreprises. Il permet de réduire le temps de transport et d'améliorer l'équilibre entre vie professionnelle et vie privée. En contrepartie, il demande une organisation rigoureuse, des outils de communication fiables et des règles claires de sécurité informatique, notamment l'usage d'un VPN et la protection des mots de passe. Les managers doivent adapter leurs pratiques de suivi, en privilégiant les résultats plutôt que la présence.";
+var tabs=document.querySelectorAll(".tabs button");
+Array.prototype.forEach.call(tabs,function(b){b.onclick=function(){Array.prototype.forEach.call(tabs,function(x){x.setAttribute("aria-selected",x===b?"true":"false");});["q","r","c"].forEach(function(k){$("p"+k).classList.toggle("hide",k!==b.getAttribute("data-t"));});};});
+$("file").onchange=function(){var f=this.files[0];if(!f)return;if(f.size>200000){$("info").textContent="Fichier trop gros (200 Ko maximum).";return;}var r=new FileReader();r.onload=function(){DOC.value=String(r.result);upd();};r.readAsText(f);};
+$("sample").onclick=function(){DOC.value=SAMPLE;upd();};
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function upd(){var n=RagLib.chunks(DOC.value).length;$("info").textContent=DOC.value.length+" caractères, "+n+" passage"+(n>1?"s":"");}
+DOC.addEventListener("input",upd);upd();
+function relay(body){
+  if(!window.RAG_RELAY)return Promise.reject(new Error("norelay"));
+  return fetch(window.RAG_RELAY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||("Erreur "+r.status));return j;});});
+}
+function noRelay(el){el.insertAdjacentHTML("beforeend",'<div class="warn">La réponse du modèle de langage n\'est pas disponible dans cette version en ligne (le relais protégeant ma clé d\'API n\'est pas encore déployé). La recherche des passages ci-dessus fonctionne.</div>');}
+/* recherche sémantique optionnelle */
+var embP=null;
+function embedder(){
+  if(embP)return embP;
+  $("info").textContent="Chargement du modèle...";
+  embP=import("https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2").then(function(m){return m.pipeline("feature-extraction","Xenova/paraphrase-multilingual-MiniLM-L12-v2");});
+  return embP;
+}
+function semantic(chunks,q){
+  return embedder().then(function(p){
+    return p(chunks.concat([q]),{pooling:"mean",normalize:true}).then(function(o){
+      var d=o.dims[1],a=o.data,qv=a.slice(chunks.length*d,(chunks.length+1)*d),sc=[];
+      for(var i=0;i<chunks.length;i++){var s=0;for(var j=0;j<d;j++)s+=a[i*d+j]*qv[j];sc.push({i:i,s:s});}
+      return sc.sort(function(x,y){return y.s-x.s;}).slice(0,2);
+    });
+  });
+}
+$("askq").onclick=function(){
+  var q=$("q").value.trim(),out=$("outq"),btn=this;if(!q||!DOC.value.trim())return;
+  var chunks=RagLib.chunks(DOC.value);btn.disabled=true;out.innerHTML='<p class="note">Recherche...</p>';
+  var pick=$("sem").checked?semantic(chunks,q).catch(function(){$("sem").checked=false;out.innerHTML='<div class="warn">Le modèle n\'a pas pu être chargé, recherche par mots à la place.</div>';return RagLib.bm25(chunks,q,2);}):Promise.resolve(RagLib.bm25(chunks,q,2));
+  pick.then(function(top){
+    $("info").textContent=chunks.length+" passages";
+    var ctx=top.map(function(t){return chunks[t.i];}).join("\n\n"),h=(out.querySelector(".warn")?out.innerHTML:"")+'<h2 style="font-size:1rem;margin:14px 0 4px">Passages retenus</h2>'+top.map(function(t,k){return '<div class="pass"><b>Passage '+(t.i+1)+' sur '+chunks.length+'</b>'+esc(chunks[t.i])+'</div>';}).join("");
+    out.innerHTML=h+'<h2 style="font-size:1rem;margin:14px 0 4px">Réponse</h2><div class="ans" id="ra"><span class="note">Rédaction...</span></div>';
+    return relay({mode:"repondre",texte:ctx,question:q}).then(function(j){$("ra").textContent=j.text;}).catch(function(e){$("ra").innerHTML="";if(e.message==="norelay")noRelay($("ra"));else $("ra").innerHTML='<div class="warn">'+esc(e.message)+'</div>';});
+  }).then(function(){btn.disabled=false;},function(){btn.disabled=false;});
+};
+$("askr").onclick=function(){
+  var out=$("outr"),btn=this,t=$("txr").value.trim();if(!t)return;btn.disabled=true;out.innerHTML='<p class="note">Rédaction...</p>';
+  relay({mode:"resumer",texte:t}).then(function(j){out.innerHTML='<div class="ans">'+esc(j.text)+'</div>';}).catch(function(e){out.innerHTML="";if(e.message==="norelay")noRelay(out);else out.innerHTML='<div class="warn">'+esc(e.message)+'</div>';}).then(function(){btn.disabled=false;});
+};
+$("askc").onclick=function(){
+  var out=$("outc"),btn=this;btn.disabled=true;out.innerHTML='<p class="note">Analyse...</p>';
+  relay({mode:"classifier",titre:$("tt").value,description:$("td").value}).then(function(j){
+    if(j.result)out.innerHTML='<div class="kv"><b>Catégorie</b><span>'+esc(j.result.categorie)+'</span><b>Priorité</b><span>'+esc(j.result.priorite)+'</span><b>Résumé</b><span>'+esc(j.result.resume)+'</span></div>';
+    else out.innerHTML='<div class="ans">'+esc(j.text)+'</div>';
+  }).catch(function(e){out.innerHTML="";if(e.message==="norelay")noRelay(out);else out.innerHTML='<div class="warn">'+esc(e.message)+'</div>';}).then(function(){btn.disabled=false;});
+};
+try{var th=localStorage.getItem("theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
+window.addEventListener("storage",function(e){if(e.key==="theme"&&e.newValue)document.documentElement.setAttribute("data-theme",e.newValue);});
+var hh=location.hash.slice(1);if(hh==="r"||hh==="c"){Array.prototype.forEach.call(tabs,function(b){if(b.getAttribute("data-t")===hh)b.click();});}
+window.__R={relay:relay};
+})();
+</script>
+</body>
+</html>

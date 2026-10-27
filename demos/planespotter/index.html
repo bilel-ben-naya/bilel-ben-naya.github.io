@@ -149,9 +149,10 @@ function init(){
   L.control.attribution({prefix:false}).addAttribution("© OpenStreetMap").addTo(map);
   fetch("paris.json").then(function(r){return r.json();}).then(function(d){snap=d;planes=(d.states||[]).map(parse).filter(Boolean);$("st").textContent="Idle";}).catch(function(){$("st").textContent="Données indisponibles";});
 }
-try{var th=localStorage.getItem("sky_theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
+try{var th=localStorage.getItem("theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
 init();window.__PS={start:start,stop:stop,P:function(){return P;},refresh:refresh};
 })();
+window.addEventListener("storage",function(e){if(e.key==="theme"&&e.newValue)document.documentElement.setAttribute("data-theme",e.newValue);});
 </script>
 </body>
 </html>

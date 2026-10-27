@@ -142,6 +142,24 @@ h2{font:800 clamp(2rem,4.4vw,3rem)/1.08 var(--display);letter-spacing:-.028em;ma
 @keyframes shim{to{background-position:-200% 0}}
 .winbody .lbl{position:absolute;bottom:16px;right:16px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:3px 12px;font-size:.85rem;color:var(--muted)}
 
+.bigstat{display:grid;gap:6px;text-align:center}.bigstat b{font:800 clamp(2.6rem,7vw,4.6rem)/1 var(--display);color:var(--accent);letter-spacing:-.03em}.bigstat span{color:var(--muted);font-size:1.05rem}
+/* fenêtre de démo flottante */
+.winbar .wb{margin-left:auto;display:flex;gap:6px}
+.winbar .wb button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;width:30px;height:28px;font-size:.95rem;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0}
+.winbar .wb button[hidden]{display:none}
+.winbar .wb button:hover{border-color:var(--accent);color:var(--accent)}
+.winbar span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.winph{visibility:hidden}
+.wbd{position:fixed;inset:0;z-index:999;background:rgba(8,14,26,.5);display:none}
+.wbd.on{display:block}
+.win.float{position:fixed;z-index:1000;left:8vw;top:6vh;width:84vw;height:88vh;min-width:300px;min-height:240px;max-width:100vw;max-height:100vh;display:flex;flex-direction:column;resize:both;box-shadow:0 24px 70px rgba(0,0,0,.45);transition:none}
+.item:hover .win.float{transform:none}
+.win.float .winbar{cursor:move;user-select:none;touch-action:none}
+.win.float .winbody,.win.float .winbody.app{flex:1;aspect-ratio:auto;height:auto;min-height:0}
+.win.float.full{left:0!important;top:0!important;width:100vw!important;height:100vh!important;border-radius:0;resize:none}
+.win.float.drag iframe{pointer-events:none}
+@media (max-width:700px){.win.float{left:2vw;top:3vh;width:96vw;height:94vh}}
+
 /* parcours */
 .tl{list-style:none;margin:0;padding:0 0 0 26px;border-left:2px solid var(--line);max-width:720px}
 .tl li{position:relative;padding:0 0 32px 20px}
@@ -280,7 +298,7 @@ var T = {
     tl2_t:"Stage chez DRÄXLMAIER",tl2_d:"Sousse Hub, Tunisie. Mai à juillet 2026.",tl3_t:"Licence Informatique",tl3_d:"CY Cergy Paris Université. 2023 à 2026.",
     langs:"Langues : français, arabe, anglais (niveau professionnel).",
     contact_title:"Parlons de votre alternance",contact_sub:"Je cherche une alternance de 24 mois en IA et data, tous postes confondus. Écrivez-moi, je réponds vite.",
-    code:"Voir le code",codesoon:"Code bientôt en ligne",demosoon:"Démo en préparation",demofull:"Ouvrir la démo en grand",team:"Projet d'équipe, ",persons:" personnes"},
+    code:"Voir le code",codesoon:"Code bientôt en ligne",demosoon:"Démo en préparation",demofull:"Ouvrir la démo en grand",wfloat:"Agrandir en fenêtre flottante",wfull:"Plein écran",wrest:"Réduire",wclose:"Fermer",team:"Projet d'équipe, ",persons:" personnes"},
   en:{nav_skills:"Skills",nav_projects:"Projects",nav_internship:"Internship",nav_background:"Background",theme:"Theme",
     status:"Available for a 24-month work-study contract in AI and data",role:"Master's student in Data / AI, focused on artificial intelligence",prefix:"I build ",
     lead:"I work on applied AI: text classification, RAG, LLM assistants. I also connect it to the real world, from Arduino sensors to mobile apps. Each project below comes with its code and live demo.",
@@ -294,7 +312,7 @@ var T = {
     tl2_t:"Internship at DRÄXLMAIER",tl2_d:"Sousse Hub, Tunisia. May to July 2026.",tl3_t:"Bachelor's in Computer Science",tl3_d:"CY Cergy Paris Université. 2023 to 2026.",
     langs:"Languages: French, Arabic, English (professional level).",
     contact_title:"Let's talk about your work-study offer",contact_sub:"I am looking for a 24-month work-study contract in AI and data, any role. Write to me, I reply fast.",
-    code:"View the code",codesoon:"Code coming soon",demosoon:"Demo in preparation",demofull:"Open the demo full size",team:"Team project, ",persons:" people"}
+    code:"View the code",codesoon:"Code coming soon",demosoon:"Demo in preparation",demofull:"Open the demo full size",wfloat:"Enlarge in a floating window",wfull:"Full screen",wrest:"Shrink",wclose:"Close",team:"Team project, ",persons:" people"}
 };
 var PHRASES = {
   fr:["des modèles de machine learning","des pipelines RAG et des assistants LLM","des objets connectés, du capteur à la base de données","des applications Android","des simulateurs en C"],
@@ -310,20 +328,18 @@ var SKILLS = [
 var PROJECTS = [
   {id:"meteo",t:{fr:"SkyTrack, site météo",en:"SkyTrack, weather website"},d:{fr:"Prévisions météo pour les communes de France, réalisées à deux avec Alexis SADE dans le module Développement Web : carte cliquable des régions, choix de la région, du département puis de la ville, prévisions sur 7 jours, mode jour et nuit. Écrit à l'origine en PHP, porté en JavaScript pour tourner directement ici.",en:"Weather forecasts for French towns, built with Alexis SADE in the Web Development module: clickable region map, region, department then town selection, 7-day forecast, day and night mode. Originally written in PHP, ported to JavaScript to run right here."},tags:["PHP","JavaScript","HTML / CSS","API REST"],team:2,demo:"demos/meteo/index.html",ratio:"1/1"},
   {id:"xiangqi",t:{fr:"Xiangqi, échecs chinois",en:"Xiangqi, Chinese chess"},d:{fr:"Jeu d'échecs chinois en Java (plateau 11x11) avec interface Swing : plateau avec rivière et palais, règles de déplacement de chaque pièce, partie à deux ou contre un bot. Le bot note chaque coup (valeur des pièces prises, menaces, risque de capture) et écarte ceux qui exposent son général. Projet de génie logiciel livré avec rapport, diagrammes UML et diagramme de Gantt.",en:"Chinese chess in Java with a Swing interface: board with river and palaces, movement rules for every piece, two-player mode or play against a bot. The bot scores each move (value of captured pieces, threats, risk of capture) and rejects moves that expose its general. Software engineering project delivered with a report, UML diagrams and a Gantt chart."},tags:["Java","Swing","UML"],team:3,code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/xiangqi",demo:"demos/xiangqi/index.html",ratio:"1/1"},
-  {id:"parking",t:{fr:"Parking connecté intelligent",en:"Smart connected parking"},d:{fr:"Maquette de parking connecté sur Arduino Mega : trois places surveillées par des capteurs à ultrasons avec LED rouge et verte, barrière à servomoteur qui reste ouverte deux secondes après le passage, et supervision sur Blynk. Le dépôt contient aussi un serveur FastAPI avec base SQLite (sessions et tarification à la minute), simulé dans la démo.",en:"Connected parking model on an Arduino Mega: three spaces watched by ultrasonic sensors with red and green LEDs, a servo-driven barrier that stays open for two seconds after a vehicle passes, and supervision on Blynk. The repository also holds a FastAPI server with an SQLite database (sessions and per-minute pricing), simulated in the demo."},tags:["Arduino","IoT","Blynk","FastAPI"],team:5,code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/parking-iot",demo:"demos/parking/index.html",ratio:"3/4"},
-  {id:"morse",t:{fr:"Communication Morse entre STM32",en:"Morse communication between STM32 boards"},d:{fr:"Deux cartes STM32F4 qui communiquent par le son : la première reçoit un texte par UART, le traduit en Morse et fait sonner un buzzer ; la seconde lit un microphone avec l'ADC, mesure la durée des sons et reconstruit le message. La démo rejoue les deux programmes C et permet d'ajouter du bruit pour voir les erreurs de décodage.",en:"Two STM32F4 boards talking through sound: the first receives text over UART, turns it into Morse and drives a buzzer; the second reads a microphone with the ADC, measures sound durations and rebuilds the message. The demo replays both C programs and lets you add noise to see decoding errors."},tags:["C","STM32","ADC / UART","Systèmes embarqués"],team:5,code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/morse-stm32",demo:"demos/morse/index.html",ratio:"1/1"},
+  {id:"parking",t:{fr:"Parking connecté intelligent",en:"Smart connected parking"},d:{fr:"Maquette de parking connecté sur Arduino Mega : trois places surveillées par des capteurs à ultrasons avec LED rouge et verte, barrière à servomoteur qui reste ouverte deux secondes après le passage, et supervision sur Blynk. Un serveur FastAPI avec base SQLite (sessions et tarification à la minute) complète le système. La maquette compte trois places, le code s'adapte à un parking bien plus grand.",en:"Connected parking model on an Arduino Mega: three spaces watched by ultrasonic sensors with red and green LEDs, a servo-driven barrier that stays open for two seconds after a vehicle passes, and supervision on Blynk. A FastAPI server with an SQLite database (sessions and per-minute pricing) completes the system. The model has three spaces, and the code scales to a much larger car park."},tags:["Arduino","IoT","Blynk","FastAPI"],team:5,code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/parking-iot",demo:"demos/parking/index.html",ratio:"3/4"},
+  {id:"morse",t:{fr:"Communication Morse entre STM32",en:"Morse communication between STM32 boards"},d:{fr:"Deux cartes STM32F4 qui communiquent par le son, sur environ un mètre : la première reçoit un texte par UART, le traduit en Morse et fait sonner un buzzer ; la seconde lit un microphone avec l'ADC, mesure la durée des sons et reconstruit le message. La démo rejoue les deux programmes C et permet d'ajouter du bruit pour voir les erreurs de décodage.",en:"Two STM32F4 boards talking through sound over about one meter: the first receives text over UART, turns it into Morse and drives a buzzer; the second reads a microphone with the ADC, measures sound durations and rebuilds the message. The demo replays both C programs and lets you add noise to see decoding errors."},tags:["C","STM32","ADC / UART","Systèmes embarqués"],team:5,code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/morse-stm32",demo:"demos/morse/index.html",ratio:"1/1"},
   {id:"planespotter",t:{fr:"PlaneSpotter, application Android",en:"PlaneSpotter, Android app"},d:{fr:"Application Android en Java pour suivre les avions en direct sur une carte (osmdroid) avec l'API OpenSky : avion orienté selon son cap, couleur selon l'altitude, trace des 25 dernières positions, fiche détaillée au toucher, réglages de l'intervalle, de la zone et du nombre d'avions. Réalisée à deux avec Alexis SADE. L'aperçu reproduit les écrans dans le navigateur avec un relevé réel au-dessus de Paris.",en:"Java Android app that tracks aircraft live on a map (osmdroid) using the OpenSky API: plane rotated to its heading, colored by altitude, trail of the last 25 positions, detail sheet on tap, settings for interval, area and number of planes. Built in pairs with Alexis SADE. The preview recreates the screens in the browser with a real snapshot over Paris."},tags:["Java","Android","OpenSky","osmdroid"],team:2,code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/planespotter",demo:"demos/planespotter/index.html",ratio:"5/4"},
-  {id:"linkup",t:{fr:"LinkUp, application Android",en:"LinkUp, Android app"},d:{fr:"Application Android en Java autour d'événements : formulaire d'accueil mémorisé dans les préférences, base SQLite, liste avec fenêtre de détails, service de téléchargement et import d'un fichier, écran de carte avec la position GPS. L'aperçu reprend le parcours dans le navigateur.",en:"Java Android app built around events: welcome form kept in preferences, SQLite database, list with a detail dialog, download service and file import, map screen with the GPS position. The preview replays the flow in the browser."},tags:["Java","Android","SQLite"],code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/linkup",demo:"demos/linkup/index.html",ratio:"5/4"},
-  {id:"cpu",t:{fr:"Simulateur d'ordonnancement CPU",en:"CPU scheduling simulator"},d:{fr:"Simulateur en C de quatre algorithmes d'ordonnancement (FIFO, SJF, SJRF, Round Robin) avec entrées/sorties parallèles ou bloquantes, métriques et diagramme de Gantt. Ici, le même calcul tourne dans le navigateur : modifiez les processus et regardez le CPU les exécuter.",en:"C simulator of four scheduling algorithms (FIFO, SJF, SJRF, Round Robin) with parallel or blocking I/O, metrics and a Gantt chart. Here the same computation runs in your browser: edit the processes and watch the CPU run them."},tags:["C","Systèmes","Ordonnancement"],team:3,code:"https://github.com/alexissade78/OS-2026",demo:"demos/cpu/index.html",ratio:"1/1"},
-  {id:"tcp",t:{fr:"Architecture distribuée",en:"Distributed architecture"},d:{fr:"Architecture distribuée TCP avec base PostgreSQL.",en:"TCP distributed architecture with a PostgreSQL database."},tags:["TCP","PostgreSQL"]},
+  {id:"cpu",t:{fr:"Simulateur d'ordonnancement CPU",en:"CPU scheduling simulator"},d:{fr:"Simulateur en C de quatre algorithmes d'ordonnancement (FIFO, SJF, SJRF, Round Robin) avec entrées/sorties parallèles ou bloquantes, métriques et diagramme de Gantt. Ici, le même calcul tourne dans le navigateur : modifiez les processus et regardez le CPU les exécuter.",en:"C simulator of four scheduling algorithms (FIFO, SJF, SJRF, Round Robin) with parallel or blocking I/O, metrics and a Gantt chart. Here the same computation runs in your browser: edit the processes and watch the CPU run them."},tags:["C","Systèmes","Ordonnancement"],team:3,code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/ordonnancement-cpu",demo:"demos/cpu/index.html",ratio:"1/1"},
   {id:"reseau",t:{fr:"TP de déploiement réseau",en:"Network deployment lab"},d:{fr:"Déploiement d'un réseau complet sur six machines FreeBSD : routage entre WAN, DMZ, réseau invité et réseau privé, DNS maître et esclave, serveur web, proxy Squid, messagerie Postfix, NAT/PAT, DHCP et pare-feu ipfw. Ici, un modèle interactif du réseau : lancez les tests du TP, suivez le paquet et cassez un service pour voir l'effet.",en:"Deployment of a complete network on six FreeBSD machines: routing between WAN, DMZ, guest and private networks, master and slave DNS, web server, Squid proxy, Postfix mail, NAT/PAT, DHCP and an ipfw firewall. Here, an interactive model of the network: run the lab's tests, follow the packet and break a service to see the effect."},tags:["FreeBSD","Routage","NAT/PAT","DNS","ipfw"],team:6,demo:"demos/reseau/index.html",ratio:"4/5"}
 ];
 var INTERN = [
-  {id:"cablage",t:{fr:"Câblage et installation des baies",en:"Cabling and rack installation"},d:{fr:"Phase réseau du stage : câblage et installation des baies, environ 780 ports par étage.",en:"Network phase of the internship: cabling and rack installation, about 780 ports per floor."},tags:["Réseaux","Infrastructure"]},
-  {id:"opensky",t:{fr:"Scanner d'avions OpenSky",en:"OpenSky aircraft tracker"},d:{fr:"Suivi en direct des avions au-dessus de la Tunisie avec l'API publique OpenSky : version en ligne de commande et tableau de bord Streamlit avec carte interactive.",en:"Live tracking of aircraft over Tunisia with the public OpenSky API: command-line version and a Streamlit dashboard with an interactive map."},tags:["Python","Streamlit","Folium","REST API"],demo:"demos/opensky/index.html",ratio:"4/5"},
-  {id:"tickets",t:{fr:"Classifieur de tickets",en:"Ticket classifier"},d:{fr:"Classe un ticket d'incident informatique dans la bonne équipe (Hardware, Réseau ou Logiciel). TF-IDF et Naive Bayes entraînés sur 499 tickets simulés, 99 % de précision sur des tickets non vus. Interface Streamlit à l'origine, refaite ici pour tourner dans votre navigateur.",en:"Sorts an IT incident ticket into the right team (Hardware, Network or Software). TF-IDF and Naive Bayes trained on 499 simulated tickets, 99% accuracy on unseen tickets. Originally a Streamlit interface, rebuilt here to run in your browser."},tags:["scikit-learn","TF-IDF","Naive Bayes"],demo:"demos/tickets/index.html",ratio:"4/5"},
-  {id:"rag",t:{fr:"Pipeline RAG",en:"RAG pipeline"},d:{fr:"Questions-réponses sur documents PDF, TXT et DOCX, avec embeddings multilingues.",en:"Question answering over PDF, TXT and DOCX documents, with multilingual embeddings."},tags:["LangChain","FAISS"]},
-  {id:"unite",t:{fr:"UNITE",en:"UNITE"},d:{fr:"Assistant LLM en ligne de commande : résumé de texte, questions sur documents, classification de tickets.",en:"Command-line LLM assistant: text summarization, document Q&A, ticket classification."},tags:["Python","Groq API","LLaMA"]}
+  {id:"cablage",t:{fr:"Câblage et installation des baies",en:"Cabling and rack installation"},d:{fr:"Phase réseau du stage : câblage et installation des baies, environ 780 ports par étage.",en:"Network phase of the internship: cabling and rack installation, about 780 ports per floor."},tags:["Réseaux","Infrastructure"],nocode:true,stat:{v:"≈ 780",l:{fr:"ports à câbler par étage",en:"ports to cable per floor"}}},
+  {id:"opensky",t:{fr:"Scanner d'avions OpenSky",en:"OpenSky aircraft tracker"},d:{fr:"Suivi en direct des avions au-dessus de la Tunisie avec l'API publique OpenSky : version en ligne de commande et tableau de bord Streamlit avec carte interactive.",en:"Live tracking of aircraft over Tunisia with the public OpenSky API: command-line version and a Streamlit dashboard with an interactive map."},tags:["Python","Streamlit","Folium","REST API"],demo:"demos/opensky/index.html",ratio:"4/5",code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/stage-draexlmaier/opensky.py"},
+  {id:"tickets",t:{fr:"Classifieur de tickets",en:"Ticket classifier"},d:{fr:"Classe un ticket d'incident informatique dans la bonne équipe (Hardware, Réseau ou Logiciel). TF-IDF et Naive Bayes entraînés sur 499 tickets simulés, 99 % de précision sur des tickets non vus. Interface Streamlit à l'origine, refaite ici pour tourner dans votre navigateur.",en:"Sorts an IT incident ticket into the right team (Hardware, Network or Software). TF-IDF and Naive Bayes trained on 499 simulated tickets, 99% accuracy on unseen tickets. Originally a Streamlit interface, rebuilt here to run in your browser."},tags:["scikit-learn","TF-IDF","Naive Bayes"],demo:"demos/tickets/index.html",ratio:"4/5",code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/stage-draexlmaier"},
+  {id:"rag",t:{fr:"Pipeline RAG",en:"RAG pipeline"},d:{fr:"Questions-réponses sur documents PDF, TXT et DOCX, avec embeddings multilingues.",en:"Question answering over PDF, TXT and DOCX documents, with multilingual embeddings."},tags:["LangChain","FAISS"],code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/stage-draexlmaier/rag.py",demo:"demos/rag/index.html#q",ratio:"4/5"},
+  {id:"unite",t:{fr:"UNITE",en:"UNITE"},d:{fr:"Assistant LLM en ligne de commande : résumé de texte, questions sur documents, classification de tickets.",en:"Command-line LLM assistant: text summarization, document Q&A, ticket classification."},tags:["Python","Groq API","LLaMA"],code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/stage-draexlmaier/unite.py",demo:"demos/rag/index.html#r",ratio:"4/5"}
 ];
 
 var lang = "fr";
@@ -337,15 +353,16 @@ function item(p,i){
   p.tags.forEach(function(x){h += '<span class="tag">'+esc(x)+'</span>';});
   h += '</div>';
   if(p.team) h += '<div class="facts">'+L.team+p.team+L.persons+'</div><br>';
-  h += '<div class="links">'+(p.code ? '<a class="codebtn" href="'+p.code+'" target="_blank" rel="noopener">'+L.code+'</a>' : '<span class="soon">'+L.codesoon+'</span>')
+  h += '<div class="links">'+(p.code ? '<a class="codebtn" href="'+p.code+'" target="_blank" rel="noopener">'+L.code+'</a>' : (p.nocode ? '' : '<span class="soon">'+L.codesoon+'</span>'))
      + (p.demo ? '<a href="'+p.demo+'" target="_blank" rel="noopener">'+L.demofull+'</a>' : '')+'</div></div>';
-  h += '<div class="win"><div class="winbar"><i></i><i></i><i></i><span>'+esc(p.t[lang])+'</span></div><div class="winbody'+(p.demo && p.ratio ? ' app" style="--ratio:'+p.ratio : '')+'">';
+  h += '<div class="win"><div class="winbar"><i></i><i></i><i></i><span>'+esc(p.t[lang])+'</span>'+(p.demo ? '<div class="wb"><button type="button" data-w="float" title="'+L.wfloat+'" aria-label="'+L.wfloat+'">⤢</button><button type="button" data-w="full" title="'+L.wfull+'" aria-label="'+L.wfull+'">⛶</button><button type="button" data-w="close" title="'+L.wclose+'" aria-label="'+L.wclose+'" hidden>✕</button></div>' : '')+'</div><div class="winbody'+(p.demo && p.ratio ? ' app" style="--ratio:'+p.ratio : '')+'">';
   h += p.demo ? '<iframe src="'+p.demo+'" loading="lazy" title="'+esc(p.t[lang])+'" sandbox="allow-scripts allow-same-origin"></iframe>'
-              : '<div class="skel"><i></i><i></i><i></i><i></i><i></i></div><span class="lbl">'+L.demosoon+'</span>';
+              : (p.stat ? '<div class="bigstat"><b>'+esc(p.stat.v)+'</b><span>'+esc(p.stat.l[lang])+'</span></div>' : '<div class="skel"><i></i><i></i><i></i><i></i><i></i></div><span class="lbl">'+L.demosoon+'</span>');
   h += '</div></div></article>';
   return h;
 }
 function render(){
+  winClose();
   var L = T[lang];
   document.documentElement.lang = lang;
   document.querySelectorAll("[data-i18n]").forEach(function(el){var k=el.getAttribute("data-i18n"); if(L[k]) el.textContent = L[k];});
@@ -406,6 +423,53 @@ function onScroll(){
   });
 }
 window.addEventListener("scroll", onScroll, {passive:true});
+
+/* fenêtre de démo : flottante, déplaçable, redimensionnable, plein écran */
+var bd = document.createElement("div"); bd.className = "wbd"; document.body.appendChild(bd);
+var curWin = null, ph = null;
+function winOpen(w, full){
+  if(curWin && curWin !== w) winClose();
+  if(!curWin){
+    ph = document.createElement("div"); ph.className = "winph"; ph.style.height = w.offsetHeight + "px"; w.parentNode.insertBefore(ph, w);
+    w.classList.add("float"); w.style.left = w.style.top = w.style.width = w.style.height = "";
+    bd.classList.add("on"); curWin = w;
+  }
+  w.classList.toggle("full", !!full);
+  w.querySelector('[data-w="close"]').hidden = false;
+  var fl = w.querySelector('[data-w="float"]'), fu = w.querySelector('[data-w="full"]'), L = T[lang];
+  fl.textContent = "▢"; fl.title = fl.ariaLabel = L.wrest;
+  fu.textContent = full ? "▣" : "⛶";
+}
+function winClose(){
+  if(!curWin) return;
+  curWin.classList.remove("float","full","drag"); curWin.style.left = curWin.style.top = curWin.style.width = curWin.style.height = "";
+  var L = T[lang], fl = curWin.querySelector('[data-w="float"]'); fl.textContent = "⤢"; fl.title = fl.ariaLabel = L.wfloat;
+  curWin.querySelector('[data-w="full"]').textContent = "⛶"; curWin.querySelector('[data-w="close"]').hidden = true;
+  if(ph && ph.parentNode) ph.parentNode.removeChild(ph);
+  ph = null; curWin = null; bd.classList.remove("on");
+}
+document.addEventListener("click", function(e){
+  var b = e.target.closest && e.target.closest("[data-w]"); if(!b) return;
+  var w = b.closest(".win"), k = b.getAttribute("data-w");
+  if(k === "close") winClose();
+  else if(k === "float"){ if(w.classList.contains("float") && !w.classList.contains("full")) winClose(); else winOpen(w, false); }
+  else if(k === "full"){ if(w.classList.contains("full")) winOpen(w, false); else winOpen(w, true); }
+});
+bd.addEventListener("click", winClose);
+document.addEventListener("keydown", function(e){ if(e.key === "Escape") winClose(); });
+document.addEventListener("pointerdown", function(e){
+  var bar = e.target.closest && e.target.closest(".win.float .winbar");
+  if(!bar || e.target.closest("button")) return;
+  var w = bar.parentNode; if(w.classList.contains("full")) return;
+  var r = w.getBoundingClientRect(), dx = e.clientX - r.left, dy = e.clientY - r.top;
+  w.classList.add("drag"); bar.setPointerCapture(e.pointerId);
+  function mv(ev){
+    var x = Math.min(Math.max(ev.clientX - dx, 40 - r.width), window.innerWidth - 40), y = Math.min(Math.max(ev.clientY - dy, 0), window.innerHeight - 40);
+    w.style.left = x + "px"; w.style.top = y + "px";
+  }
+  function up(){ w.classList.remove("drag"); bar.removeEventListener("pointermove", mv); bar.removeEventListener("pointerup", up); bar.removeEventListener("pointercancel", up); }
+  bar.addEventListener("pointermove", mv); bar.addEventListener("pointerup", up); bar.addEventListener("pointercancel", up);
+});
 
 $("lang").onclick = function(){
   lang = lang === "fr" ? "en" : "fr";

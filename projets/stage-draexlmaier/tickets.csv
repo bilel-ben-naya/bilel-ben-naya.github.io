@@ -1,0 +1,500 @@
+titre,description,equipe
+PC lent,Mon ordinateur prend 10 minutes à démarrer depuis ce matin,Hardware
+Problème VPN,Je narrive plus à me connecter au VPN depuis chez moi,Réseau
+Accès SAP refusé,Jai un message accès refusé quand jouvre SAP,Logiciel
+Ecran noir,Mon écran devient noir aléatoirement pendant le travail,Hardware
+Wifi salle R12,Le wifi est très instable dans la salle de réunion R12,Réseau
+Installation Office,Lerreur 0x800 apparait lors de linstallation dOffice 365,Logiciel
+Clavier cassé,Plusieurs touches de mon clavier ne répondent plus,Hardware
+Email bloqué,Je nenvoie plus demails depuis ce matin,Réseau
+Licence manquante,Jai besoin dune licence Adobe Acrobat pour mon poste,Logiciel
+PC redémarre,Mon PC redémarre tout seul plusieurs fois par jour,Hardware
+Drive inaccessible,Je nai plus accès au dossier partagé de mon équipe,Réseau
+Logiciel plante,Lapplication RH se ferme dès louverture,Logiciel
+Batterie HS,La batterie de mon laptop ne charge plus du tout,Hardware
+Connexion serveur,Impossible de joindre le serveur de fichiers depuis hier,Réseau
+Mise à jour bloquée,La mise à jour de SAP se bloque à 45% à chaque tentative,Logiciel
+Souris morte,Ma souris ne fonctionne plus après le redémarrage,Hardware
+Coupure réseau,Le réseau coupe toutes les 30 minutes sur mon poste,Réseau
+Accès application,Je nai pas accès à loutil de gestion des congés,Logiciel
+Ecran scintille,Mon écran scintille depuis le changement de câble,Hardware
+DNS erreur,Jerreur DNS apparait en permanence sur mon navigateur,Réseau
+Ecran noir matin,Mon écran reste noir au démarrage du PC ce matin,Hardware
+Port USB mort,Mon port USB ne reconnait plus aucun périphérique,Hardware
+Son qui marche pas,Le son de mon ordinateur a disparu après la mise à jour,Hardware
+Ventilateur bruyant,Mon PC fait un bruit de ventilateur très fort depuis hier,Hardware
+Deuxième écran,Mon deuxième écran nest plus détecté par le PC,Hardware
+Imprimante hors ligne,Limprimante du bureau est indiquée hors ligne,Hardware
+PC surchauffe,Mon ordinateur devient brûlant après 30 minutes dutilisation,Hardware
+Webcam invisible,Ma webcam napparaît plus dans les paramètres,Hardware
+Accès Teams impossible,Je ne peux pas rejoindre les réunions Teams depuis ce matin,Réseau
+Partage réseau coupé,Le dossier partagé réseau nest plus accessible depuis hier,Réseau
+IP en conflit,Un message derreur dit que mon adresse IP est en conflit,Réseau
+Proxy bloqué,Le proxy bloque certains sites nécessaires à mon travail,Réseau
+Lenteur réseau,Le réseau est extrêmement lent depuis le changement de switch,Réseau
+Bug application RH,Lapplication RH affiche une erreur 500 à louverture,Logiciel
+Mot de passe expiré,Mon mot de passe a expiré et je ne peux plus me connecter,Logiciel
+Macro Excel bloquée,La macro Excel ne sexécute plus depuis la mise à jour,Logiciel
+Accès Power BI,Je nai pas accès au rapport Power BI de mon équipe,Logiciel
+Crash Outlook,Outlook se ferme automatiquement toutes les 10 minutes,Logiciel
+Erreur : Crash Outlook,Outlook se ferme automatiquement toutes les 10 minutes Cela bloque mon travail quotidien.,Logiciel
+Depuis hier soir : VPN lent,Le VPN est très lent et rend le travail impossible Cela impacte toute mon équipe.,Réseau
+Urgent : Adresse mail refusée,Mon adresse mail est rejetée par les serveurs externes Besoin d'une intervention rapide.,Réseau
+Urgent : PC lent,Mon ordinateur est très lent depuis la mise à jour,Hardware
+Problème : PC ne démarre pas,Mon PC ne démarre plus du tout Besoin d'aide urgent.,Hardware
+Erreur : Windows Update bloqué,Windows Update bloque mon PC pendant des heures Merci de traiter en priorité.,Logiciel
+Licence manquante,J'ai besoin d'une licence Adobe Acrobat pour mon poste Merci de traiter en priorité.,Logiciel
+Besoin : Licence manquante,J'ai besoin d'une licence Adobe Acrobat pour mon poste,Logiciel
+Ecran noir,Mon écran reste noir au démarrage Merci de traiter rapidement.,Hardware
+Besoin : Double authentification,La double authentification ne fonctionne plus sur mon téléphone Besoin d'une solution rapidement.,Logiciel
+PC bloqué POST,Mon PC se bloque au logo au démarrage Cela bloque mon travail.,Hardware
+Depuis ce matin : Chargeur laptop HS,Le chargeur de mon laptop ne charge plus,Hardware
+Erreur : SAP bloqué,La mise à jour de SAP se bloque à 45% à chaque tentative J'ai besoin d'aide.,Logiciel
+Urgent : RAM insuffisante,Mon PC manque de mémoire et plante régulièrement Besoin d'aide urgent.,Hardware
+Ecran trop sombre,Mon écran est trop sombre même au maximum Cela bloque mon travail.,Hardware
+Besoin : SSO ne fonctionne pas,Le SSO ne me connecte plus automatiquement Besoin d'une solution rapidement.,Logiciel
+Problème : Imprimante ne répond pas,L'imprimante n'imprime plus depuis ce matin Besoin d'aide urgent.,Hardware
+Impossible : Outlook connexion,Outlook ne se connecte plus au serveur de messagerie Cela impacte toute mon équipe.,Réseau
+Bloqué : Mot de passe expiré,Mon mot de passe a expiré et je ne peux plus me connecter J'ai besoin d'aide.,Logiciel
+Bloqué : Macro Excel bloquée,La macro Excel ne s'exécute plus depuis la mise à jour,Logiciel
+Impossible : Wifi instable,Le wifi coupe toutes les 30 minutes sur mon poste Merci d'intervenir.,Réseau
+Besoin : Logiciel obsolète,Mon logiciel affiche une erreur de version obsolète Cela bloque mon travail quotidien.,Logiciel
+Erreur : Base de données erreur,La base de données retourne une erreur de connexion Cela bloque mon travail quotidien.,Logiciel
+Depuis hier soir : RDP impossible,Je ne peux plus me connecter en bureau à distance Je ne peux plus travailler.,Réseau
+Besoin d'aide : Proxy bloqué,Le proxy bloque des sites nécessaires à mon travail Cela impacte toute mon équipe.,Réseau
+PC ne démarre pas,Mon PC ne démarre plus du tout Besoin d'aide urgent.,Hardware
+Impossible : Messagerie indisponible,La messagerie d'entreprise est inaccessible Le problème persiste depuis hier.,Réseau
+Imprimante ne répond pas,L'imprimante n'imprime plus depuis ce matin C'est urgent.,Hardware
+Bug application RH,L'application RH affiche une erreur 500 à l'ouverture Cela bloque mon travail quotidien.,Logiciel
+Urgent : Son absent,Le son de mon ordinateur a disparu après la mise à jour Cela bloque mon travail.,Hardware
+Besoin : Accès SAP refusé,J'ai un message accès refusé quand j'ouvre SAP Besoin d'une solution rapidement.,Logiciel
+Besoin d'aide : Firewall bloquant,Le firewall bloque mon application de travail Merci d'intervenir.,Réseau
+Depuis hier : Ecran noir,Mon écran reste noir au démarrage Je suis bloqué.,Hardware
+PC ne démarre pas,Mon PC ne démarre plus du tout Besoin d'aide urgent.,Hardware
+Besoin : Windows Update bloqué,Windows Update bloque mon PC pendant des heures Besoin d'une solution rapidement.,Logiciel
+Besoin d'aide : Accès FTP bloqué,Je n'arrive plus à accéder au serveur FTP Je ne peux plus travailler.,Réseau
+Impossible : Impression réseau,Je ne vois plus l'imprimante réseau du couloir Cela impacte toute mon équipe.,Réseau
+Urgent : Proxy bloqué,Le proxy bloque des sites nécessaires à mon travail Cela impacte toute mon équipe.,Réseau
+Besoin : Base de données erreur,La base de données retourne une erreur de connexion,Logiciel
+Ecran noir,Mon écran reste noir au démarrage C'est urgent.,Hardware
+Port réseau mort,Le port réseau de mon bureau ne fonctionne plus Cela impacte toute mon équipe.,Réseau
+Depuis ce matin : Trackpad mort,Le trackpad de mon laptop ne répond plus,Hardware
+Erreur : Activation Windows,Windows n'est plus activé sur mon poste Je suis complètement bloqué.,Logiciel
+Depuis hier : Ecran qui scintille,Mon écran scintille depuis ce matin C'est urgent.,Hardware
+Depuis la mise à jour : Double authentification,La double authentification ne fonctionne plus sur mon téléphone J'ai besoin d'aide.,Logiciel
+Raccourci disparu,Le raccourci de mon application a disparu du bureau Je suis complètement bloqué.,Logiciel
+Accès FTP bloqué,Je n'arrive plus à accéder au serveur FTP Merci d'intervenir.,Réseau
+Erreur : Crash Outlook,Outlook se ferme automatiquement toutes les 10 minutes Merci de traiter en priorité.,Logiciel
+Switch défaillant,Le switch du couloir semble avoir un problème Besoin d'une intervention rapide.,Réseau
+Urgent : Port réseau mort,Le port réseau de mon bureau ne fonctionne plus Le problème persiste depuis hier.,Réseau
+Impossible : Outlook connexion,Outlook ne se connecte plus au serveur de messagerie Merci d'intervenir.,Réseau
+Besoin : Mot de passe expiré,Mon mot de passe a expiré et je ne peux plus me connecter Cela bloque mon travail quotidien.,Logiciel
+Depuis ce matin : Ecran fissuré,L'écran de mon laptop est fissuré suite à une chute C'est urgent.,Hardware
+Problème : Microphone muet,Mon microphone n'est pas reconnu par le système Cela bloque mon travail.,Hardware
+Erreur : Crash Outlook,Outlook se ferme automatiquement toutes les 10 minutes Je suis complètement bloqué.,Logiciel
+Depuis ce matin : Connecteur cassé,Le connecteur jack de mon PC est cassé Merci de traiter rapidement.,Hardware
+Windows Update bloqué,Windows Update bloque mon PC pendant des heures Besoin d'une solution rapidement.,Logiciel
+RDP impossible,Je ne peux plus me connecter en bureau à distance Le problème persiste depuis hier.,Réseau
+Impossible : Certificat SSL expiré,Mon navigateur signale un certificat SSL expiré Le problème persiste depuis hier.,Réseau
+Depuis ce matin : Touches collantes,Les touches de mon clavier collent Merci de traiter rapidement.,Hardware
+Erreur : Logiciel obsolète,Mon logiciel affiche une erreur de version obsolète Cela bloque mon travail quotidien.,Logiciel
+Besoin : Licence Office expirée,Ma licence Office 365 a expiré Cela bloque mon travail quotidien.,Logiciel
+Depuis ce matin : Batterie HS,La batterie de mon laptop ne charge plus du tout Merci de traiter rapidement.,Hardware
+Depuis ce matin : PC surchauffe,Mon ordinateur devient brûlant après 30 minutes,Hardware
+Depuis la mise à jour : SSO ne fonctionne pas,Le SSO ne me connecte plus automatiquement Cela bloque mon travail quotidien.,Logiciel
+IP en conflit,Un message d'erreur dit que mon adresse IP est en conflit Le problème persiste depuis hier.,Réseau
+Erreur : Double authentification,La double authentification ne fonctionne plus sur mon téléphone J'ai besoin d'aide.,Logiciel
+Impossible : Réseau lent open space,Le réseau est lent uniquement dans l'open space Le problème persiste depuis hier.,Réseau
+Depuis la mise à jour : Accès sharepoint,Je n'ai plus accès à mon espace Sharepoint Cela bloque mon travail quotidien.,Logiciel
+Depuis hier : Ecran qui scintille,Mon écran scintille depuis ce matin C'est urgent.,Hardware
+Depuis ce matin : PC surchauffe,Mon ordinateur devient brûlant après 30 minutes Besoin d'aide urgent.,Hardware
+Teams audio,L'audio ne fonctionne pas lors des réunions Teams Cela impacte toute mon équipe.,Réseau
+Depuis hier : Câble écran cassé,Le câble HDMI de mon écran est endommagé Besoin d'aide urgent.,Hardware
+Depuis hier soir : Lenteur réseau,Le réseau est extrêmement lent depuis le changement de switch Besoin d'une intervention rapide.,Réseau
+Urgent : Son absent,Le son de mon ordinateur a disparu après la mise à jour Je suis bloqué.,Hardware
+Bloqué : Erreur Python,Mon script Python ne fonctionne plus après la mise à jour J'ai besoin d'aide.,Logiciel
+Urgent : Accès Teams bloqué,Mon compte Teams est bloqué depuis ce matin Je ne peux plus travailler.,Réseau
+Depuis hier : Deuxième écran,Mon deuxième écran n'est plus détecté par le PC Besoin d'aide urgent.,Hardware
+Erreur : Crash Outlook,Outlook se ferme automatiquement toutes les 10 minutes Besoin d'une solution rapidement.,Logiciel
+Urgent : PC surchauffe,Mon ordinateur devient brûlant après 30 minutes Je suis bloqué.,Hardware
+Impossible : Accès FTP bloqué,Je n'arrive plus à accéder au serveur FTP Le problème persiste depuis hier.,Réseau
+Erreur : Installation Office,L'erreur 0x800 apparait lors de l'installation d'Office 365 Cela bloque mon travail quotidien.,Logiciel
+Depuis hier soir : Messagerie indisponible,La messagerie d'entreprise est inaccessible Besoin d'une intervention rapide.,Réseau
+Depuis la mise à jour : Erreur Python,Mon script Python ne fonctionne plus après la mise à jour Besoin d'une solution rapidement.,Logiciel
+Partage réseau coupé,Le dossier partagé réseau n'est plus accessible Besoin d'une intervention rapide.,Réseau
+Besoin d'aide : VPN lent,Le VPN est très lent et rend le travail impossible Merci d'intervenir.,Réseau
+Besoin d'aide : Connexion coupée,Ma connexion réseau se coupe plusieurs fois par heure Besoin d'une intervention rapide.,Réseau
+Depuis hier : Erreur BSOD,Mon PC affiche un écran bleu et redémarre,Hardware
+Webcam invisible,Ma webcam n'apparaît plus dans les paramètres Merci de traiter rapidement.,Hardware
+Erreur : Activation Windows,Windows n'est plus activé sur mon poste Je suis complètement bloqué.,Logiciel
+Depuis ce matin : PC surchauffe,Mon ordinateur devient brûlant après 30 minutes Je suis bloqué.,Hardware
+Depuis la mise à jour : Base de données erreur,La base de données retourne une erreur de connexion Besoin d'une solution rapidement.,Logiciel
+Impossible : Adresse mail refusée,Mon adresse mail est rejetée par les serveurs externes Je ne peux plus travailler.,Réseau
+Imprimante hors ligne,L'imprimante du bureau est indiquée hors ligne Cela bloque mon travail.,Hardware
+Bloqué : Logiciel non installé,J'ai besoin du logiciel AutoCAD sur mon poste,Logiciel
+Besoin : Logiciel plante,L'application RH se ferme dès l'ouverture Besoin d'une solution rapidement.,Logiciel
+Bloqué : Accès sharepoint,Je n'ai plus accès à mon espace Sharepoint J'ai besoin d'aide.,Logiciel
+Bloqué : Mot de passe expiré,Mon mot de passe a expiré et je ne peux plus me connecter,Logiciel
+Depuis hier : Trackpad mort,Le trackpad de mon laptop ne répond plus Merci de traiter rapidement.,Hardware
+Besoin : PDF ne s'ouvre pas,Acrobat Reader ne s'ouvre plus depuis hier J'ai besoin d'aide.,Logiciel
+IP en conflit,Un message d'erreur dit que mon adresse IP est en conflit Merci d'intervenir.,Réseau
+Bloqué : Excel plante,Excel se ferme sans prévenir quand j'ouvre un gros fichier Merci de traiter en priorité.,Logiciel
+Bloqué : Licence Office expirée,Ma licence Office 365 a expiré Besoin d'une solution rapidement.,Logiciel
+Besoin : Accès SAP refusé,J'ai un message accès refusé quand j'ouvre SAP Je suis complètement bloqué.,Logiciel
+Depuis hier soir : Firewall bloquant,Le firewall bloque mon application de travail Le problème persiste depuis hier.,Réseau
+Depuis hier : Port USB mort,Mon port USB ne reconnait plus aucun périphérique Besoin d'aide urgent.,Hardware
+Urgent : Port réseau mort,Le port réseau de mon bureau ne fonctionne plus Cela impacte toute mon équipe.,Réseau
+Depuis hier soir : Teams audio,L'audio ne fonctionne pas lors des réunions Teams Le problème persiste depuis hier.,Réseau
+Depuis hier soir : Teams impossible,Je ne peux pas rejoindre les réunions Teams Cela impacte toute mon équipe.,Réseau
+Depuis ce matin : Trackpad mort,Le trackpad de mon laptop ne répond plus C'est urgent.,Hardware
+Urgent : VPN lent,Le VPN est très lent et rend le travail impossible Le problème persiste depuis hier.,Réseau
+Erreur : Activation Windows,Windows n'est plus activé sur mon poste Merci de traiter en priorité.,Logiciel
+Besoin d'aide : Certificat SSL expiré,Mon navigateur signale un certificat SSL expiré Cela impacte toute mon équipe.,Réseau
+Adresse mail refusée,Mon adresse mail est rejetée par les serveurs externes Cela impacte toute mon équipe.,Réseau
+Erreur : Raccourci disparu,Le raccourci de mon application a disparu du bureau,Logiciel
+Problème : PC redémarre seul,Mon PC redémarre aléatoirement sans raison,Hardware
+Problème : PC surchauffe,Mon ordinateur devient brûlant après 30 minutes Je suis bloqué.,Hardware
+Depuis la mise à jour : Raccourci disparu,Le raccourci de mon application a disparu du bureau Besoin d'une solution rapidement.,Logiciel
+Urgent : Port réseau mort,Le port réseau de mon bureau ne fonctionne plus Merci d'intervenir.,Réseau
+Impossible : Impression réseau,Je ne vois plus l'imprimante réseau du couloir Je ne peux plus travailler.,Réseau
+Depuis hier : Deuxième écran,Mon deuxième écran n'est plus détecté par le PC Merci de traiter rapidement.,Hardware
+Erreur : Raccourci disparu,Le raccourci de mon application a disparu du bureau,Logiciel
+Erreur Python,Mon script Python ne fonctionne plus après la mise à jour Cela bloque mon travail quotidien.,Logiciel
+Depuis la mise à jour : Teams mise à jour,Teams demande une mise à jour mais elle échoue Je suis complètement bloqué.,Logiciel
+Depuis hier soir : Connexion VPN lente,La connexion VPN prend plus de 10 minutes à s'établir Merci d'intervenir.,Réseau
+Impossible : Firewall bloquant,Le firewall bloque mon application de travail Le problème persiste depuis hier.,Réseau
+Bloqué : Macro Excel bloquée,La macro Excel ne s'exécute plus depuis la mise à jour Je suis complètement bloqué.,Logiciel
+Bloqué : Teams mise à jour,Teams demande une mise à jour mais elle échoue Cela bloque mon travail quotidien.,Logiciel
+Urgent : Partage réseau coupé,Le dossier partagé réseau n'est plus accessible Merci d'intervenir.,Réseau
+SAP bloqué,La mise à jour de SAP se bloque à 45% à chaque tentative Cela bloque mon travail quotidien.,Logiciel
+Souris morte,Ma souris ne fonctionne plus après redémarrage Merci de traiter rapidement.,Hardware
+Depuis la mise à jour : Double authentification,La double authentification ne fonctionne plus sur mon téléphone J'ai besoin d'aide.,Logiciel
+PC lent,Mon ordinateur est très lent depuis la mise à jour Cela bloque mon travail.,Hardware
+Depuis ce matin : Webcam invisible,Ma webcam n'apparaît plus dans les paramètres,Hardware
+Souris morte,Ma souris ne fonctionne plus après redémarrage Merci de traiter rapidement.,Hardware
+Besoin : Accès Power BI,Je n'ai pas accès au rapport Power BI de mon équipe Cela bloque mon travail quotidien.,Logiciel
+Problème : Ecran noir,Mon écran reste noir au démarrage Cela bloque mon travail.,Hardware
+Depuis la mise à jour : Droits insuffisants,Je n'ai pas les droits pour installer un logiciel Cela bloque mon travail quotidien.,Logiciel
+Ventilateur bruyant,Mon PC fait un bruit de ventilateur très fort Je suis bloqué.,Hardware
+Câble écran cassé,Le câble HDMI de mon écran est endommagé Besoin d'aide urgent.,Hardware
+Logiciel obsolète,Mon logiciel affiche une erreur de version obsolète Besoin d'une solution rapidement.,Logiciel
+Bloqué : Base de données erreur,La base de données retourne une erreur de connexion Je suis complètement bloqué.,Logiciel
+Depuis hier soir : Lenteur réseau,Le réseau est extrêmement lent depuis le changement de switch Cela impacte toute mon équipe.,Réseau
+Problème : PC bloqué POST,Mon PC se bloque au logo au démarrage Besoin d'aide urgent.,Hardware
+Urgent : Serveur inaccessible,Impossible de joindre le serveur de fichiers depuis hier Besoin d'une intervention rapide.,Réseau
+Besoin : Teams mise à jour,Teams demande une mise à jour mais elle échoue J'ai besoin d'aide.,Logiciel
+Depuis la mise à jour : Base de données erreur,La base de données retourne une erreur de connexion J'ai besoin d'aide.,Logiciel
+Depuis hier : Souris morte,Ma souris ne fonctionne plus après redémarrage Merci de traiter rapidement.,Hardware
+Depuis hier soir : Ping élevé,Mon ping est très élevé sur toutes les applications Cela impacte toute mon équipe.,Réseau
+Erreur : Droits insuffisants,Je n'ai pas les droits pour installer un logiciel,Logiciel
+Depuis ce matin : Webcam invisible,Ma webcam n'apparaît plus dans les paramètres,Hardware
+Bloqué : Mot de passe expiré,Mon mot de passe a expiré et je ne peux plus me connecter,Logiciel
+Depuis hier soir : RDP impossible,Je ne peux plus me connecter en bureau à distance,Réseau
+Impossible : Serveur inaccessible,Impossible de joindre le serveur de fichiers depuis hier Je ne peux plus travailler.,Réseau
+Depuis la mise à jour : Licence manquante,J'ai besoin d'une licence Adobe Acrobat pour mon poste Je suis complètement bloqué.,Logiciel
+Impossible : DNS erreur,L'erreur DNS apparait en permanence sur mon navigateur Je ne peux plus travailler.,Réseau
+Depuis hier soir : Adresse mail refusée,Mon adresse mail est rejetée par les serveurs externes Le problème persiste depuis hier.,Réseau
+Depuis la mise à jour : Double authentification,La double authentification ne fonctionne plus sur mon téléphone Merci de traiter en priorité.,Logiciel
+Besoin d'aide : Teams audio,L'audio ne fonctionne pas lors des réunions Teams Le problème persiste depuis hier.,Réseau
+Urgent : Certificat SSL expiré,Mon navigateur signale un certificat SSL expiré Merci d'intervenir.,Réseau
+Besoin : Accès SAP refusé,J'ai un message accès refusé quand j'ouvre SAP Merci de traiter en priorité.,Logiciel
+Impossible : Email bloqué,Je n'envoie plus d'emails depuis ce matin Cela impacte toute mon équipe.,Réseau
+Lecteur CD mort,Le lecteur de carte SD ne fonctionne plus,Hardware
+Erreur : Raccourci disparu,Le raccourci de mon application a disparu du bureau Besoin d'une solution rapidement.,Logiciel
+Problème : Trackpad mort,Le trackpad de mon laptop ne répond plus Je suis bloqué.,Hardware
+Besoin d'aide : Impression réseau,Je ne vois plus l'imprimante réseau du couloir Je ne peux plus travailler.,Réseau
+Bloqué : Teams mise à jour,Teams demande une mise à jour mais elle échoue,Logiciel
+Urgent : Ventilateur bruyant,Mon PC fait un bruit de ventilateur très fort Cela bloque mon travail.,Hardware
+Depuis hier : Ventilateur bruyant,Mon PC fait un bruit de ventilateur très fort Je suis bloqué.,Hardware
+Depuis la mise à jour : Crash Outlook,Outlook se ferme automatiquement toutes les 10 minutes,Logiciel
+Logiciel non installé,J'ai besoin du logiciel AutoCAD sur mon poste Besoin d'une solution rapidement.,Logiciel
+Besoin d'aide : Messagerie indisponible,La messagerie d'entreprise est inaccessible Cela impacte toute mon équipe.,Réseau
+Erreur Python,Mon script Python ne fonctionne plus après la mise à jour Besoin d'une solution rapidement.,Logiciel
+Depuis la mise à jour : Double authentification,La double authentification ne fonctionne plus sur mon téléphone Merci de traiter en priorité.,Logiciel
+Urgent : PC lent,Mon ordinateur est très lent depuis la mise à jour Je suis bloqué.,Hardware
+Depuis ce matin : Connecteur cassé,Le connecteur jack de mon PC est cassé Je suis bloqué.,Hardware
+Problème : PC bloqué POST,Mon PC se bloque au logo au démarrage Merci de traiter rapidement.,Hardware
+Depuis hier : PC lent,Mon ordinateur est très lent depuis la mise à jour C'est urgent.,Hardware
+Urgent : RDP impossible,Je ne peux plus me connecter en bureau à distance Merci d'intervenir.,Réseau
+Teams audio,L'audio ne fonctionne pas lors des réunions Teams Je ne peux plus travailler.,Réseau
+Problème : Ecran qui scintille,Mon écran scintille depuis ce matin,Hardware
+Depuis la mise à jour : Erreur Python,Mon script Python ne fonctionne plus après la mise à jour Besoin d'une solution rapidement.,Logiciel
+Urgent : Chargeur laptop HS,Le chargeur de mon laptop ne charge plus,Hardware
+Besoin d'aide : VPN lent,Le VPN est très lent et rend le travail impossible Besoin d'une intervention rapide.,Réseau
+Urgent : Imprimante ne répond pas,L'imprimante n'imprime plus depuis ce matin,Hardware
+Urgent : Certificat SSL expiré,Mon navigateur signale un certificat SSL expiré Le problème persiste depuis hier.,Réseau
+Impossible : Outlook connexion,Outlook ne se connecte plus au serveur de messagerie,Réseau
+Urgent : Problème VPN,Je n'arrive plus à me connecter au VPN depuis chez moi,Réseau
+Erreur : Double authentification,La double authentification ne fonctionne plus sur mon téléphone J'ai besoin d'aide.,Logiciel
+Depuis ce matin : Disque dur plein,Mon disque dur est plein et je ne peux plus travailler C'est urgent.,Hardware
+Câble écran cassé,Le câble HDMI de mon écran est endommagé Merci de traiter rapidement.,Hardware
+Depuis ce matin : Clavier cassé,Plusieurs touches de mon clavier ne répondent plus,Hardware
+Depuis ce matin : Port USB mort,Mon port USB ne reconnait plus aucun périphérique Je suis bloqué.,Hardware
+Urgent : Lenteur réseau,Le réseau est extrêmement lent depuis le changement de switch Besoin d'une intervention rapide.,Réseau
+Besoin d'aide : Messagerie indisponible,La messagerie d'entreprise est inaccessible Je ne peux plus travailler.,Réseau
+Deuxième écran,Mon deuxième écran n'est plus détecté par le PC,Hardware
+Accès CRM refusé,Je n'ai plus accès au CRM depuis le changement de mot de passe Je suis complètement bloqué.,Logiciel
+Problème VPN,Je n'arrive plus à me connecter au VPN depuis chez moi Cela impacte toute mon équipe.,Réseau
+Besoin : Licence Office expirée,Ma licence Office 365 a expiré Merci de traiter en priorité.,Logiciel
+Erreur : Logiciel non installé,J'ai besoin du logiciel AutoCAD sur mon poste Cela bloque mon travail quotidien.,Logiciel
+Impossible : IP en conflit,Un message d'erreur dit que mon adresse IP est en conflit Le problème persiste depuis hier.,Réseau
+Depuis hier soir : Pas internet,Je n'ai plus accès à internet depuis ce matin Le problème persiste depuis hier.,Réseau
+Depuis hier soir : Wifi instable,Le wifi coupe toutes les 30 minutes sur mon poste Merci d'intervenir.,Réseau
+Besoin d'aide : Adresse mail refusée,Mon adresse mail est rejetée par les serveurs externes Je ne peux plus travailler.,Réseau
+Depuis ce matin : Imprimante hors ligne,L'imprimante du bureau est indiquée hors ligne Je suis bloqué.,Hardware
+Besoin d'aide : Partage réseau coupé,Le dossier partagé réseau n'est plus accessible Merci d'intervenir.,Réseau
+Problème : PC lent,Mon ordinateur est très lent depuis la mise à jour Je suis bloqué.,Hardware
+Depuis hier : Câble écran cassé,Le câble HDMI de mon écran est endommagé Je suis bloqué.,Hardware
+Urgent : Ping élevé,Mon ping est très élevé sur toutes les applications Je ne peux plus travailler.,Réseau
+Accès CRM refusé,Je n'ai plus accès au CRM depuis le changement de mot de passe,Logiciel
+Impossible : Drive inaccessible,Je n'ai plus accès au dossier partagé de mon équipe Le problème persiste depuis hier.,Réseau
+PC bloqué POST,Mon PC se bloque au logo au démarrage Merci de traiter rapidement.,Hardware
+Impossible : Réseau lent open space,Le réseau est lent uniquement dans l'open space Je ne peux plus travailler.,Réseau
+Erreur : Macro Excel bloquée,La macro Excel ne s'exécute plus depuis la mise à jour Je suis complètement bloqué.,Logiciel
+Depuis la mise à jour : Accès Power BI,Je n'ai pas accès au rapport Power BI de mon équipe Merci de traiter en priorité.,Logiciel
+Erreur : Licence Office expirée,Ma licence Office 365 a expiré,Logiciel
+Besoin : Macro Excel bloquée,La macro Excel ne s'exécute plus depuis la mise à jour J'ai besoin d'aide.,Logiciel
+Urgent : Impression réseau,Je ne vois plus l'imprimante réseau du couloir,Réseau
+Impossible : RDP impossible,Je ne peux plus me connecter en bureau à distance Cela impacte toute mon équipe.,Réseau
+Urgent : Teams audio,L'audio ne fonctionne pas lors des réunions Teams Merci d'intervenir.,Réseau
+Urgent : Erreur BSOD,Mon PC affiche un écran bleu et redémarre,Hardware
+Depuis hier : Touches collantes,Les touches de mon clavier collent Merci de traiter rapidement.,Hardware
+Impossible : DNS erreur,L'erreur DNS apparait en permanence sur mon navigateur Besoin d'une intervention rapide.,Réseau
+Connecteur cassé,Le connecteur jack de mon PC est cassé,Hardware
+Urgent : Réseau lent open space,Le réseau est lent uniquement dans l'open space Besoin d'une intervention rapide.,Réseau
+Bloqué : Erreur Java,Une erreur Java empêche l'ouverture de mon application Besoin d'une solution rapidement.,Logiciel
+Urgent : Touches collantes,Les touches de mon clavier collent Cela bloque mon travail.,Hardware
+Urgent : Pas internet,Je n'ai plus accès à internet depuis ce matin Besoin d'une intervention rapide.,Réseau
+Impossible : Wifi instable,Le wifi coupe toutes les 30 minutes sur mon poste,Réseau
+Depuis ce matin : RAM insuffisante,Mon PC manque de mémoire et plante régulièrement C'est urgent.,Hardware
+Base de données erreur,La base de données retourne une erreur de connexion,Logiciel
+Clavier cassé,Plusieurs touches de mon clavier ne répondent plus Merci de traiter rapidement.,Hardware
+Urgent : RDP impossible,Je ne peux plus me connecter en bureau à distance Je ne peux plus travailler.,Réseau
+Depuis la mise à jour : Logiciel obsolète,Mon logiciel affiche une erreur de version obsolète Je suis complètement bloqué.,Logiciel
+Urgent : Ping élevé,Mon ping est très élevé sur toutes les applications,Réseau
+Besoin d'aide : Ping élevé,Mon ping est très élevé sur toutes les applications,Réseau
+Urgent : Serveur inaccessible,Impossible de joindre le serveur de fichiers depuis hier Cela impacte toute mon équipe.,Réseau
+Depuis hier soir : VPN lent,Le VPN est très lent et rend le travail impossible Je ne peux plus travailler.,Réseau
+Depuis hier soir : Ping élevé,Mon ping est très élevé sur toutes les applications Le problème persiste depuis hier.,Réseau
+Erreur : Accès application,Je n'ai pas accès à l'outil de gestion des congés,Logiciel
+Bloqué : Windows Update bloqué,Windows Update bloque mon PC pendant des heures J'ai besoin d'aide.,Logiciel
+Impossible : Port réseau mort,Le port réseau de mon bureau ne fonctionne plus Je ne peux plus travailler.,Réseau
+Besoin : Bug application RH,L'application RH affiche une erreur 500 à l'ouverture,Logiciel
+Besoin d'aide : Drive inaccessible,Je n'ai plus accès au dossier partagé de mon équipe Besoin d'une intervention rapide.,Réseau
+Chargeur laptop HS,Le chargeur de mon laptop ne charge plus Cela bloque mon travail.,Hardware
+Besoin d'aide : Drive inaccessible,Je n'ai plus accès au dossier partagé de mon équipe Je ne peux plus travailler.,Réseau
+Coupure internet bureau,Tout le bureau n'a plus internet depuis 1h Le problème persiste depuis hier.,Réseau
+Besoin d'aide : Switch défaillant,Le switch du couloir semble avoir un problème Le problème persiste depuis hier.,Réseau
+Depuis hier soir : Email bloqué,Je n'envoie plus d'emails depuis ce matin Besoin d'une intervention rapide.,Réseau
+Besoin : Teams mise à jour,Teams demande une mise à jour mais elle échoue Merci de traiter en priorité.,Logiciel
+Depuis ce matin : Trackpad mort,Le trackpad de mon laptop ne répond plus,Hardware
+Urgent : Ecran qui scintille,Mon écran scintille depuis ce matin Besoin d'aide urgent.,Hardware
+Depuis la mise à jour : Droits insuffisants,Je n'ai pas les droits pour installer un logiciel,Logiciel
+Depuis ce matin : Deuxième écran,Mon deuxième écran n'est plus détecté par le PC Cela bloque mon travail.,Hardware
+Depuis ce matin : Disque dur plein,Mon disque dur est plein et je ne peux plus travailler Merci de traiter rapidement.,Hardware
+Batterie HS,La batterie de mon laptop ne charge plus du tout Besoin d'aide urgent.,Hardware
+Impossible : Connexion coupée,Ma connexion réseau se coupe plusieurs fois par heure Besoin d'une intervention rapide.,Réseau
+Depuis la mise à jour : Macro Excel bloquée,La macro Excel ne s'exécute plus depuis la mise à jour J'ai besoin d'aide.,Logiciel
+Problème : Clavier cassé,Plusieurs touches de mon clavier ne répondent plus,Hardware
+Depuis hier : Ecran qui scintille,Mon écran scintille depuis ce matin Je suis bloqué.,Hardware
+Impossible : Proxy bloqué,Le proxy bloque des sites nécessaires à mon travail Merci d'intervenir.,Réseau
+Impossible : Port réseau mort,Le port réseau de mon bureau ne fonctionne plus Je ne peux plus travailler.,Réseau
+Depuis ce matin : Câble écran cassé,Le câble HDMI de mon écran est endommagé Je suis bloqué.,Hardware
+Besoin d'aide : Ping élevé,Mon ping est très élevé sur toutes les applications Cela impacte toute mon équipe.,Réseau
+Urgent : Messagerie indisponible,La messagerie d'entreprise est inaccessible Cela impacte toute mon équipe.,Réseau
+Bloqué : Macro Excel bloquée,La macro Excel ne s'exécute plus depuis la mise à jour Besoin d'une solution rapidement.,Logiciel
+Teams mise à jour,Teams demande une mise à jour mais elle échoue Besoin d'une solution rapidement.,Logiciel
+DNS erreur,L'erreur DNS apparait en permanence sur mon navigateur Je ne peux plus travailler.,Réseau
+Erreur : Crash Outlook,Outlook se ferme automatiquement toutes les 10 minutes J'ai besoin d'aide.,Logiciel
+Bloqué : Crash Outlook,Outlook se ferme automatiquement toutes les 10 minutes,Logiciel
+Urgent : Switch défaillant,Le switch du couloir semble avoir un problème Besoin d'une intervention rapide.,Réseau
+Impossible : Accès FTP bloqué,Je n'arrive plus à accéder au serveur FTP Je ne peux plus travailler.,Réseau
+Impossible : Problème VPN,Je n'arrive plus à me connecter au VPN depuis chez moi Merci d'intervenir.,Réseau
+Ecran noir,Mon écran reste noir au démarrage Besoin d'aide urgent.,Hardware
+PC surchauffe,Mon ordinateur devient brûlant après 30 minutes,Hardware
+Urgent : Ecran noir,Mon écran reste noir au démarrage,Hardware
+Urgent : PC bloqué POST,Mon PC se bloque au logo au démarrage Merci de traiter rapidement.,Hardware
+SSO ne fonctionne pas,Le SSO ne me connecte plus automatiquement J'ai besoin d'aide.,Logiciel
+Depuis ce matin : Erreur BSOD,Mon PC affiche un écran bleu et redémarre Je suis bloqué.,Hardware
+Erreur : Windows Update bloqué,Windows Update bloque mon PC pendant des heures J'ai besoin d'aide.,Logiciel
+Depuis hier : PC bloqué POST,Mon PC se bloque au logo au démarrage Besoin d'aide urgent.,Hardware
+Ping élevé,Mon ping est très élevé sur toutes les applications,Réseau
+Besoin : Droits insuffisants,Je n'ai pas les droits pour installer un logiciel Cela bloque mon travail quotidien.,Logiciel
+Firewall bloquant,Le firewall bloque mon application de travail Merci d'intervenir.,Réseau
+Licence manquante,J'ai besoin d'une licence Adobe Acrobat pour mon poste Merci de traiter en priorité.,Logiciel
+Depuis hier soir : Adresse mail refusée,Mon adresse mail est rejetée par les serveurs externes Je ne peux plus travailler.,Réseau
+Depuis hier : Webcam invisible,Ma webcam n'apparaît plus dans les paramètres Cela bloque mon travail.,Hardware
+Erreur : Accès SAP refusé,J'ai un message accès refusé quand j'ouvre SAP Merci de traiter en priorité.,Logiciel
+Réseau lent open space,Le réseau est lent uniquement dans l'open space Merci d'intervenir.,Réseau
+Excel plante,Excel se ferme sans prévenir quand j'ouvre un gros fichier Je suis complètement bloqué.,Logiciel
+Depuis hier soir : Certificat SSL expiré,Mon navigateur signale un certificat SSL expiré Besoin d'une intervention rapide.,Réseau
+Besoin : Antivirus bloquant,L'antivirus bloque mon logiciel métier J'ai besoin d'aide.,Logiciel
+Logiciel plante,L'application RH se ferme dès l'ouverture J'ai besoin d'aide.,Logiciel
+Erreur : Bug application RH,L'application RH affiche une erreur 500 à l'ouverture Je suis complètement bloqué.,Logiciel
+Bug application RH,L'application RH affiche une erreur 500 à l'ouverture Merci de traiter en priorité.,Logiciel
+Impossible : Teams audio,L'audio ne fonctionne pas lors des réunions Teams,Réseau
+Urgent : Connecteur cassé,Le connecteur jack de mon PC est cassé Cela bloque mon travail.,Hardware
+Urgent : Ventilateur bruyant,Mon PC fait un bruit de ventilateur très fort Cela bloque mon travail.,Hardware
+Besoin d'aide : Accès Teams bloqué,Mon compte Teams est bloqué depuis ce matin Le problème persiste depuis hier.,Réseau
+Besoin : PDF ne s'ouvre pas,Acrobat Reader ne s'ouvre plus depuis hier Besoin d'une solution rapidement.,Logiciel
+Erreur : Licence manquante,J'ai besoin d'une licence Adobe Acrobat pour mon poste Merci de traiter en priorité.,Logiciel
+PC bloqué POST,Mon PC se bloque au logo au démarrage,Hardware
+Besoin d'aide : Teams audio,L'audio ne fonctionne pas lors des réunions Teams Cela impacte toute mon équipe.,Réseau
+Depuis ce matin : Ecran qui scintille,Mon écran scintille depuis ce matin Cela bloque mon travail.,Hardware
+Depuis hier soir : Messagerie indisponible,La messagerie d'entreprise est inaccessible Merci d'intervenir.,Réseau
+Problème : Disque dur bruyant,Mon disque dur fait un bruit anormal,Hardware
+Bloqué : Raccourci disparu,Le raccourci de mon application a disparu du bureau,Logiciel
+Besoin : Mot de passe expiré,Mon mot de passe a expiré et je ne peux plus me connecter Je suis complètement bloqué.,Logiciel
+Depuis ce matin : Touches collantes,Les touches de mon clavier collent C'est urgent.,Hardware
+Bloqué : Accès SAP refusé,J'ai un message accès refusé quand j'ouvre SAP J'ai besoin d'aide.,Logiciel
+Bloqué : Teams mise à jour,Teams demande une mise à jour mais elle échoue Je suis complètement bloqué.,Logiciel
+Depuis hier : Webcam invisible,Ma webcam n'apparaît plus dans les paramètres Cela bloque mon travail.,Hardware
+Besoin d'aide : DNS erreur,L'erreur DNS apparait en permanence sur mon navigateur Merci d'intervenir.,Réseau
+Depuis hier : Lecteur CD mort,Le lecteur de carte SD ne fonctionne plus,Hardware
+Besoin : Base de données erreur,La base de données retourne une erreur de connexion Cela bloque mon travail quotidien.,Logiciel
+Connexion coupée,Ma connexion réseau se coupe plusieurs fois par heure Merci d'intervenir.,Réseau
+Depuis hier : Deuxième écran,Mon deuxième écran n'est plus détecté par le PC C'est urgent.,Hardware
+Impossible : Lenteur réseau,Le réseau est extrêmement lent depuis le changement de switch Merci d'intervenir.,Réseau
+Depuis ce matin : Connecteur cassé,Le connecteur jack de mon PC est cassé,Hardware
+Depuis ce matin : Son absent,Le son de mon ordinateur a disparu après la mise à jour,Hardware
+Urgent : Problème VPN,Je n'arrive plus à me connecter au VPN depuis chez moi Merci d'intervenir.,Réseau
+Impossible : Switch défaillant,Le switch du couloir semble avoir un problème Je ne peux plus travailler.,Réseau
+Depuis la mise à jour : Licence Office expirée,Ma licence Office 365 a expiré Je suis complètement bloqué.,Logiciel
+Erreur : Logiciel non installé,J'ai besoin du logiciel AutoCAD sur mon poste Merci de traiter en priorité.,Logiciel
+Depuis hier soir : Switch défaillant,Le switch du couloir semble avoir un problème Besoin d'une intervention rapide.,Réseau
+Erreur : Macro Excel bloquée,La macro Excel ne s'exécute plus depuis la mise à jour J'ai besoin d'aide.,Logiciel
+Crash Outlook,Outlook se ferme automatiquement toutes les 10 minutes Merci de traiter en priorité.,Logiciel
+Urgent : Impression réseau,Je ne vois plus l'imprimante réseau du couloir Cela impacte toute mon équipe.,Réseau
+Besoin d'aide : Serveur inaccessible,Impossible de joindre le serveur de fichiers depuis hier,Réseau
+Depuis la mise à jour : Licence manquante,J'ai besoin d'une licence Adobe Acrobat pour mon poste Besoin d'une solution rapidement.,Logiciel
+Urgent : Imprimante ne répond pas,L'imprimante n'imprime plus depuis ce matin Je suis bloqué.,Hardware
+Impossible : Messagerie indisponible,La messagerie d'entreprise est inaccessible Le problème persiste depuis hier.,Réseau
+Problème : Imprimante hors ligne,L'imprimante du bureau est indiquée hors ligne Besoin d'aide urgent.,Hardware
+Besoin d'aide : Email bloqué,Je n'envoie plus d'emails depuis ce matin Je ne peux plus travailler.,Réseau
+Erreur : Antivirus bloquant,L'antivirus bloque mon logiciel métier J'ai besoin d'aide.,Logiciel
+Switch défaillant,Le switch du couloir semble avoir un problème Le problème persiste depuis hier.,Réseau
+Depuis ce matin : Port USB mort,Mon port USB ne reconnait plus aucun périphérique Je suis bloqué.,Hardware
+Bloqué : Double authentification,La double authentification ne fonctionne plus sur mon téléphone J'ai besoin d'aide.,Logiciel
+Depuis hier soir : Adresse mail refusée,Mon adresse mail est rejetée par les serveurs externes Cela impacte toute mon équipe.,Réseau
+Certificat SSL expiré,Mon navigateur signale un certificat SSL expiré Merci d'intervenir.,Réseau
+Réseau lent open space,Le réseau est lent uniquement dans l'open space Cela impacte toute mon équipe.,Réseau
+Bloqué : Licence Office expirée,Ma licence Office 365 a expiré,Logiciel
+Urgent : Email bloqué,Je n'envoie plus d'emails depuis ce matin Cela impacte toute mon équipe.,Réseau
+Besoin d'aide : Teams impossible,Je ne peux pas rejoindre les réunions Teams Je ne peux plus travailler.,Réseau
+Certificat SSL expiré,Mon navigateur signale un certificat SSL expiré Le problème persiste depuis hier.,Réseau
+Besoin : Imprimante logiciel,Le pilote de l'imprimante est introuvable Je suis complètement bloqué.,Logiciel
+Imprimante hors ligne,L'imprimante du bureau est indiquée hors ligne Besoin d'aide urgent.,Hardware
+Besoin : PDF ne s'ouvre pas,Acrobat Reader ne s'ouvre plus depuis hier Cela bloque mon travail quotidien.,Logiciel
+Urgent : Connexion coupée,Ma connexion réseau se coupe plusieurs fois par heure Besoin d'une intervention rapide.,Réseau
+Besoin d'aide : Problème VPN,Je n'arrive plus à me connecter au VPN depuis chez moi Je ne peux plus travailler.,Réseau
+Besoin d'aide : Réseau lent open space,Le réseau est lent uniquement dans l'open space Besoin d'une intervention rapide.,Réseau
+Problème : PC redémarre seul,Mon PC redémarre aléatoirement sans raison Cela bloque mon travail.,Hardware
+Depuis ce matin : Batterie HS,La batterie de mon laptop ne charge plus du tout Besoin d'aide urgent.,Hardware
+Depuis hier : PC redémarre seul,Mon PC redémarre aléatoirement sans raison Merci de traiter rapidement.,Hardware
+Problème : PC redémarre seul,Mon PC redémarre aléatoirement sans raison,Hardware
+Besoin d'aide : Wifi instable,Le wifi coupe toutes les 30 minutes sur mon poste Le problème persiste depuis hier.,Réseau
+Crash Outlook,Outlook se ferme automatiquement toutes les 10 minutes J'ai besoin d'aide.,Logiciel
+Impossible : Port réseau mort,Le port réseau de mon bureau ne fonctionne plus Merci d'intervenir.,Réseau
+Besoin d'aide : VPN lent,Le VPN est très lent et rend le travail impossible,Réseau
+Bloqué : Macro Excel bloquée,La macro Excel ne s'exécute plus depuis la mise à jour Cela bloque mon travail quotidien.,Logiciel
+Problème : Touches collantes,Les touches de mon clavier collent Merci de traiter rapidement.,Hardware
+Outlook connexion,Outlook ne se connecte plus au serveur de messagerie Je ne peux plus travailler.,Réseau
+Teams mise à jour,Teams demande une mise à jour mais elle échoue Je suis complètement bloqué.,Logiciel
+Besoin d'aide : Certificat SSL expiré,Mon navigateur signale un certificat SSL expiré Je ne peux plus travailler.,Réseau
+Urgent : Imprimante ne répond pas,L'imprimante n'imprime plus depuis ce matin Je suis bloqué.,Hardware
+Depuis hier soir : Connexion coupée,Ma connexion réseau se coupe plusieurs fois par heure Cela impacte toute mon équipe.,Réseau
+Urgent : Imprimante hors ligne,L'imprimante du bureau est indiquée hors ligne Cela bloque mon travail.,Hardware
+Erreur : Antivirus bloquant,L'antivirus bloque mon logiciel métier Merci de traiter en priorité.,Logiciel
+Microphone muet,Mon microphone n'est pas reconnu par le système Merci de traiter rapidement.,Hardware
+Besoin : Mot de passe expiré,Mon mot de passe a expiré et je ne peux plus me connecter,Logiciel
+Depuis la mise à jour : PDF ne s'ouvre pas,Acrobat Reader ne s'ouvre plus depuis hier Cela bloque mon travail quotidien.,Logiciel
+Besoin d'aide : Connexion VPN lente,La connexion VPN prend plus de 10 minutes à s'établir Merci d'intervenir.,Réseau
+Depuis ce matin : Erreur BSOD,Mon PC affiche un écran bleu et redémarre Je suis bloqué.,Hardware
+Activation Windows,Windows n'est plus activé sur mon poste Merci de traiter en priorité.,Logiciel
+Bloqué : Mot de passe expiré,Mon mot de passe a expiré et je ne peux plus me connecter Besoin d'une solution rapidement.,Logiciel
+Ecran fissuré,L'écran de mon laptop est fissuré suite à une chute Besoin d'aide urgent.,Hardware
+Depuis la mise à jour : SSO ne fonctionne pas,Le SSO ne me connecte plus automatiquement Je suis complètement bloqué.,Logiciel
+Accès SAP refusé,J'ai un message accès refusé quand j'ouvre SAP J'ai besoin d'aide.,Logiciel
+Urgent : Firewall bloquant,Le firewall bloque mon application de travail,Réseau
+IP en conflit,Un message d'erreur dit que mon adresse IP est en conflit Je ne peux plus travailler.,Réseau
+Depuis la mise à jour : SSO ne fonctionne pas,Le SSO ne me connecte plus automatiquement,Logiciel
+Erreur : Bug application RH,L'application RH affiche une erreur 500 à l'ouverture J'ai besoin d'aide.,Logiciel
+Double authentification,La double authentification ne fonctionne plus sur mon téléphone Cela bloque mon travail quotidien.,Logiciel
+Depuis la mise à jour : Licence manquante,J'ai besoin d'une licence Adobe Acrobat pour mon poste Cela bloque mon travail quotidien.,Logiciel
+Besoin d'aide : Impression réseau,Je ne vois plus l'imprimante réseau du couloir Besoin d'une intervention rapide.,Réseau
+Depuis la mise à jour : Double authentification,La double authentification ne fonctionne plus sur mon téléphone,Logiciel
+Pas internet,Je n'ai plus accès à internet depuis ce matin Cela impacte toute mon équipe.,Réseau
+Connecteur cassé,Le connecteur jack de mon PC est cassé,Hardware
+Depuis ce matin : PC surchauffe,Mon ordinateur devient brûlant après 30 minutes Cela bloque mon travail.,Hardware
+Depuis hier : PC lent,Mon ordinateur est très lent depuis la mise à jour Cela bloque mon travail.,Hardware
+Besoin : Logiciel obsolète,Mon logiciel affiche une erreur de version obsolète,Logiciel
+Urgent : Email bloqué,Je n'envoie plus d'emails depuis ce matin Le problème persiste depuis hier.,Réseau
+Besoin d'aide : Teams impossible,Je ne peux pas rejoindre les réunions Teams Le problème persiste depuis hier.,Réseau
+PC ne démarre pas,Mon PC ne démarre plus du tout Cela bloque mon travail.,Hardware
+Problème : Webcam invisible,Ma webcam n'apparaît plus dans les paramètres Merci de traiter rapidement.,Hardware
+Depuis ce matin : Souris morte,Ma souris ne fonctionne plus après redémarrage Je suis bloqué.,Hardware
+Besoin : Erreur Python,Mon script Python ne fonctionne plus après la mise à jour Besoin d'une solution rapidement.,Logiciel
+Impossible : Email bloqué,Je n'envoie plus d'emails depuis ce matin,Réseau
+Depuis la mise à jour : Mot de passe expiré,Mon mot de passe a expiré et je ne peux plus me connecter Cela bloque mon travail quotidien.,Logiciel
+Urgent : Touches collantes,Les touches de mon clavier collent C'est urgent.,Hardware
+Antivirus bloquant,L'antivirus bloque mon logiciel métier Je suis complètement bloqué.,Logiciel
+Besoin : Accès Power BI,Je n'ai pas accès au rapport Power BI de mon équipe Je suis complètement bloqué.,Logiciel
+Erreur : Accès sharepoint,Je n'ai plus accès à mon espace Sharepoint Je suis complètement bloqué.,Logiciel
+Depuis hier : Disque dur plein,Mon disque dur est plein et je ne peux plus travailler Cela bloque mon travail.,Hardware
+Depuis la mise à jour : SAP bloqué,La mise à jour de SAP se bloque à 45% à chaque tentative Cela bloque mon travail quotidien.,Logiciel
+Besoin : Raccourci disparu,Le raccourci de mon application a disparu du bureau Cela bloque mon travail quotidien.,Logiciel
+Urgent : Ventilateur bruyant,Mon PC fait un bruit de ventilateur très fort Je suis bloqué.,Hardware
+Impossible : Proxy bloqué,Le proxy bloque des sites nécessaires à mon travail Merci d'intervenir.,Réseau
+Adresse mail refusée,Mon adresse mail est rejetée par les serveurs externes Je ne peux plus travailler.,Réseau
+Depuis ce matin : Imprimante hors ligne,L'imprimante du bureau est indiquée hors ligne C'est urgent.,Hardware
+DNS erreur,L'erreur DNS apparait en permanence sur mon navigateur Le problème persiste depuis hier.,Réseau
+Urgent : Réseau lent open space,Le réseau est lent uniquement dans l'open space Merci d'intervenir.,Réseau
+Besoin d'aide : Proxy bloqué,Le proxy bloque des sites nécessaires à mon travail,Réseau
+Urgent : PC ne démarre pas,Mon PC ne démarre plus du tout C'est urgent.,Hardware
+Coupure internet bureau,Tout le bureau n'a plus internet depuis 1h Le problème persiste depuis hier.,Réseau
+PC surchauffe,Mon ordinateur devient brûlant après 30 minutes C'est urgent.,Hardware
+Problème : PC surchauffe,Mon ordinateur devient brûlant après 30 minutes,Hardware
+Disque dur plein,Mon disque dur est plein et je ne peux plus travailler Cela bloque mon travail.,Hardware
+Urgent : Drive inaccessible,Je n'ai plus accès au dossier partagé de mon équipe Le problème persiste depuis hier.,Réseau
+DNS erreur,L'erreur DNS apparait en permanence sur mon navigateur Je ne peux plus travailler.,Réseau
+Besoin : Licence Office expirée,Ma licence Office 365 a expiré Besoin d'une solution rapidement.,Logiciel
+Imprimante ne répond pas,L'imprimante n'imprime plus depuis ce matin Cela bloque mon travail.,Hardware
+Depuis hier : Batterie HS,La batterie de mon laptop ne charge plus du tout Cela bloque mon travail.,Hardware
+Impossible : Teams audio,L'audio ne fonctionne pas lors des réunions Teams Cela impacte toute mon équipe.,Réseau
+VPN lent,Le VPN est très lent et rend le travail impossible Cela impacte toute mon équipe.,Réseau
+Problème : Souris morte,Ma souris ne fonctionne plus après redémarrage Besoin d'aide urgent.,Hardware
+Depuis hier soir : Impression réseau,Je ne vois plus l'imprimante réseau du couloir Besoin d'une intervention rapide.,Réseau
+Erreur : Accès Power BI,Je n'ai pas accès au rapport Power BI de mon équipe Cela bloque mon travail quotidien.,Logiciel
+Besoin d'aide : Messagerie indisponible,La messagerie d'entreprise est inaccessible Le problème persiste depuis hier.,Réseau
+Depuis ce matin : PC surchauffe,Mon ordinateur devient brûlant après 30 minutes,Hardware
+Installation Office,L'erreur 0x800 apparait lors de l'installation d'Office 365 Besoin d'une solution rapidement.,Logiciel
+Base de données erreur,La base de données retourne une erreur de connexion Je suis complètement bloqué.,Logiciel
+Bloqué : Activation Windows,Windows n'est plus activé sur mon poste Merci de traiter en priorité.,Logiciel
+RAM insuffisante,Mon PC manque de mémoire et plante régulièrement Merci de traiter rapidement.,Hardware
+Urgent : Lecteur CD mort,Le lecteur de carte SD ne fonctionne plus,Hardware
+Impossible : IP en conflit,Un message d'erreur dit que mon adresse IP est en conflit Je ne peux plus travailler.,Réseau
+Besoin : Raccourci disparu,Le raccourci de mon application a disparu du bureau J'ai besoin d'aide.,Logiciel
+Urgent : Problème VPN,Je n'arrive plus à me connecter au VPN depuis chez moi Je ne peux plus travailler.,Réseau
+Depuis hier soir : Email bloqué,Je n'envoie plus d'emails depuis ce matin Le problème persiste depuis hier.,Réseau
+Problème : Port USB mort,Mon port USB ne reconnait plus aucun périphérique C'est urgent.,Hardware
+Besoin : Raccourci disparu,Le raccourci de mon application a disparu du bureau Besoin d'une solution rapidement.,Logiciel
+Besoin d'aide : Email bloqué,Je n'envoie plus d'emails depuis ce matin Je ne peux plus travailler.,Réseau
+Depuis hier : Imprimante ne répond pas,L'imprimante n'imprime plus depuis ce matin Besoin d'aide urgent.,Hardware
+Besoin : Excel plante,Excel se ferme sans prévenir quand j'ouvre un gros fichier Je suis complètement bloqué.,Logiciel
+Urgent : Messagerie indisponible,La messagerie d'entreprise est inaccessible Cela impacte toute mon équipe.,Réseau
+Depuis hier soir : Drive inaccessible,Je n'ai plus accès au dossier partagé de mon équipe Cela impacte toute mon équipe.,Réseau
+Depuis la mise à jour : Excel plante,Excel se ferme sans prévenir quand j'ouvre un gros fichier,Logiciel
+Urgent : Port USB mort,Mon port USB ne reconnait plus aucun périphérique Je suis bloqué.,Hardware
+Besoin d'aide : Outlook connexion,Outlook ne se connecte plus au serveur de messagerie,Réseau
+Raccourci disparu,Le raccourci de mon application a disparu du bureau J'ai besoin d'aide.,Logiciel
+Accès Power BI,Je n'ai pas accès au rapport Power BI de mon équipe,Logiciel
+RAM insuffisante,Mon PC manque de mémoire et plante régulièrement Merci de traiter rapidement.,Hardware
+Mot de passe expiré,Mon mot de passe a expiré et je ne peux plus me connecter Je suis complètement bloqué.,Logiciel
+Coupure internet bureau,Tout le bureau n'a plus internet depuis 1h Je ne peux plus travailler.,Réseau
+Bloqué : Windows Update bloqué,Windows Update bloque mon PC pendant des heures J'ai besoin d'aide.,Logiciel
+Bloqué : Licence manquante,J'ai besoin d'une licence Adobe Acrobat pour mon poste Besoin d'une solution rapidement.,Logiciel
+Imprimante logiciel,Le pilote de l'imprimante est introuvable Je suis complètement bloqué.,Logiciel
+Bloqué : Base de données erreur,La base de données retourne une erreur de connexion Je suis complètement bloqué.,Logiciel
+Problème VPN,Je n'arrive plus à me connecter au VPN depuis chez moi Le problème persiste depuis hier.,Réseau
+Urgent : PC lent,Mon ordinateur est très lent depuis la mise à jour Je suis bloqué.,Hardware
+Accès Teams bloqué,Mon compte Teams est bloqué depuis ce matin Cela impacte toute mon équipe.,Réseau

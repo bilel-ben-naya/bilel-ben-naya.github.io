@@ -152,9 +152,10 @@ function start(){
   mode=$("mode").value;$("hist").innerHTML="";draw();
 }
 $("new").onclick=start;$("mode").onchange=start;
-try{var th=localStorage.getItem("sky_theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
+try{var th=localStorage.getItem("theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
 build();start();
 })();
+window.addEventListener("storage",function(e){if(e.key==="theme"&&e.newValue)document.documentElement.setAttribute("data-theme",e.newValue);});
 </script>
 </body>
 </html>

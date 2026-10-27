@@ -178,7 +178,7 @@ function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
 
 /* thème jour / nuit */
 var theme = "light";
-try{ theme = localStorage.getItem("sky_theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); }catch(e){}
+try{ theme = localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); }catch(e){}
 function applyTheme(){
   document.documentElement.setAttribute("data-theme", theme);
   var n = 1 + Math.floor(Math.random()*3);
@@ -326,6 +326,7 @@ Promise.all([
   if(r){ $("dept").value = "75"; return chooseDept("75").then(function(rows){ var c = rows && matchCity("Paris"); if(c){ $("city").value = c[0]; lastLoaded = c[0]; load(c, false); } }); }
 }).catch(function(){ $("out").innerHTML = '<div class="state">Impossible de charger les données. Rechargez la page.</div>'; });
 })();
+window.addEventListener("storage",function(e){if(e.key==="theme"&&e.newValue)document.documentElement.setAttribute("data-theme",e.newValue);});
 </script>
 </body>
 </html>

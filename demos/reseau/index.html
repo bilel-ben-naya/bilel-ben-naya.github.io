@@ -178,9 +178,10 @@ function go(){
   $("out").textContent=r.lines.join("\n");animate(r);
 }
 $("go").onclick=go;$("tgt").addEventListener("keydown",function(e){if(e.key==="Enter")go();});
-try{var th=localStorage.getItem("sky_theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
+try{var th=localStorage.getItem("theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
 go();
 })();
+window.addEventListener("storage",function(e){if(e.key==="theme"&&e.newValue)document.documentElement.setAttribute("data-theme",e.newValue);});
 </script>
 </body>
 </html>

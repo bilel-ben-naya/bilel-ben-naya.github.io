@@ -58,7 +58,7 @@ input[type=text]{padding:6px 10px;border-radius:8px;border:1px solid var(--line)
   </section>
   <section class="card">
     <h2>Serveur du dépôt (FastAPI + SQLite)</h2>
-    <p class="note" style="margin:0 0 8px">Ici, les changements d'état des places sont envoyés à <code>POST /iot/slot</code>. Temps accéléré : 1 seconde = 1 minute de stationnement, à 0,05 € la minute.</p>
+    <p class="note" style="margin:0 0 8px">Les changements d'état des places sont envoyés à <code>POST /iot/slot</code>. Temps accéléré : 1 seconde = 1 minute de stationnement, à 0,05 € la minute.</p>
     <div style="margin-bottom:8px"><label for="plate" style="font-size:.8rem;font-weight:700">Plaque du prochain véhicule </label><input id="plate" type="text" value="AA-123-AA" maxlength="12"></div>
     <table><thead><tr><th>#</th><th>Plaque</th><th>Place</th><th>Durée</th><th>Montant</th></tr></thead><tbody id="sess"></tbody></table>
     <h2 style="margin-top:12px">Journal (<code>GET /events</code>)</h2>
@@ -66,7 +66,7 @@ input[type=text]{padding:6px 10px;border-radius:8px;border:1px solid var(--line)
   </section>
 </div>
 
-<section class="card note"><strong>Ce qui est fidèle au projet.</strong> Les seuils (5 cm pour une place, 6 cm pour la barrière), les périodes de lecture (100, 200 et 500 ms), le maintien de la barrière ouverte pendant 2 secondes après la dernière détection, les LED et les valeurs envoyées à Blynk sont ceux du programme <code>codes_parking_2.ino</code>. La partie serveur reprend <code>backend/main.py</code>. Dans le rapport, la supervision passe par Blynk sans base de données durable ; relier la carte au serveur est la suite logique et c'est ce que montre le panneau de droite.</p>
+<section class="card note"><strong>Ce qui est fidèle au projet.</strong> Les seuils (5 cm pour une place, 6 cm pour la barrière), les périodes de lecture (100, 200 et 500 ms), le maintien de la barrière ouverte pendant 2 secondes après la dernière détection, les LED et les valeurs envoyées à Blynk sont ceux du programme <code>codes_parking_2.ino</code>. La partie serveur reprend <code>backend/main.py</code> : dans le projet, la carte lui envoie l'état des places, et Blynk sert à la supervision en direct. La maquette compte trois places, mais le programme se généralise facilement à un parking plus grand (une paire de broches par place supplémentaire).</p>
 </main>
 <script src="firmware.js"></script>
 <script>
@@ -159,9 +159,10 @@ $("man").onchange=function(){F.setManuel(this.checked);};
 build();controls();read();
 setInterval(loop,10);
 (function frame(){render();requestAnimationFrame(frame);})();
-try{var th=localStorage.getItem("sky_theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
+try{var th=localStorage.getItem("theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
 window.__P={F:F,B:B,setR:setR};
 })();
+window.addEventListener("storage",function(e){if(e.key==="theme"&&e.newValue)document.documentElement.setAttribute("data-theme",e.newValue);});
 </script>
 </body>
 </html>

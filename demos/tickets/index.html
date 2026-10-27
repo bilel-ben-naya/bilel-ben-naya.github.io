@@ -132,9 +132,10 @@ function init(m){
   $("t").addEventListener("input", render);
   $("t").value = EXAMPLES[0]; render();
 }
-try{ var th = localStorage.getItem("sky_theme"); if(th) document.documentElement.setAttribute("data-theme", th); }catch(e){}
+try{ var th = localStorage.getItem("theme"); if(th) document.documentElement.setAttribute("data-theme", th); }catch(e){}
 fetch("model.json").then(function(r){ return r.json(); }).then(init).catch(function(){ $("res").innerHTML = '<div class="warn">Impossible de charger le modèle. Rechargez la page.</div>'; });
 })();
+window.addEventListener("storage",function(e){if(e.key==="theme"&&e.newValue)document.documentElement.setAttribute("data-theme",e.newValue);});
 </script>
 </body>
 </html>
