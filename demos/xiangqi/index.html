@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Xiangqi, échecs chinois</title>
+<style>
+:root{--bg:#F4F7FB;--panel:#fff;--ink:#13233A;--muted:#566A85;--line:#D8E1EE;--accent:#2F5BFF;--onaccent:#fff;--soft:#E8EEFF;--hi:#2F5BFF;--b1:#EFE4CF;--b2:#E2D2B3;--p1:#E7D2AE;--p2:#D5BD92;--riv:#8FB4E3;--grid:#8a6f4d;--last:rgba(255,196,0,.5)}
+:root[data-theme="dark"]{--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A;--hi:#7F9DFF;--b1:#CDBE9F;--b2:#BFAE8B;--p1:#C8B48C;--p2:#B59F76;--riv:#6F96C9;--grid:#6b553a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A;--hi:#7F9DFF;--b1:#CDBE9F;--b2:#BFAE8B;--p1:#C8B48C;--p2:#B59F76;--riv:#6F96C9;--grid:#6b553a}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+main{max-width:980px;margin:0 auto;padding:16px}
+h1{margin:0 0 4px;font-size:1.25rem}.lead{margin:0 0 14px;color:var(--muted)}
+.wrap{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:14px;align-items:start}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+.boardbox{padding:10px}
+.bd{display:grid;grid-template-columns:22px repeat(11,1fr);grid-template-rows:repeat(11,auto) 20px;gap:0;user-select:none}
+.lab{font-size:11px;color:var(--muted);display:flex;align-items:center;justify-content:center}
+.cell{position:relative;aspect-ratio:1;border:1px solid var(--grid);cursor:pointer;padding:0;background:var(--b1);display:block;min-width:0}
+.cell.alt{background:var(--b2)}
+.cell.pal{background:var(--p1)}.cell.pal.alt{background:var(--p2)}
+.cell.riv{background:var(--riv)}
+.cell img{position:absolute;inset:6%;width:88%;height:88%;pointer-events:none}
+.cell.sel{outline:3px solid #FFC400;outline-offset:-3px;z-index:2}
+.cell.ok::after{content:"";position:absolute;inset:0;background:rgba(40,200,90,.38);pointer-events:none}
+.cell.ok.cap::after{background:rgba(220,50,40,.4)}
+.cell.last::before{content:"";position:absolute;inset:0;background:var(--last);pointer-events:none}
+.cell:hover{filter:brightness(.96)}.cell:focus-visible{z-index:3}
+.cell[disabled]{cursor:default}
+label{display:block;font-weight:600;font-size:.85rem;margin-bottom:4px}
+select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:inherit;font:inherit}
+button.pri{background:var(--accent);color:var(--onaccent);border:1px solid var(--accent);border-radius:8px;padding:8px 16px;font:inherit;font-weight:600;cursor:pointer;width:100%;margin-top:10px}
+button.pri:hover{filter:brightness(1.08)}
+.turn{font-weight:700;display:flex;align-items:center;gap:8px}.dot{width:14px;height:14px;border-radius:50%;display:inline-block;border:1px solid var(--ink)}
+.msg{min-height:3em;color:var(--muted);font-size:.9rem;margin:6px 0 0}.msg.end{color:var(--ink);font-weight:700}
+.hist{height:210px;overflow:auto;background:var(--soft);border-radius:8px;padding:8px 10px;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:6px 0 0}
+.hist div{display:flex;gap:10px}.hist span.n{color:var(--muted);width:2.2em}
+.note{font-size:.84rem;color:var(--muted)}
+h2{margin:0 0 8px;font-size:1rem}
+@media(max-width:760px){.wrap{grid-template-columns:1fr}.hist{height:120px}}
+</style>
+</head>
+<body>
+<main>
+<h1>Xiangqi, échecs chinois sur 11 x 11</h1>
+<p class="lead">Mon jeu Java réécrit pour le navigateur : mêmes règles, même bot. Les Rouges commencent. Cliquez sur une pièce puis sur une case en surbrillance.</p>
+<div class="wrap">
+  <div class="card boardbox"><div class="bd" id="bd" role="grid" aria-label="Plateau de Xiangqi"></div></div>
+  <div>
+    <div class="card">
+      <label for="mode">Mode de jeu</label>
+      <select id="mode"><option value="bot">Contre le bot (il joue les Noirs)</option><option value="pvp">1 contre 1, sur le même écran</option></select>
+      <button class="pri" id="new" type="button">Nouvelle partie</button>
+    </div>
+    <div class="card">
+      <div class="turn"><span class="dot" id="dot"></span><span id="turn"></span></div>
+      <p class="msg" id="msg" aria-live="polite"></p>
+      <h2 style="margin-top:12px">Historique</h2>
+      <div class="hist" id="hist" aria-label="Historique des coups"></div>
+    </div>
+  </div>
+</div>
+<div class="card note"><strong>Ce que ce port reproduit.</strong> Le moteur (déplacements de chaque pièce, échec, mat, pat, généraux face à face) et le bot (score par capture, avancée des soldats, mobilité, menaces, protection du général, pénalité de risque) sont repris du code Java. Je les ai comparés au Java sur plus de 2 200 positions de parties aléatoires : mêmes coups possibles, mêmes états d'échec et même coup choisi par le bot.
+<p style="margin:6px 0 0">Les règles sont celles du projet, pas celles du Xiangqi officiel : plateau de 11 x 11 avec la rivière sur une ligne entière, cases autorisées pour les éléphants et déplacements du cheval propres au projet.</p></div>
+</main>
+<script src="xq.js"></script>
+<script>
+(function(){
+"use strict";
+var $=function(i){return document.getElementById(i);};
+var NOM={general:"general",garde:"garde",elephant:"elephant",cheval:"cheval",canon:"canon",tour:"tour",soldat:"soldat"};
+var FR={general:"général",garde:"garde",elephant:"éléphant",cheval:"cheval",canon:"canon",tour:"tour",soldat:"soldat"};
+var pl,bot,cur,sel,hist,last,over,busy,mode,msg="";
+var cells=[];
+function build(){
+  var bd=$("bd");bd.innerHTML="";cells=[];
+  for(var y=0;y<11;y++){
+    var l=document.createElement("div");l.className="lab";l.textContent=11-y;bd.appendChild(l);
+    for(var x=0;x<11;x++){
+      var c=document.createElement("button");c.type="button";c.className="cell";
+      if(y===5)c.className+=" riv";else{
+        if(x>=3&&x<=7&&(y<=2||y>=8))c.className+=" pal";
+        if((x+y)%2)c.className+=" alt";
+      }
+      (function(x,y){c.addEventListener("click",function(){click(x,y);});})(x,y);
+      bd.appendChild(c);cells[x*11+y]=c;
+    }
+  }
+  bd.appendChild(document.createElement("div"));
+  for(var x2=0;x2<11;x2++){var t=document.createElement("div");t.className="lab";t.textContent=String.fromCharCode(65+x2);bd.appendChild(t);}
+}
+function draw(){
+  for(var x=0;x<11;x++)for(var y=0;y<11;y++){
+    var c=cells[x*11+y],p=pl.get(x,y);
+    c.classList.remove("sel","ok","cap","last");
+    c.innerHTML=p?'<img alt="'+FR[p.t]+" "+(p.c==="R"?"rouge":"noir")+'" src="img/'+NOM[p.t]+(p.c==="R"?"Rouge":"Noir")+'.png">':"";
+    c.setAttribute("aria-label",XQ.notation(x,y)+(p?", "+FR[p.t]+" "+(p.c==="R"?"rouge":"noir"):", vide"));
+    c.disabled=over;
+  }
+  if(last){[[last[0],last[1]],[last[2],last[3]]].forEach(function(q){cells[q[0]*11+q[1]].classList.add("last");});}
+  if(sel){
+    cells[sel.x*11+sel.y].classList.add("sel");
+    for(var i=0;i<11;i++)for(var j=0;j<11;j++){
+      var d=pl.get(i,j);
+      if(pl.valide(sel,i,j)&&(!d||d.c!==sel.c)){var cc=cells[i*11+j];cc.classList.add("ok");if(d)cc.classList.add("cap");}
+    }
+  }
+  $("dot").style.background=cur==="R"?"#D8352A":"#1b1b1b";
+  $("turn").textContent=over?"Partie terminée":"Tour du joueur "+(cur==="R"?"Rouge":"Noir");
+  var m=$("msg");m.textContent=msg;m.className="msg"+(over?" end":"");
+}
+function addHist(c,mv){
+  var r=document.createElement("div");
+  r.innerHTML='<span class="n">'+(hist+1)+'.</span><span>'+(c==="R"?"Rouge":"Noir")+" "+XQ.notation(mv[0],mv[1])+" → "+XQ.notation(mv[2],mv[3])+"</span>";
+  $("hist").appendChild(r);$("hist").scrollTop=1e6;hist++;
+}
+function finish(text){over=true;msg=text;sel=null;}
+function click(x,y){
+  if(over||busy)return;
+  if(mode==="bot"&&cur!=="R")return;
+  var p=pl.get(x,y);
+  if(!sel){if(p&&p.c===cur){sel=p;msg="";}draw();return;}
+  if(p&&p.c===cur){sel=p;msg="";draw();return;}
+  if(!pl.valide(sel,x,y)){sel=null;msg="Mouvement invalide !";draw();return;}
+  var ox=sel.x,oy=sel.y,piece=sel,r=pl.jouer(piece,ox,oy,x,y);
+  sel=null;
+  if(!r||r.refuse){msg="Ce mouvement met le général en échec !";draw();return;}
+  last=[ox,oy,x,y];addHist(cur,last);msg="";
+  var adv=cur==="R"?"B":"R",advNom=adv==="R"?"Rouge":"Noir",gagnant=cur==="R"?"Rouge":"Noir";
+  if(r.mat){finish("Échec et mat au général "+advNom+" ! Le joueur "+gagnant+" gagne.");draw();return;}
+  if(r.fin){finish(r.fin);draw();return;}
+  if(r.echec)msg="Échec au général "+advNom+" !";
+  cur=adv;draw();
+  if(mode==="bot"&&cur==="B")botPlay();
+}
+function botPlay(){
+  busy=true;msg=(msg?msg+" ":"")+"Le bot réfléchit…";draw();
+  setTimeout(function(){
+    var r=bot.jouer();busy=false;msg="";
+    if(!r){finish("Le bot n'a aucun coup à jouer.");draw();return;}
+    last=r.coup;addHist("B",r.coup);
+    if(pl.echecEtMat("R")){finish("Échec et mat ! Le joueur Noir gagne.");draw();return;}
+    if(r.fin){finish(r.fin);draw();return;}
+    if(pl.enEchec("R"))msg="Échec au général Rouge !";
+    cur="R";draw();
+  },380);
+}
+function start(){
+  pl=new XQ.Board();bot=new XQ.Bot(pl);cur="R";sel=null;hist=0;last=null;over=false;busy=false;msg="";
+  mode=$("mode").value;$("hist").innerHTML="";draw();
+}
+$("new").onclick=start;$("mode").onchange=start;
+try{var th=localStorage.getItem("sky_theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
+build();start();
+})();
+</script>
+</body>
+</html>

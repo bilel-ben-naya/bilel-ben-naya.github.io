@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trafic aérien OpenSky</title>
+<link rel="stylesheet" href="vendor/leaflet.css">
+<style>
+:root{--bg:#F4F7FB;--panel:#fff;--ink:#13233A;--muted:#566A85;--line:#D8E1EE;--accent:#2F5BFF;--onaccent:#fff;--soft:#E8EEFF;--plane:#13233A;--pl2:#fff}
+:root[data-theme="dark"]{--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A;--plane:#FFD166;--pl2:#0C1424}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A;--plane:#FFD166;--pl2:#0C1424}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+main{max-width:980px;margin:0 auto;padding:16px}
+h1{margin:0 0 4px;font-size:1.25rem}.lead{margin:0 0 12px;color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px}
+.bar .grow{flex:1}
+select,button{padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:.9rem;cursor:pointer}
+button:hover,select:hover{border-color:var(--accent)}
+.pill{display:inline-block;background:var(--soft);border-radius:999px;padding:3px 12px;font-size:.85rem;font-weight:600}
+#map{height:380px;border-radius:10px;border:1px solid var(--line);background:#222}
+#map.dk .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.9) contrast(.9)}
+.pl{filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
+.tw{max-height:300px;overflow:auto;margin-top:10px;border:1px solid var(--line);border-radius:8px}
+table{width:100%;border-collapse:collapse;font-size:.86rem;font-variant-numeric:tabular-nums}
+th,td{padding:5px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child,th:nth-child(2),td:nth-child(2){text-align:left}
+th{position:sticky;top:0;background:var(--soft);cursor:pointer;font-weight:700}
+tbody tr{cursor:pointer}tbody tr:hover{background:var(--soft)}
+.note{font-size:.85rem;color:var(--muted)}
+.warn{padding:8px 12px;border-radius:8px;background:var(--soft);border-left:4px solid #E07A1F;font-size:.88rem;margin:8px 0 0}
+.leaflet-container{font:inherit}
+</style>
+</head>
+<body>
+<main>
+<h1>Trafic aérien en direct</h1>
+<p class="lead">Mon scanner d'avions OpenSky (Python, Streamlit et Folium) refait pour le navigateur : carte, tableau et déplacement des avions.</p>
+<section class="card">
+  <div class="bar">
+    <span class="pill" id="count"></span>
+    <label class="note" for="zone">Zone</label>
+    <select id="zone"><option value="all">Tout l'instantané</option><option value="tn">Cadre Tunisie du projet</option></select>
+    <label class="note" for="spd">Vitesse</label>
+    <select id="spd"><option value="1">Temps réel</option><option value="30">x30</option><option value="120" selected>x120</option></select>
+    <span class="grow"></span>
+    <button id="reset" type="button">Réinitialiser</button><button id="live" type="button" hidden>Actualiser en direct</button>
+  </div>
+  <div id="map" role="region" aria-label="Carte des avions"></div>
+  <div class="warn" id="warn"></div>
+  <div class="tw"><table id="tb"><thead><tr><th data-k="cs">Indicatif</th><th data-k="pays">Pays</th><th data-k="alt">Altitude (m)</th><th data-k="kmh">Vitesse (km/h)</th><th data-k="cap">Cap</th></tr></thead><tbody></tbody></table></div>
+</section>
+<section class="card note"><strong>Comment ça marche.</strong> Les données viennent de l'API publique d'OpenSky Network (états des avions : position, altitude, vitesse, cap). Comme dans le projet Python, les avions au sol sont écartés, la vitesse est convertie en km/h et le cadre de la Tunisie reprend les coordonnées du projet. Entre deux relevés, la position de chaque avion est prolongée à partir de sa vitesse et de son cap.
+<p style="margin:6px 0 0">OpenSky n'autorise pas les appels depuis un autre site, donc cette page affiche un instantané réel enregistré et ne se met pas à jour toute seule. Le direct passe par un petit relais (fichier <code>relay-worker.js</code>) qu'il suffit de déployer.</p></div>
+</main>
+<script src="vendor/leaflet.js"></script>
+<script src="config.js"></script>
+<script>
+(function(){
+"use strict";
+var $=function(i){return document.getElementById(i);};
+var TN={la:[30.2,37.5],lo:[7.5,11.6]};
+var snap=null,fl=[],markers=[],t0=0,map,tiles,sortK="alt",sortD=-1,selected=null;
+function dark(){var t=document.documentElement.getAttribute("data-theme");return t?t==="dark":(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches);}
+function loadTiles(){
+  if(tiles)map.removeLayer(tiles);
+  tiles=L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:10,attribution:"© OpenStreetMap"}).addTo(map);
+  $("map").classList.toggle("dk",dark());
+}
+function icon(h){
+  return L.divIcon({className:"",iconSize:[26,26],iconAnchor:[13,13],html:'<svg class="pl" width="26" height="26" viewBox="0 0 24 24" style="transform:rotate('+h+'deg)"><path fill="var(--plane)" stroke="var(--pl2)" stroke-width="1" d="M12 1.5c.9 0 1.5.8 1.5 1.8v6.2l8 4.6v2.1l-8-2.2v4.7l2.2 1.7v1.7L12 20.4 8.3 22.1v-1.7l2.2-1.7v-4.7l-8 2.2v-2.1l8-4.6V3.3c0-1 .6-1.8 1.5-1.8z"/></svg>'});
+}
+function inTN(f){return f.lat>=TN.la[0]&&f.lat<=TN.la[1]&&f.lon>=TN.lo[0]&&f.lon<=TN.lo[1];}
+function load(s){
+  snap=s;t0=Date.now();
+  fl=s.vols.map(function(v){return {cs:v.cs||"None",pays:v.pays,lat0:v.lat,lon0:v.lon,lat:v.lat,lon:v.lon,alt:v.alt,kmh:Math.floor(v.v*3.6),v:v.v,cap:v.cap};});
+  rebuild();
+}
+function rebuild(){
+  markers.forEach(function(m){map.removeLayer(m.m);});markers=[];
+  var z=$("zone").value,list=fl.filter(function(f){return z==="all"||inTN(f);});
+  list.forEach(function(f){
+    var m=L.marker([f.lat,f.lon],{icon:icon(f.cap),keyboard:false}).addTo(map);
+    m.bindPopup("<b>"+f.cs+"</b><br>"+f.pays+"<br>"+f.alt+" m · "+f.kmh+" km/h · cap "+f.cap+"°");
+    m.on("click",function(){selected=f;render();});markers.push({m:m,f:f});
+  });
+  var d=new Date(snap.time*1000);
+  $("count").textContent=list.length+" vol"+(list.length>1?"s":"")+" détecté"+(list.length>1?"s":"");
+  $("warn").textContent=(list.length===0&&z==="tn"?"Aucun avion dans le cadre de la Tunisie à cet instant. Passez à « Tout l'instantané » pour voir la Méditerranée centrale. ":"")+(window.OPENSKY_RELAY&&snap.live?"Données en direct du ":"Instantané réel d'OpenSky du ")+d.toLocaleDateString("fr-FR")+" à "+d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})+".";
+  render();
+}
+function render(){
+  var z=$("zone").value,list=fl.filter(function(f){return z==="all"||inTN(f);});
+  list.sort(function(a,b){var x=a[sortK],y=b[sortK];return (x>y?1:x<y?-1:0)*sortD;});
+  $("tb").tBodies[0].innerHTML=list.map(function(f,i){return '<tr data-i="'+fl.indexOf(f)+'"><td>'+f.cs+'</td><td>'+f.pays+'</td><td>'+f.alt.toLocaleString("fr-FR")+'</td><td>'+f.kmh+'</td><td>'+f.cap+'°</td></tr>';}).join("");
+  Array.prototype.forEach.call($("tb").tBodies[0].rows,function(r){r.onclick=function(){var f=fl[+r.getAttribute("data-i")];map.setView([f.lat,f.lon],Math.max(map.getZoom(),7));markers.forEach(function(m){if(m.f===f)m.m.openPopup();});};});
+}
+function tick(){
+  var k=+$("spd").value,dt=(Date.now()-t0)/1000*k;
+  markers.forEach(function(o){
+    var f=o.f,h=f.cap*Math.PI/180;
+    f.lat=f.lat0+f.v*Math.cos(h)*dt/111320;
+    f.lon=f.lon0+f.v*Math.sin(h)*dt/(111320*Math.cos(f.lat0*Math.PI/180));
+    o.m.setLatLng([f.lat,f.lon]);
+  });
+}
+function init(){
+  map=L.map("map",{zoomControl:true,attributionControl:true}).setView([34,10],5);
+  loadTiles();
+  L.rectangle([[TN.la[0],TN.lo[0]],[TN.la[1],TN.lo[1]]],{color:"#2F5BFF",weight:2,fill:false,dashArray:"6 6"}).addTo(map).bindTooltip("Cadre Tunisie du projet");
+  fetch("snapshot.json").then(function(r){return r.json();}).then(load).catch(function(){$("warn").textContent="Impossible de charger l'instantané.";});
+  $("zone").onchange=rebuild;
+  $("spd").onchange=function(){fl.forEach(function(f){f.lat0=f.lat;f.lon0=f.lon;});t0=Date.now();};
+  $("reset").onclick=function(){if(snap)load(snap);};
+  Array.prototype.forEach.call(document.querySelectorAll("th[data-k]"),function(th){th.onclick=function(){var k=th.getAttribute("data-k");if(sortK===k)sortD=-sortD;else{sortK=k;sortD=(k==="cs"||k==="pays")?1:-1;}render();};});
+  if(window.OPENSKY_RELAY){
+    $("live").hidden=false;
+    $("live").onclick=function(){
+      var u=window.OPENSKY_RELAY+"?lamin=28&lamax=40&lomin=4&lomax=16";
+      fetch(u).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(d){
+        var v=(d.states||[]).filter(function(s){return !s[8]&&s[5]!=null&&s[6]!=null;}).map(function(s){return {cs:(s[1]||"").trim()||null,pays:s[2],lon:s[5],lat:s[6],alt:Math.round(s[7]||0),v:s[9]||0,cap:Math.round(s[10]||0)};});
+        load({time:d.time,vols:v,live:true});
+      }).catch(function(){$("warn").textContent="Le relais ne répond pas pour le moment (limite de requêtes d'OpenSky ou relais arrêté).";});
+    };
+  }
+  setInterval(tick,1000);
+  if(window.matchMedia)matchMedia("(prefers-color-scheme: dark)").addEventListener&&matchMedia("(prefers-color-scheme: dark)").addEventListener("change",loadTiles);
+}
+try{var th=localStorage.getItem("sky_theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
+init();
+})();
+</script>
+</body>
+</html>
