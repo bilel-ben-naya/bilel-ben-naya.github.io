@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Classifieur de tickets</title>
+<style>
+:root{
+  --bg:#F4F7FB; --panel:#FFFFFF; --ink:#13233A; --muted:#566A85; --line:#D8E1EE; --accent:#2F5BFF; --onaccent:#fff; --soft:#E8EEFF;
+  --c0:#E07A1F; --c1:#2F5BFF; --c2:#0FA89A;
+}
+:root[data-theme="dark"]{
+  --bg:#0C1424; --panel:#142036; --ink:#E9F0FB; --muted:#9BB0CC; --line:#25364F; --accent:#7F9DFF; --onaccent:#0C1424; --soft:#1C2C4A;
+  --c0:#FFA24A; --c1:#7F9DFF; --c2:#3DD6C6;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C1424; --panel:#142036; --ink:#E9F0FB; --muted:#9BB0CC; --line:#25364F; --accent:#7F9DFF; --onaccent:#0C1424; --soft:#1C2C4A;
+    --c0:#FFA24A; --c1:#7F9DFF; --c2:#3DD6C6;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+main{max-width:860px;margin:0 auto;padding:16px}
+h1{margin:0 0 4px;font-size:1.25rem}
+.lead{margin:0 0 14px;color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+label{display:block;font-weight:600;font-size:.9rem;margin-bottom:6px}
+textarea{width:100%;min-height:78px;resize:vertical;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:inherit;font:inherit}
+.ex{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ex button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:4px 12px;font:inherit;font-size:.85rem;cursor:pointer;transition:border-color .15s,background .15s}
+.ex button:hover{border-color:var(--accent);background:var(--soft)}
+.res h2{margin:0 0 10px;font-size:1rem}
+.top{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+.top b{font-size:1.6rem;line-height:1}
+.top span{color:var(--muted);font-size:.9rem}
+.bars{display:grid;gap:8px}
+.br{display:grid;grid-template-columns:84px 1fr 64px;gap:10px;align-items:center}
+.br .n{font-weight:600}
+.br .t{height:14px;border-radius:7px;background:var(--soft);overflow:hidden}
+.br .t i{display:block;height:100%;border-radius:7px;transition:width .35s ease}
+.br .p{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.why{margin-top:12px;color:var(--muted);font-size:.9rem}
+.why b{color:var(--ink)}
+.chip{display:inline-block;background:var(--soft);color:var(--ink);border-radius:6px;padding:0 8px;margin:2px 4px 2px 0;font-weight:600}
+.warn{padding:10px 12px;border-radius:8px;background:var(--soft);font-size:.9rem}
+.ev{font-size:.88rem;color:var(--muted)}
+.ev strong{color:var(--ink)}
+.ev p{margin:4px 0 0}
+@media (max-width:480px){.br{grid-template-columns:70px 1fr 60px}}
+@media (prefers-reduced-motion: reduce){.br .t i{transition:none}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Classifieur de tickets</h1>
+  <p class="lead">Décrivez un problème informatique : le modèle choisit l'équipe qui doit le traiter (Hardware, Réseau ou Logiciel).</p>
+
+  <section class="card">
+    <label for="t">Texte du ticket</label>
+    <textarea id="t" placeholder="Exemple : mon écran ne s'allume plus depuis ce matin"></textarea>
+    <div class="ex" id="ex" aria-label="Exemples"></div>
+  </section>
+
+  <section class="card res" id="res" aria-live="polite"></section>
+
+  <section class="card ev" id="ev"></section>
+</main>
+
+<script>
+(function(){
+"use strict";
+var $ = function(id){ return document.getElementById(id); };
+var M = null, COLORS = ["var(--c0)","var(--c1)","var(--c2)"];
+var EXAMPLES = ["Mon écran ne s'allume plus depuis ce matin","Impossible de me connecter au VPN depuis chez moi","Excel plante quand j'ouvre le fichier de budget","Le wifi coupe toutes les dix minutes"];
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+
+/* Même découpage que scikit-learn : minuscules, mots de 2 caractères ou plus (lettres, chiffres, _). */
+function tokens(text){ return String(text).toLowerCase().match(/[\p{L}\p{N}_]{2,}/gu) || []; }
+
+function predict(text){
+  var idx = M.index, counts = {}, unknown = [], nWords = 0;
+  tokens(text).forEach(function(w){
+    nWords++;
+    if(idx.hasOwnProperty(w)) counts[idx[w]] = (counts[idx[w]] || 0) + 1; else if(unknown.indexOf(w) < 0) unknown.push(w);
+  });
+  var ids = Object.keys(counts).map(Number), x = {}, norm = 0;
+  ids.forEach(function(i){ x[i] = counts[i] * M.idf[i]; norm += x[i] * x[i]; });
+  norm = Math.sqrt(norm);
+  var K = M.classes.length, logp = [], k, j;
+  for(k = 0; k < K; k++){
+    var s = M.prior[k];
+    if(norm > 0) ids.forEach(function(i){ s += (x[i] / norm) * M.flp[k][i]; });
+    logp.push(s);
+  }
+  var mx = Math.max.apply(null, logp), e = logp.map(function(v){ return Math.exp(v - mx); }), z = e.reduce(function(a,b){ return a + b; }, 0);
+  var probs = e.map(function(v){ return v / z; });
+  var best = probs.indexOf(Math.max.apply(null, probs)), second = -1, sv = -1;
+  for(k = 0; k < K; k++) if(k !== best && probs[k] > sv){ sv = probs[k]; second = k; }
+  var why = ids.map(function(i){ return {w: M.vocab[i], d: (x[i] / norm) * (M.flp[best][i] - M.flp[second][i])}; })
+              .filter(function(o){ return o.d > 0; }).sort(function(a,b){ return b.d - a.d; }).slice(0, 4).map(function(o){ return o.w; });
+  return {probs: probs, best: best, known: ids.length, unknown: unknown, why: why, nWords: nWords};
+}
+
+function render(){
+  var text = $("t").value.trim();
+  if(!text){ $("res").innerHTML = '<h2>Résultat</h2><p class="ev" style="margin:0">Écrivez un ticket ou choisissez un exemple pour voir la prédiction.</p>'; return; }
+  var r = predict(text);
+  if(!r.known){ $("res").innerHTML = '<h2>Résultat</h2><div class="warn">Aucun mot de ce texte n\'est connu du modèle, il ne peut pas décider. Il a été entraîné sur des tickets de support informatique en français.</div>'; return; }
+  var h = '<h2>Équipe proposée</h2><div class="top"><b style="color:'+COLORS[r.best]+'">'+esc(M.classes[r.best])+'</b><span>'+Math.round(r.probs[r.best]*100)+' % de confiance</span></div><div class="bars">';
+  M.classes.forEach(function(c, k){
+    h += '<div class="br"><span class="n">'+esc(c)+'</span><span class="t"><i style="width:'+(r.probs[k]*100).toFixed(1)+'%;background:'+COLORS[k]+'"></i></span><span class="p">'+(r.probs[k]*100).toFixed(1).replace(".",",")+' %</span></div>';
+  });
+  h += '</div>';
+  if(r.why.length) h += '<p class="why"><b>Mots qui ont pesé le plus :</b> '+r.why.map(function(w){ return '<span class="chip">'+esc(w)+'</span>'; }).join("")+'</p>';
+  if(r.unknown.length) h += '<p class="why">Mots inconnus du modèle, ignorés : '+r.unknown.slice(0,8).map(esc).join(", ")+'.</p>';
+  $("res").innerHTML = h;
+}
+
+function fmt(n){ return String(n).replace(".", ","); }
+function init(m){
+  M = m; M.index = {}; M.vocab.forEach(function(w, i){ M.index[w] = i; });
+  var ev = M.eval, c = ev.counts;
+  $("ev").innerHTML = '<strong>Comment le modèle a été construit.</strong> TF-IDF puis Naive Bayes multinomial (scikit-learn), entraîné sur '+ev.n_tickets+' tickets simulés : '
+    + Object.keys(c).map(function(k){ return c[k]+' '+k; }).join(', ')+'. Le calcul de la prédiction est refait ici en JavaScript, sans serveur.'
+    + '<p><strong>Précision mesurée sur des tickets non vus :</strong> '+fmt(ev.cv)+' % en validation croisée (5 plis), '+fmt(ev.dedup)+' % après retrait des doublons ('+ev.n_dedup+' tickets de test).</p>'
+    + '<p>Le jeu de données est petit et simulé : ces scores montrent que la méthode fonctionne, pas que le modèle est prêt pour de vrais tickets.</p>';
+  $("ex").innerHTML = EXAMPLES.map(function(t){ return '<button type="button">'+esc(t)+'</button>'; }).join("");
+  Array.prototype.forEach.call($("ex").children, function(b, i){ b.onclick = function(){ $("t").value = EXAMPLES[i]; render(); }; });
+  $("t").addEventListener("input", render);
+  $("t").value = EXAMPLES[0]; render();
+}
+try{ var th = localStorage.getItem("sky_theme"); if(th) document.documentElement.setAttribute("data-theme", th); }catch(e){}
+fetch("model.json").then(function(r){ return r.json(); }).then(init).catch(function(){ $("res").innerHTML = '<div class="warn">Impossible de charger le modèle. Rechargez la page.</div>'; });
+})();
+</script>
+</body>
+</html>

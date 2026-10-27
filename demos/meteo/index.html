@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SkyTrack, prévisions météo</title>
+<style>
+:root{
+  --bg:#EEF6FF; --panel:#FFFFFF; --ink:#16324F; --muted:#5B7189; --line:#D3E2F2;
+  --accent:#1E7FE8; --onaccent:#fff; --hot:#FF8A00; --cold:#3AA0FF; --soft:#E3F0FF;
+}
+:root[data-theme="dark"]{
+  --bg:#0D1A2B; --panel:#15253B; --ink:#E8F0FA; --muted:#95A9C2; --line:#25394F;
+  --accent:#6CB6FF; --onaccent:#0D1A2B; --hot:#FFA83A; --cold:#5FB0FF; --soft:#1B3250;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;transition:background .3s,color .3s}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+header{position:relative;color:#fff;background:#274a6b center/cover no-repeat}
+header::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,24,44,.35),rgba(8,24,44,.7))}
+.bar{position:relative;display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;padding:12px 16px}
+.bar img{width:38px;height:38px}
+.bar h1{margin:0;min-width:0;font-size:1.2rem;letter-spacing:.01em;text-shadow:0 1px 6px rgba(0,0,0,.5)}
+.bar .sp{flex:1}
+.mode{white-space:nowrap;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.45);color:#fff;border-radius:8px;padding:5px 12px;cursor:pointer;font-size:.88rem}
+.mode:hover{background:rgba(255,255,255,.28)}
+.tabs{display:flex;gap:2px;margin-left:8px}
+.tab{background:transparent;border:0;color:rgba(255,255,255,.85);padding:6px 12px;cursor:pointer;border-bottom:3px solid transparent;font-weight:600}
+.tab[aria-selected="true"]{color:#fff;border-bottom-color:#fff}
+main{padding:14px;max-width:1040px;margin:0 auto}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:18px;align-items:start}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+.card h2{margin:0 0 10px;font-size:1.02rem}
+.hint{color:var(--muted);font-size:.88rem;margin:8px 0 0}
+svg.map{display:block;width:100%;height:auto}
+svg.map polygon{fill:transparent;stroke:transparent;stroke-width:5;cursor:pointer;transition:fill .15s,stroke .15s}
+svg.map polygon:hover,svg.map polygon:focus-visible{fill:rgba(30,127,232,.28)}
+svg.map polygon.sel{fill:rgba(30,127,232,.34);stroke:var(--accent)}
+svg.map polygon:focus-visible{outline:none;stroke:var(--accent)}
+.fields{display:grid;gap:8px}
+label{display:block;font-size:.84rem;color:var(--muted);margin-bottom:3px;font-weight:600}
+select,input[type=text]{width:100%;padding:7px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg)}
+select:disabled,input:disabled{opacity:.55}
+.now{display:flex;align-items:center;gap:14px;margin-top:14px;padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#5BC0FF);color:#fff}
+:root[data-theme="dark"] .now{background:linear-gradient(135deg,#1F4E85,#2B7BC4);color:#fff}
+.now .ic{width:64px;height:64px;flex:none}
+.now .ic img,.now .ic svg{width:100%;height:100%;display:block}
+.now .t{font-size:2.6rem;font-weight:800;line-height:1}
+.now .where{font-weight:700}
+.now .meta{font-size:.9rem;opacity:.92}
+.fc{margin-top:14px;display:grid;gap:2px}
+.fc h3{margin:0 0 6px;font-size:1rem}
+.row{display:grid;grid-template-columns:86px 36px minmax(0,1fr) 62px;gap:10px;align-items:center;padding:7px 4px;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.d b{display:block;text-transform:capitalize;font-size:.92rem}
+.d span{font-size:.78rem;color:var(--muted)}
+.row .ic{width:34px;height:34px}
+.row .ic img,.row .ic svg{width:100%;height:100%;display:block}
+.lab{font-size:.82rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rng{display:grid;grid-template-columns:34px 1fr 34px;gap:6px;align-items:center;font-size:.85rem;font-weight:700}
+.rng .lo{color:var(--cold);text-align:right}.rng .hi{color:var(--hot)}
+.track{position:relative;height:6px;border-radius:3px;background:var(--soft)}
+.track i{position:absolute;top:0;bottom:0;border-radius:3px;background:linear-gradient(90deg,var(--cold),var(--hot))}
+.w{font-size:.8rem;color:var(--muted);text-align:right;line-height:1.3}
+.rn{display:block}
+.state{padding:16px;border-radius:12px;background:var(--soft);color:var(--ink);margin-top:14px;text-align:center}
+.state button{margin-top:8px;border:1px solid var(--accent);background:var(--accent);color:var(--onaccent);border-radius:8px;padding:6px 14px;cursor:pointer;font-weight:600}
+.skel{height:14px;border-radius:7px;margin:10px 0;background:linear-gradient(90deg,var(--line),var(--soft),var(--line));background-size:200% 100%;animation:sh 1.5s linear infinite}
+@keyframes sh{to{background-position:-200% 0}}
+.stats .bars{display:grid;gap:8px}
+.sb{display:grid;grid-template-columns:minmax(80px,160px) 1fr 30px;gap:10px;align-items:center;font-size:.92rem}
+.sb .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb .b{height:14px;border-radius:7px;background:var(--soft);overflow:hidden}
+.sb .b i{display:block;height:100%;border-radius:7px;background:var(--accent);transform-origin:left;animation:grow .6s ease-out both}
+@keyframes grow{from{transform:scaleX(0)}}
+.sb .c{text-align:right;font-weight:700}
+footer{max-width:1040px;margin:4px auto 0;padding:10px 16px 22px;color:var(--muted);font-size:.8rem}
+footer a{color:var(--accent)}
+[hidden]{display:none!important}
+@media (max-width:780px){
+  .row{grid-template-columns:78px 34px minmax(0,1fr);row-gap:0}
+  .w{grid-column:3;text-align:left;margin-top:-2px}
+  .rn{display:inline;margin-left:10px}
+}
+@media (max-width:560px){
+  .tabs{order:3;width:100%;margin-left:0}
+  .grid{grid-template-columns:1fr}
+  .now .t{font-size:2.2rem}
+}
+@media (prefers-reduced-motion: reduce){
+  .skel,.sb .b i{animation:none}
+  body,svg.map polygon{transition:none}
+}
+</style>
+</head>
+<body>
+<header id="hd">
+  <div class="bar">
+    <img src="images/Logo.png" alt="">
+    <h1>SkyTrack</h1>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-map" aria-selected="true" aria-controls="p-map" type="button">Carte</button>
+      <button class="tab" role="tab" id="tab-stats" aria-selected="false" aria-controls="p-stats" type="button">Statistiques</button>
+    </div>
+    <span class="sp"></span>
+    <button class="mode" id="mode" type="button">Mode nuit</button>
+  </div>
+</header>
+
+<main>
+  <div id="p-map" role="tabpanel" aria-labelledby="tab-map">
+    <div class="grid">
+      <section class="card">
+        <h2>Choisissez une région</h2>
+        <svg class="map" id="map" viewBox="0 0 864 823" role="group" aria-label="Carte des régions de France"><image href="images/carte-france.png" width="864" height="823"></image></svg>
+        <p class="hint">Cliquez sur une région, ou utilisez les listes.</p>
+      </section>
+      <section>
+        <div class="card">
+          <div class="fields">
+            <div><label for="region">Région</label><select id="region"></select></div>
+            <div><label for="dept">Département</label><select id="dept" disabled></select></div>
+            <div><label for="city">Ville</label><input type="text" id="city" list="cities" placeholder="Tapez ou choisissez une ville" autocomplete="off" disabled><datalist id="cities"></datalist></div>
+          </div>
+        </div>
+        <div id="out" aria-live="polite"></div>
+      </section>
+    </div>
+  </div>
+
+  <div id="p-stats" role="tabpanel" aria-labelledby="tab-stats" hidden>
+    <section class="card stats">
+      <h2>Villes les plus consultées</h2>
+      <div class="bars" id="bars"></div>
+      <p class="hint">Ces statistiques comptent vos consultations sur cet appareil. Dans la version PHP d'origine, elles étaient partagées entre tous les visiteurs.</p>
+    </section>
+  </div>
+</main>
+
+<footer>
+  Projet du module Développement Web, réalisé à deux avec Alexis SADE. Version PHP d'origine portée en JavaScript pour ce portfolio.
+  Données météo : <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a>.
+</footer>
+
+<script>
+(function(){
+"use strict";
+var $ = function(id){ return document.getElementById(id); };
+var nfc = function(s){ return String(s).normalize("NFC"); };
+var plain = function(s){ return nfc(s).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[’']/g," ").trim(); };
+
+var POLYS = {};
+
+var WMO = {0:["Ciel dégagé","sun"],1:["Plutôt dégagé","sun"],2:["Partiellement nuageux","cloud-sun"],3:["Couvert","cloud"],
+  45:["Brouillard","fog"],48:["Brouillard givrant","fog"],51:["Bruine légère","rain"],53:["Bruine","rain"],55:["Bruine dense","rain"],
+  56:["Bruine verglaçante","rain"],57:["Bruine verglaçante","rain"],61:["Pluie faible","rain"],63:["Pluie","rain"],65:["Forte pluie","rain"],
+  66:["Pluie verglaçante","rain"],67:["Pluie verglaçante","rain"],71:["Neige faible","snow"],73:["Neige","snow"],75:["Forte neige","snow"],
+  77:["Grains de neige","snow"],80:["Averses faibles","rain"],81:["Averses","rain"],82:["Averses violentes","rain"],
+  85:["Averses de neige","snow"],86:["Fortes averses de neige","snow"],95:["Orage","storm"],96:["Orage et grêle","storm"],99:["Orage et forte grêle","storm"]};
+var CLOUD = "M13 35a8 8 0 0 1 0-16a11 11 0 0 1 21-2a9 9 0 0 1 1 18z";
+function icon(kind, isDay){
+  if(kind === "sun") return '<img src="images/icons/'+(isDay === 0 ? "moon" : "sun")+'.svg" alt="">';
+  if(kind === "cloud-sun" || kind === "rain") return '<img src="images/icons/'+kind+'.svg" alt="">';
+  var s = '<svg viewBox="0 0 48 48" aria-hidden="true">';
+  if(kind === "cloud") s += '<path fill="#B0BEC5" d="'+CLOUD+'"/>';
+  if(kind === "fog") s += '<path fill="#CFD8DC" transform="translate(0,-5)" d="'+CLOUD+'"/><g stroke="#90A4AE" stroke-width="3" stroke-linecap="round"><path d="M12 35h24M16 41h18"/></g>';
+  if(kind === "snow") s += '<path fill="#B0BEC5" transform="translate(0,-5)" d="'+CLOUD+'"/><g fill="#64B5F6"><circle cx="16" cy="38" r="2.6"/><circle cx="24" cy="43" r="2.6"/><circle cx="32" cy="38" r="2.6"/></g>';
+  if(kind === "storm") s += '<path fill="#78909C" transform="translate(0,-6)" d="'+CLOUD+'"/><polygon fill="#FFD54F" points="26,26 19,38 24,38 21,47 31,33 26,33"/>';
+  return s + "</svg>";
+}
+
+var regions = [], citiesCache = {}, current = {region:null, dept:null}, reqId = 0;
+var fmtDay = new Intl.DateTimeFormat("fr-FR",{weekday:"long"});
+var fmtDate = new Intl.DateTimeFormat("fr-FR",{day:"numeric",month:"short"});
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+
+/* thème jour / nuit */
+var theme = "light";
+try{ theme = localStorage.getItem("sky_theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); }catch(e){}
+function applyTheme(){
+  document.documentElement.setAttribute("data-theme", theme);
+  var n = 1 + Math.floor(Math.random()*3);
+  $("hd").style.backgroundImage = "url('images/img"+n+"-"+(theme === "dark" ? "nuit" : "jour")+".jpg')";
+  $("mode").textContent = theme === "dark" ? "Mode jour" : "Mode nuit";
+}
+$("mode").onclick = function(){
+  theme = theme === "dark" ? "light" : "dark";
+  try{ localStorage.setItem("sky_theme", theme); }catch(e){}
+  applyTheme();
+};
+
+/* onglets */
+function showTab(name){
+  var m = name === "map";
+  $("p-map").hidden = !m; $("p-stats").hidden = m;
+  $("tab-map").setAttribute("aria-selected", m); $("tab-stats").setAttribute("aria-selected", !m);
+  if(!m) renderStats();
+}
+$("tab-map").onclick = function(){ showTab("map"); };
+$("tab-stats").onclick = function(){ showTab("stats"); };
+
+/* statistiques locales */
+var KEY = "sky_consultations";
+function readStats(){ try{ return JSON.parse(localStorage.getItem(KEY)) || {}; }catch(e){ return {}; } }
+function bump(name){ var s = readStats(); s[name] = (s[name] || 0) + 1; try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} }
+function renderStats(){
+  var s = readStats(), list = Object.keys(s).map(function(k){ return [k, s[k]]; }).sort(function(a,b){ return b[1]-a[1]; }).slice(0,10);
+  if(!list.length){ $("bars").innerHTML = '<div class="state">Aucune consultation pour le moment. Choisissez une ville sur la carte pour commencer.</div>'; return; }
+  var max = list[0][1];
+  $("bars").innerHTML = list.map(function(r){
+    return '<div class="sb"><span class="n">'+esc(r[0])+'</span><span class="b"><i style="width:'+Math.max(6, r[1]/max*100)+'%"></i></span><span class="c">'+r[1]+'</span></div>';
+  }).join("");
+}
+
+/* carte */
+function buildMap(){
+  var svg = $("map"), ns = "http://www.w3.org/2000/svg";
+  Object.keys(POLYS).forEach(function(name){
+    var p = document.createElementNS(ns, "polygon");
+    p.setAttribute("points", POLYS[name]); p.setAttribute("tabindex", "0"); p.setAttribute("role", "button");
+    p.setAttribute("aria-label", name); p.setAttribute("data-region", nfc(name));
+    var t = document.createElementNS(ns, "title"); t.textContent = name; p.appendChild(t);
+    p.addEventListener("click", function(){ chooseRegion(name, true); });
+    p.addEventListener("keydown", function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); chooseRegion(name, true); } });
+    svg.appendChild(p);
+  });
+}
+function markMap(name){
+  document.querySelectorAll("#map polygon").forEach(function(p){ p.classList.toggle("sel", p.getAttribute("data-region") === nfc(name || "")); });
+}
+
+/* sélection région / département / ville */
+function findRegion(name){ return regions.filter(function(r){ return nfc(r.name) === nfc(name); })[0]; }
+function fillRegions(){
+  $("region").innerHTML = '<option value="">Choisir une région</option>' + regions.map(function(r){ return '<option>'+esc(r.name)+'</option>'; }).join("");
+}
+function chooseRegion(name, fromUser){
+  var r = findRegion(name); if(!r) return null;
+  $("region").value = r.name; markMap(r.name); current.region = r;
+  var depts = r.departments.filter(function(d){ return d.n > 0; });
+  $("dept").innerHTML = '<option value="">Choisir un département</option>' + depts.map(function(d){ return '<option value="'+d.code+'">'+esc(d.name)+' ('+d.code+')</option>'; }).join("");
+  $("dept").disabled = false;
+  $("city").value = ""; lastLoaded = ""; $("city").disabled = true; $("cities").innerHTML = "";
+  if(fromUser) $("dept").focus();
+  return r;
+}
+function loadCities(code){
+  if(citiesCache[code]) return Promise.resolve(citiesCache[code]);
+  return fetch("data/cities/"+code+".json").then(function(r){ if(!r.ok) throw new Error("http"); return r.json(); }).then(function(rows){ citiesCache[code] = rows; return rows; });
+}
+function chooseDept(code){
+  current.dept = code; lastLoaded = "";
+  $("city").value = ""; $("city").disabled = true; $("cities").innerHTML = "";
+  if(!code) return Promise.resolve(null);
+  return loadCities(code).then(function(rows){
+    $("cities").innerHTML = rows.map(function(c){ return '<option value="'+esc(c[0])+'"></option>'; }).join("");
+    $("city").disabled = false;
+    return rows;
+  }).catch(function(){ $("out").innerHTML = '<div class="state">Impossible de charger les villes de ce département.</div>'; return null; });
+}
+function matchCity(text){
+  var rows = citiesCache[current.dept]; if(!rows || !text) return null;
+  var q = plain(text);
+  return rows.filter(function(c){ return plain(c[0]) === q; })[0] || null;
+}
+
+/* météo */
+function load(city, user){
+  var id = ++reqId;
+  $("out").innerHTML = '<div class="now" style="opacity:.55"><div class="ic"></div><div><div class="where">'+esc(city[0])+'</div><div class="meta">Chargement des prévisions...</div></div></div><div class="card fc"><div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>';
+  var url = "https://api.open-meteo.com/v1/forecast?latitude="+city[1]+"&longitude="+city[2]
+    + "&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,is_day"
+    + "&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,precipitation_sum&timezone=auto&forecast_days=7";
+  var ctl = ("AbortController" in window) ? new AbortController() : null, to = ctl ? setTimeout(function(){ ctl.abort(); }, 12000) : null;
+  fetch(url, ctl ? {signal:ctl.signal} : undefined).then(function(r){ if(!r.ok) throw new Error("http"); return r.json(); }).then(function(d){
+    if(id !== reqId) return;
+    if(!d || !d.current || !d.daily || !d.daily.time) throw new Error("format");
+    render(city, d);
+    if(user) bump(city[0]);
+  }).catch(function(){
+    if(id !== reqId) return;
+    $("out").innerHTML = '<div class="state">Impossible de récupérer la météo pour '+esc(city[0])+'. Vérifiez votre connexion puis réessayez.<br><button type="button" id="retry">Réessayer</button></div>';
+    $("retry").onclick = function(){ load(city, user); };
+  }).then(function(){ if(to) clearTimeout(to); });
+}
+function wm(code){ return WMO[code] || ["Conditions variables","cloud"]; }
+function render(city, d){
+  var c = d.current, w = wm(c.weather_code), dy = d.daily, n = dy.time.length;
+  var lo = Math.min.apply(null, dy.temperature_2m_min), hi = Math.max.apply(null, dy.temperature_2m_max), span = Math.max(1, hi - lo);
+  var h = '<div class="now"><div class="ic">'+icon(w[1], c.is_day)+'</div><div><div class="t">'+Math.round(c.temperature_2m)+' °C</div></div>'
+        + '<div><div class="where">'+esc(city[0])+'</div><div>'+w[0]+'</div><div class="meta">Vent '+Math.round(c.wind_speed_10m)+' km/h, humidité '+Math.round(c.relative_humidity_2m)+' %</div></div></div>';
+  h += '<div class="card fc"><h3>Prévisions sur '+n+' jours</h3>';
+  for(var i = 0; i < n; i++){
+    var p = dy.time[i].split("-"), dt = new Date(+p[0], +p[1]-1, +p[2]), dw = wm(dy.weather_code[i]);
+    var mn = dy.temperature_2m_min[i], mx = dy.temperature_2m_max[i];
+    var left = (mn - lo) / span * 100, width = Math.max(6, (mx - mn) / span * 100);
+    var rain = dy.precipitation_sum[i];
+    h += '<div class="row"><div class="d"><b>'+(i === 0 ? "Aujourd'hui" : fmtDay.format(dt))+'</b><span>'+fmtDate.format(dt)+'</span></div>'
+       + '<div class="ic" title="'+dw[0]+'">'+icon(dw[1], 1)+'</div>'
+       + '<div><div class="lab">'+dw[0]+'</div><div class="rng"><span class="lo">'+Math.round(mn)+'°</span><span class="track"><i style="left:'+left+'%;width:'+Math.min(width,100-left)+'%"></i></span><span class="hi">'+Math.round(mx)+'°</span></div></div>'
+       + '<div class="w">'+Math.round(dy.wind_speed_10m_max[i])+' km/h'+(rain >= 0.1 ? '<span class="rn">'+rain.toFixed(1).replace(".",",")+' mm</span>' : '')+'</div></div>';
+  }
+  $("out").innerHTML = h + '</div>';
+}
+
+/* évènements */
+$("region").onchange = function(){ if(this.value) chooseRegion(this.value, false); };
+$("dept").onchange = function(){ chooseDept(this.value).then(function(){ if(current.dept) $("city").focus(); }); };
+var lastLoaded = "";
+function pickCity(el){ var c = matchCity(el.value); if(c && c[0] !== lastLoaded){ lastLoaded = c[0]; el.value = c[0]; el.blur(); load(c, true); } }
+$("city").addEventListener("input", function(){ pickCity(this); });
+$("city").addEventListener("change", function(){ pickCity(this); });
+
+/* démarrage : Paris par défaut, pour que la démo affiche déjà un résultat */
+applyTheme();
+Promise.all([
+  fetch("data/regions.json").then(function(r){ return r.json(); }),
+  fetch("data/map-polygons.json").then(function(r){ return r.json(); }).catch(function(){ return {}; })
+]).then(function(res){
+  var list = res[0]; POLYS = res[1]; buildMap();
+  regions = list.sort(function(a,b){ return a.name.localeCompare(b.name, "fr"); });
+  fillRegions();
+  var r = chooseRegion("Île-de-France", false);
+  if(r){ $("dept").value = "75"; return chooseDept("75").then(function(rows){ var c = rows && matchCity("Paris"); if(c){ $("city").value = c[0]; lastLoaded = c[0]; load(c, false); } }); }
+}).catch(function(){ $("out").innerHTML = '<div class="state">Impossible de charger les données. Rechargez la page.</div>'; });
+})();
+</script>
+</body>
+</html>
