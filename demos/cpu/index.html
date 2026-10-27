@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulateur d'ordonnancement</title>
+<style>
+:root{--bg:#F4F7FB;--panel:#fff;--ink:#13233A;--muted:#566A85;--line:#D8E1EE;--accent:#2F5BFF;--onaccent:#fff;--soft:#E8EEFF;--grid:#C9D4E5;--lum:46%}
+:root[data-theme="dark"]{--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A;--grid:#2C4060;--lum:62%}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A;--grid:#2C4060;--lum:62%}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+main{max-width:900px;margin:0 auto;padding:16px}
+h1{margin:0 0 4px;font-size:1.25rem}h2{margin:0 0 10px;font-size:1rem}
+.lead{margin:0 0 14px;color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+label{display:block;font-weight:600;font-size:.88rem;margin-bottom:5px}
+textarea,select,input[type=number]{width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:inherit;font:inherit}
+textarea{min-height:110px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:7px 14px;font:inherit;font-size:.9rem;cursor:pointer;transition:border-color .15s,background .15s}
+button:hover{border-color:var(--accent);background:var(--soft)}
+button.pri{background:var(--accent);color:var(--onaccent);border-color:var(--accent);font-weight:600}
+button.pri:hover{filter:brightness(1.08);background:var(--accent)}
+.pre{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pre button{border-radius:999px;padding:3px 12px;font-size:.82rem}
+.err{padding:10px 12px;border-radius:8px;background:var(--soft);border-left:4px solid #E07A1F;font-size:.9rem;margin-top:10px}
+.hint{color:var(--muted);font-size:.82rem;margin:6px 0 0}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:.88rem}
+th,td{padding:5px 8px;text-align:right;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}th{color:var(--muted);font-weight:600}
+.tw{overflow-x:auto}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 12px}
+.kpi{background:var(--soft);border-radius:8px;padding:8px 10px}.kpi b{display:block;font-size:1.15rem}.kpi span{color:var(--muted);font-size:.78rem}
+.gwrap{overflow-x:auto}svg{display:block;max-width:none}
+.legend{display:flex;flex-wrap:wrap;gap:12px;color:var(--muted);font-size:.8rem;margin-top:8px}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:2px;margin-right:5px;vertical-align:middle}
+.status{font-size:.9rem;color:var(--muted);margin:8px 0 0;min-height:1.4em}.status b{color:var(--ink)}
+.best{font-weight:700;color:var(--accent)}
+.note{font-size:.85rem;color:var(--muted)}
+@media(max-width:600px){.row{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<main>
+<h1>Simulateur d'ordonnancement de processus</h1>
+<p class="lead">Les quatre algorithmes du projet C (FIFO, SJF, SJRF, Round Robin) portés en JavaScript. Modifiez les processus, choisissez un algorithme et regardez le CPU les exécuter milliseconde par milliseconde.</p>
+
+<section class="card">
+  <label for="in">Processus (une ligne : pid, arrivée, durée CPU, durée E/S, type E/S, début E/S)</label>
+  <textarea id="in" spellcheck="false"></textarea>
+  <p class="hint">Type E/S : 0 aucune, 1 parallèle (le CPU est libéré), 2 non parallèle (le CPU est bloqué). Les lignes qui commencent par # sont ignorées.</p>
+  <div class="pre" id="pre" aria-label="Jeux d'exemple"></div>
+  <div class="row">
+    <div><label for="algo">Algorithme</label>
+      <select id="algo"><option value="FIFO">FIFO</option><option value="SJF">SJF</option><option value="SJRF">SJRF</option><option value="RR">Round Robin</option></select></div>
+    <div><label for="q">Quantum (Round Robin)</label><input id="q" type="number" min="1" value="2"></div>
+    <div></div>
+  </div>
+  <div class="btns"><button class="pri" id="go" type="button">Lancer et animer</button><button id="all" type="button">Comparer les 4 algorithmes</button></div>
+  <div id="err"></div>
+</section>
+
+<section class="card" id="resCard" hidden>
+  <h2 id="gt">Diagramme de Gantt</h2>
+  <div class="gwrap"><svg id="g" role="img" aria-label="Diagramme de Gantt"></svg></div>
+  <div class="legend"><span><i style="background:hsl(215 70% var(--lum))"></i>CPU</span><span><i style="background:repeating-linear-gradient(45deg,var(--grid) 0 3px,transparent 3px 6px);border:1px solid var(--grid)"></i>Entrée/sortie</span></div>
+  <p class="status" id="st" aria-live="polite"></p>
+  <div class="btns"><button id="replay" type="button">Rejouer</button><button id="skip" type="button">Afficher tout</button></div>
+</section>
+
+<section class="card" id="metCard" hidden>
+  <h2>Métriques</h2>
+  <div class="kpis" id="kpis"></div>
+  <div class="tw"><table id="tb"></table></div>
+</section>
+
+<section class="card" id="cmpCard" hidden>
+  <h2>Comparaison</h2>
+  <div class="tw"><table id="cmp"></table></div>
+  <p class="note" id="cmpn"></p>
+</section>
+
+<section class="card note">
+  <strong>D'où viennent les calculs.</strong> Chaque algorithme reprend la logique du code C final du groupe (horloge de 1 ms, E/S déclenchée après un certain temps de CPU, formules de métriques identiques). Le port a été comparé au programme C sur des centaines de jeux de processus tirés au hasard, avec des résultats identiques. Le temps d'attente vaut restitution moins CPU moins E/S.
+  <p style="margin:6px 0 0">Deux limites du programme C d'origine, conservées ici : l'E/S ne peut pas se déclencher à la dernière milliseconde de CPU (le début E/S doit être inférieur à la durée CPU), et Round Robin peut ne jamais terminer si un processus arrive pendant une E/S non parallèle. Dans ces cas la démo l'indique au lieu de se figer.</p>
+</section>
+</main>
+<script src="sim.js"></script>
+<script>
+(function(){
+"use strict";
+var $=function(i){return document.getElementById(i);};
+var SETS={
+ "Jeu du rapport":"# pid arrivee cpu es type debut\n1 0 6 2 1 2\n2 1 3 0 0 0\n3 2 8 0 0 0",
+ "Effet de convoi":"1 0 12 0 0 0\n2 1 2 0 0 0\n3 2 2 0 0 0\n4 3 2 0 0 0",
+ "E/S non parallèle":"1 0 5 3 2 2\n2 1 4 0 0 0\n3 2 3 0 0 0",
+ "Arrivées simultanées":"1 0 5 0 0 0\n2 0 2 0 0 0\n3 0 4 0 0 0\n4 0 1 0 0 0"
+};
+var RM=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+var cur=null, timer=null, tick=0;
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function f2(x){return x.toFixed(2).replace(".",",");}
+function col(pid){return "hsl("+((pid*67+215)%360)+" 70% var(--lum))";}
+function readInput(){
+  var r=Sim.parse($("in").value);
+  if(r.error) return {error:r.error};
+  if(!r.procs.length) return {error:"Aucun processus : ajoutez au moins une ligne."};
+  var seen={},i,p;
+  for(i=0;i<r.procs.length;i++){p=r.procs[i];
+    if(seen[p.pid]) return {error:"Le pid "+p.pid+" apparaît deux fois."}; seen[p.pid]=1;
+    if(p.cpu<1) return {error:"P"+p.pid+" : la durée CPU doit être d'au moins 1 ms."};
+    if(p.type>2) return {error:"P"+p.pid+" : le type d'E/S vaut 0, 1 ou 2."};
+    if(p.type>0&&p.es>0&&(p.deb<1||p.deb>=p.cpu)) return {error:"P"+p.pid+" : le début d'E/S doit être compris entre 1 et durée CPU moins 1 (limite du programme C d'origine)."};
+    if(p.type===0) {p.es=0;p.deb=0;}
+    if(p.es===0) p.type=0;
+    if(r.procs.length>12) return {error:"12 processus au maximum pour garder un Gantt lisible."};
+    if(p.cpu>60||p.arr>200) return {error:"Valeurs limitées à 60 ms de CPU et 200 ms d'arrivée dans cette démo."};
+  }
+  return {procs:r.procs};
+}
+function simulate(algo,procs,q){
+  try{return {res:Sim.run(algo,procs,q)};}
+  catch(e){return {error:algo==="RR"?"Round Robin ne termine pas sur ce jeu : un processus arrive pendant une E/S non parallèle et n'est jamais mis en file (défaut du programme C d'origine). Essayez FIFO, SJF ou SJRF, ou un autre jeu.":"La simulation ne termine pas sur ce jeu."};}
+}
+function showErr(m){$("err").innerHTML=m?'<div class="err" role="alert">'+esc(m)+'</div>':"";}
+function drawGantt(res){
+  var pids=res.procs.map(function(p){return p.pid;}), RH=30, L=44, U=Math.max(14,Math.min(34,Math.floor(760/Math.max(res.fin,1))));
+  var W=L+res.fin*U+14, H=pids.length*RH+34, s="",i;
+  s+='<defs><pattern id="hat" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><rect width="3" height="6" fill="var(--grid)"/></pattern><clipPath id="clp"><rect id="clr" x="0" y="0" width="'+(RM?W:L)+'" height="'+H+'"/></clipPath></defs>';
+  for(i=0;i<=res.fin;i++){var x=L+i*U;
+    s+='<line x1="'+x+'" y1="4" x2="'+x+'" y2="'+(pids.length*RH+4)+'" stroke="var(--line)" stroke-width="1"/>';
+    if(res.fin<=40||i%5===0) s+='<text x="'+x+'" y="'+(pids.length*RH+20)+'" font-size="11" text-anchor="middle" fill="var(--muted)">'+i+'</text>';}
+  pids.forEach(function(pid,r){
+    var y=4+r*RH; s+='<text x="6" y="'+(y+19)+'" font-size="13" font-weight="600" fill="var(--ink)">P'+pid+'</text>';
+    var p=res.procs[r];
+    if(p.es>0&&p.finEs>-1) s+='<rect x="'+(L+(p.finEs-p.es)*U)+'" y="'+(y+5)+'" width="'+(p.es*U)+'" height="'+(RH-10)+'" rx="3" fill="url(#hat)" stroke="var(--grid)"/>';
+  });
+  s+='<g clip-path="url(#clp)">';
+  res.gantt.forEach(function(e){var r=pids.indexOf(e.pid),y=4+r*RH;
+    s+='<rect x="'+(L+e.debut*U)+'" y="'+(y+3)+'" width="'+((e.fin-e.debut)*U-1)+'" height="'+(RH-6)+'" rx="3" fill="'+col(e.pid)+'"/>';
+    if((e.fin-e.debut)*U>=24) s+='<text x="'+(L+e.debut*U+((e.fin-e.debut)*U)/2)+'" y="'+(y+19)+'" font-size="11" text-anchor="middle" fill="#fff" font-weight="600">'+(e.fin-e.debut)+' ms</text>';});
+  s+='</g><line id="cur" x1="'+L+'" x2="'+L+'" y1="0" y2="'+(pids.length*RH+6)+'" stroke="var(--accent)" stroke-width="2"/>';
+  var g=$("g"); g.setAttribute("viewBox","0 0 "+W+" "+H); g.setAttribute("width",W); g.setAttribute("height",H); g.innerHTML=s;
+  g._L=L; g._U=U; g._W=W;
+}
+function setCursor(t,res){
+  var g=$("g"); var x=g._L+t*g._U;
+  $("clr").setAttribute("width",t>=res.fin?g._W:x); $("cur").setAttribute("x1",x); $("cur").setAttribute("x2",x);
+  var run=null; res.gantt.forEach(function(e){if(e.debut<=t-1&&e.fin>t-1&&t>0)run=e.pid;});
+  var io=res.procs.filter(function(p){return p.es>0&&p.finEs>-1&&t>p.finEs-p.es&&t<=p.finEs;}).map(function(p){return "P"+p.pid;});
+  $("st").innerHTML="t = <b>"+t+" ms</b>"+(t>0&&run?" · CPU : <b>P"+run+"</b>":(t>0&&t<res.fin?" · CPU : <b>inactif ou bloqué</b>":""))+(io.length&&t<res.fin?" · en E/S : "+io.join(", "):"")+(t>=res.fin?" · terminé":"");
+}
+function play(){
+  clearInterval(timer); if(!cur) return; tick=0; setCursor(0,cur);
+  if(RM){setCursor(cur.fin,cur);return;}
+  var step=Math.max(1,Math.ceil(cur.fin/90));
+  timer=setInterval(function(){tick=Math.min(cur.fin,tick+step);setCursor(tick,cur);if(tick>=cur.fin)clearInterval(timer);},110);
+}
+function metrics(res){
+  var k=$("kpis"); k.innerHTML=[["Attente moyenne",f2(res.moyAttente)+" ms"],["Restitution moyenne",f2(res.moyRestit)+" ms"],["Réponse moyenne",f2(res.moyReponse)+" ms"],["Taux CPU",res.tauxCpu.toFixed(1).replace(".",",")+" %"]].map(function(a){return '<div class="kpi"><b>'+a[1]+'</b><span>'+a[0]+'</span></div>';}).join("");
+  var h='<tr><th>PID</th><th>Arrivée</th><th>CPU</th><th>Début</th><th>Fin</th><th>Attente</th><th>Restitution</th><th>Réponse</th></tr>';
+  res.procs.forEach(function(p){h+='<tr><td>P'+p.pid+'</td><td>'+p.arr+'</td><td>'+p.cpu+'</td><td>'+p.debut+'</td><td>'+p.fin+'</td><td>'+p.attente+'</td><td>'+p.restit+'</td><td>'+p.reponse+'</td></tr>';});
+  $("tb").innerHTML=h;
+}
+var NAMES={FIFO:"FIFO",SJF:"SJF",SJRF:"SJRF",RR:"Round Robin"};
+function run(){
+  showErr(""); $("cmpCard").hidden=true;
+  var inp=readInput(); if(inp.error){showErr(inp.error);return;}
+  var algo=$("algo").value, q=Math.max(1,parseInt($("q").value,10)||1);
+  var r=simulate(algo,inp.procs,q); if(r.error){showErr(r.error);return;}
+  cur=r.res; $("resCard").hidden=false; $("metCard").hidden=false;
+  $("gt").textContent="Diagramme de Gantt : "+NAMES[algo]+(algo==="RR"?" (quantum "+q+")":"");
+  drawGantt(cur); metrics(cur); play();
+}
+function compare(){
+  showErr(""); var inp=readInput(); if(inp.error){showErr(inp.error);return;}
+  var q=Math.max(1,parseInt($("q").value,10)||1), rows=[], fails=[];
+  ["FIFO","SJF","SJRF","RR"].forEach(function(a){var r=simulate(a,inp.procs,q); if(r.error) fails.push(a); else rows.push(r.res);});
+  var best=function(key){var m=Math.min.apply(null,rows.map(function(r){return r[key];}));return m;};
+  var ba=best("moyAttente"),br=best("moyRestit"),bp=best("moyReponse");
+  var h='<tr><th>Algorithme</th><th>Attente moy.</th><th>Restitution moy.</th><th>Réponse moy.</th><th>Taux CPU</th></tr>';
+  rows.forEach(function(r){var c=function(v,b){return '<td'+(Math.abs(v-b)<1e-9?' class="best"':'')+'>'+f2(v)+' ms</td>';};
+    h+='<tr><td>'+NAMES[r.algo]+(r.algo==="RR"?" (q="+q+")":"")+'</td>'+c(r.moyAttente,ba)+c(r.moyRestit,br)+c(r.moyReponse,bp)+'<td>'+r.tauxCpu.toFixed(1).replace(".",",")+' %</td></tr>';});
+  $("cmp").innerHTML=h; $("cmpn").textContent="En couleur : la meilleure valeur de chaque colonne."+(fails.length?" "+fails.map(function(a){return NAMES[a];}).join(", ")+" non affiché (la simulation ne termine pas sur ce jeu).":"");
+  $("cmpCard").hidden=false;
+}
+$("pre").innerHTML=Object.keys(SETS).map(function(k){return '<button type="button">'+esc(k)+'</button>';}).join("");
+Array.prototype.forEach.call($("pre").children,function(b,i){b.onclick=function(){$("in").value=SETS[Object.keys(SETS)[i]];run();};});
+$("go").onclick=run; $("all").onclick=compare;
+$("replay").onclick=play; $("skip").onclick=function(){clearInterval(timer);if(cur)setCursor(cur.fin,cur);};
+$("algo").onchange=run; $("q").onchange=run;
+try{var th=localStorage.getItem("sky_theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
+$("in").value=SETS["Jeu du rapport"]; run();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Labo réseau prune.org</title>
+<style>
+:root{--bg:#F4F7FB;--panel:#fff;--ink:#13233A;--muted:#566A85;--line:#D8E1EE;--accent:#2F5BFF;--onaccent:#fff;--soft:#E8EEFF;--ok:#0E8F5A;--ko:#C8372D;--wan:#FFF3E3;--dmz:#E7F0FF;--inv:#EAF7EF;--priv:#F4EAFB;--term:#0F1B2E;--termink:#D6E4FA}
+:root[data-theme="dark"]{--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A;--ok:#3DD69B;--ko:#FF7B70;--wan:#2A2216;--dmz:#16264A;--inv:#13301F;--priv:#2A1B3A;--term:#07101D;--termink:#D6E4FA}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0C1424;--panel:#142036;--ink:#E9F0FB;--muted:#9BB0CC;--line:#25364F;--accent:#7F9DFF;--onaccent:#0C1424;--soft:#1C2C4A;--ok:#3DD69B;--ko:#FF7B70;--wan:#2A2216;--dmz:#16264A;--inv:#13301F;--priv:#2A1B3A;--term:#07101D;--termink:#D6E4FA}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+main{max-width:940px;margin:0 auto;padding:16px}
+h1{margin:0 0 4px;font-size:1.25rem}h2{margin:0 0 10px;font-size:1rem}
+.lead{margin:0 0 14px;color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+label{display:block;font-weight:600;font-size:.85rem;margin-bottom:4px}
+select,input[type=text]{width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:inherit;font:inherit}
+.row{display:grid;grid-template-columns:1fr 1fr 1.6fr auto;gap:10px;align-items:end}
+button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:8px 16px;font:inherit;font-size:.9rem;cursor:pointer;transition:border-color .15s,background .15s}
+button:hover{border-color:var(--accent);background:var(--soft)}
+button.pri{background:var(--accent);color:var(--onaccent);border-color:var(--accent);font-weight:600}
+button.pri:hover{filter:brightness(1.08);background:var(--accent)}
+.pre{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.pre button{border-radius:999px;padding:3px 12px;font-size:.82rem}
+.tg{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:6px 16px;margin-top:6px}
+.tg label{display:flex;gap:8px;align-items:center;font-weight:500;margin:0;font-size:.88rem;cursor:pointer}
+.tg input{width:17px;height:17px;accent-color:var(--accent)}
+svg{display:block;width:100%;height:auto}
+.zone{stroke:var(--line);stroke-width:1}
+.znm{font-size:11px;fill:var(--muted);font-weight:600}
+.lnk{stroke:var(--grid,#9fb0c8);stroke-width:2;opacity:.8}
+.nd{cursor:pointer}.nd rect{fill:var(--panel);stroke:var(--ink);stroke-width:1.5}
+.nd text{fill:var(--ink);font-size:12px;font-weight:700;text-anchor:middle;pointer-events:none}.nd .s{font-weight:500;font-size:9.5px;fill:var(--muted)}
+.nd:hover rect,.nd:focus-visible rect{stroke:var(--accent);stroke-width:2.5}
+.nd.sel rect{stroke:var(--accent);stroke-width:3}
+.nd.off rect{stroke:var(--ko);stroke-dasharray:4 3}
+.sw rect{fill:var(--soft);stroke:var(--muted)}.sw text{font-size:9px;fill:var(--muted);text-anchor:middle}
+.pth{fill:none;stroke:var(--accent);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;opacity:.45}
+.pth.ko{stroke:var(--ko)}
+.dot{fill:var(--accent);stroke:var(--panel);stroke-width:2}
+.x{stroke:var(--ko);stroke-width:4;stroke-linecap:round}
+.info{font-size:.88rem;color:var(--muted);margin:8px 0 0;min-height:2.8em}.info b{color:var(--ink)}
+.out{background:var(--term);color:var(--termink);border-radius:10px;padding:12px 14px;font:13px/1.55 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;min-height:90px;margin:0;overflow-x:auto}
+.v{display:inline-block;margin-bottom:8px;padding:3px 12px;border-radius:999px;font-weight:700;font-size:.85rem;background:var(--soft)}
+.v.ok{color:var(--ok)}.v.ko{color:var(--ko)}
+.note{font-size:.85rem;color:var(--muted)}
+.lg{display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-top:6px}
+.lg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px;border:1px solid var(--line)}
+@media(max-width:700px){.row{grid-template-columns:1fr 1fr}.row>div:nth-child(3){grid-column:1/-1}.row>button{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<main>
+<h1>Labo réseau prune.org</h1>
+<p class="lead">Les six machines FreeBSD du TP, leurs adresses, leurs routes, le NAT/PAT et les règles du pare-feu du guide. Lancez un test, regardez le chemin du paquet, puis cassez quelque chose pour voir ce qui change.</p>
+
+<section class="card">
+  <svg id="map" viewBox="0 0 820 400" role="img" aria-label="Schéma du réseau : Internet, FAI, PC1 à PC6 et leurs quatre segments"></svg>
+  <div class="lg"><span><i style="background:var(--wan)"></i>WAN 200.222.14.188/30</span><span><i style="background:var(--dmz)"></i>DMZ 77.88.4.128/27</span><span><i style="background:var(--inv)"></i>Invité 77.88.4.160/27</span><span><i style="background:var(--priv)"></i>Privé 192.168.22.0/24</span></div>
+  <p class="info" id="info">Cliquez sur une machine pour voir son rôle et ses interfaces.</p>
+</section>
+
+<section class="card">
+  <div class="row">
+    <div><label for="from">Depuis</label><select id="from"></select></div>
+    <div><label for="act">Test</label><select id="act">
+      <option value="ping">ping</option><option value="web">Web direct (HTTP, port 80)</option><option value="proxy">Navigateur via le proxy</option><option value="smtp">Mail (SMTP, port 25)</option><option value="nslookup">nslookup</option><option value="traceroute">traceroute (UDP)</option><option value="tracerouteI">traceroute -I (ICMP)</option></select></div>
+    <div><label for="tgt">Cible (nom ou adresse)</label><input id="tgt" type="text" list="names" autocomplete="off" spellcheck="false" value="5.5.5.5"><datalist id="names"></datalist></div>
+    <button class="pri" id="go" type="button">Lancer</button>
+  </div>
+  <div class="pre" id="pre" aria-label="Tests du guide"></div>
+  <h2 style="margin:16px 0 4px">Casser quelque chose</h2>
+  <div class="tg" id="tg"></div>
+</section>
+
+<section class="card">
+  <span class="v" id="vd" hidden></span>
+  <pre class="out" id="out" aria-live="polite">Lancez un test.</pre>
+</section>
+
+<section class="card note">
+  <strong>Ce que c'est.</strong> Un modèle du réseau décrit dans le guide du TP (adressage, routes, services, règles ipfw de PC1 et PC2, NAT et redirection de port sur PC5), pas les machines virtuelles elles-mêmes. Les règles de pare-feu sont évaluées dans l'ordre et la première qui correspond s'applique, comme avec ipfw. Les sorties de commande sont simplifiées.
+  <p style="margin:6px 0 0">Une observation tirée du modèle : avec les règles du guide, PC2 ne laisse passer que l'ICMP vers l'extérieur, donc le traceroute UDP par défaut échoue depuis le réseau invité alors que « traceroute -I » fonctionne.</p>
+</section>
+</main>
+<script src="net.js"></script>
+<script src="lab.js"></script>
+<script>
+(function(){
+"use strict";
+var $=function(i){return document.getElementById(i);};
+var N=Net,NS="http://www.w3.org/2000/svg",RM=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+var POS={EXT:[60,50],ISP:[60,170],PC1:[190,170],PC3:[320,60],PC2:[450,170],PC4:[570,60],PC5:[690,170],PC6:[570,320]};
+var SW={SWD:[320,170,"switch DMZ"],SWG:[570,170,"switch invité"],SWP:[690,320,"switch privé"]};
+var LINKS=[["EXT","ISP"],["ISP","PC1"],["PC1","SWD"],["PC3","SWD"],["PC2","SWD"],["PC2","SWG"],["PC4","SWG"],["PC5","SWG"],["PC5","SWP"],["PC6","SWP"]];
+var S=N.fresh(),timer=null,sel=null;
+function el(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+function pt(k){return POS[k]||[SW[k][0],SW[k][1]];}
+/* décor */
+var svg=$("map");
+[[8,8,150,384,"wan","WAN / Internet"],[160,8,300,384,"dmz","DMZ"],[470,8,215,384,"inv","Réseau invité"],[585,250,225,142,"priv","Réseau privé"]].forEach(function(z){});
+el("rect",{x:6,y:6,width:272,height:388,rx:14,fill:"var(--wan)",class:"zone"},svg);
+el("rect",{x:286,y:6,width:236,height:388,rx:14,fill:"var(--dmz)",class:"zone"},svg);
+el("rect",{x:530,y:6,width:284,height:388,rx:14,fill:"var(--inv)",class:"zone"},svg);
+el("rect",{x:530,y:262,width:284,height:132,rx:14,fill:"var(--priv)",class:"zone"},svg);
+[[18,24,"Internet et FAI"],[298,24,"DMZ"],[542,24,"Réseau invité"],[542,280,"Réseau privé"]].forEach(function(z){var t=el("text",{x:z[0],y:z[1],class:"znm"},svg);t.textContent=z[2];});
+LINKS.forEach(function(l){var a=pt(l[0]),b=pt(l[1]);el("line",{x1:a[0],y1:a[1],x2:b[0],y2:b[1],class:"lnk"},svg);});
+Object.keys(SW).forEach(function(k){var g=el("g",{class:"sw"},svg);el("rect",{x:SW[k][0]-22,y:SW[k][1]-8,width:44,height:16,rx:4},g);var t=el("text",{x:SW[k][0],y:SW[k][1]+3},g);t.textContent="switch";});
+var pathLayer=el("g",{},svg),nodes={},topLayer=null;
+Object.keys(POS).forEach(function(k){
+  var n=N.NODES[k],g=el("g",{class:"nd",tabindex:0,role:"button","aria-label":n.label+" "+(n.host||"")},svg);
+  el("rect",{x:POS[k][0]-46,y:POS[k][1]-21,width:92,height:42,rx:9},g);
+  var t=el("text",{x:POS[k][0],y:POS[k][1]-3},g);t.textContent=k==="EXT"?"Internet":k==="ISP"?"FAI":k;
+  var s=el("text",{x:POS[k][0],y:POS[k][1]+11,class:"s"},g);s.textContent=k==="EXT"?"5.5.5.5":k==="ISP"?"200.222.14.190":n.ifs[n.ifs.length-1].ip;
+  g.addEventListener("click",function(){pick(k);});g.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();pick(k);}});
+  nodes[k]=g;
+});
+topLayer=el("g",{},svg);
+function pick(k){
+  sel=k;Object.keys(nodes).forEach(function(x){nodes[x].classList.toggle("sel",x===k);});
+  var n=N.NODES[k];$("info").innerHTML="<b>"+(n.role?k+" : "+n.role:n.label)+"</b>"+(n.host?" · "+n.host:"")+"<br>"+n.ifs.map(function(f){return f.n+" "+f.ip+" ("+f.net+")";}).join(" · ");
+  if(["PC1","PC2","PC3","PC4","PC5","PC6","EXT"].indexOf(k)>-1)$("from").value=k;
+}
+/* liens et chemins */
+function adj(){var a={};LINKS.forEach(function(l){(a[l[0]]=a[l[0]]||[]).push(l[1]);(a[l[1]]=a[l[1]]||[]).push(l[0]);});return a;}
+var ADJ=adj();
+function route(a,b){ /* BFS dans le graphe des liens physiques */
+  var q=[[a]],seen={};seen[a]=1;
+  while(q.length){var p=q.shift(),l=p[p.length-1];if(l===b)return p;(ADJ[l]||[]).forEach(function(n){if(!seen[n]){seen[n]=1;q.push(p.concat(n));}});}
+  return [a,b];
+}
+function legPoints(path){var pts=[];for(var i=0;i<path.length-1;i++){var r=route(path[i],path[i+1]);r.forEach(function(k,j){if(i>0&&j===0)return;pts.push(pt(k));});}if(path.length===1)pts.push(pt(path[0]));return pts;}
+function clearPaths(){clearInterval(timer);while(pathLayer.firstChild)pathLayer.removeChild(pathLayer.firstChild);while(topLayer.firstChild)topLayer.removeChild(topLayer.firstChild);}
+function animate(res){
+  clearPaths();
+  var all=[],legsPts=res.legs.map(legPoints);
+  legsPts.forEach(function(pts,i){
+    var last=i===legsPts.length-1,bad=!res.ok&&last;
+    var d=pts.map(function(p,j){return (j?"L":"M")+p[0]+" "+p[1];}).join(" ");
+    el("path",{d:d,class:"pth"+(bad?" ko":"")},pathLayer);
+    pts.forEach(function(p,j){if(!(i>0&&j===0))all.push(p);});
+  });
+  var lastP=all[all.length-1];
+  var drawEnd=function(){if(!res.ok&&lastP){var x=lastP[0],y=lastP[1];var cx=x+(x>100?0:0),cy=y-30;el("circle",{cx:cx,cy:cy,r:13,fill:"var(--panel)",stroke:"var(--ko)","stroke-width":3},topLayer);el("line",{x1:cx-6,y1:cy-6,x2:cx+6,y2:cy+6,class:"x"},topLayer);el("line",{x1:cx-6,y1:cy+6,x2:cx+6,y2:cy-6,class:"x"},topLayer);}};
+  if(RM||all.length<2){drawEnd();return;}
+  var dot=el("circle",{r:7,class:"dot",cx:all[0][0],cy:all[0][1]},topLayer),i=0,f=0,STEPS=14;
+  timer=setInterval(function(){
+    if(i>=all.length-1){clearInterval(timer);dot.parentNode&&dot.parentNode.removeChild(dot);drawEnd();return;}
+    f++;var a=all[i],b=all[i+1],t=f/STEPS;dot.setAttribute("cx",a[0]+(b[0]-a[0])*t);dot.setAttribute("cy",a[1]+(b[1]-a[1])*t);
+    if(f>=STEPS){f=0;i++;}
+  },22);
+}
+/* contrôles */
+var FROMS=["EXT","PC1","PC2","PC3","PC4","PC5","PC6"];
+$("from").innerHTML=FROMS.map(function(k){return '<option value="'+k+'">'+(k==="EXT"?"Internet (pigeon.canard.com)":k+" ("+N.NODES[k].host+")")+'</option>';}).join("");
+$("from").value="PC6";
+$("names").innerHTML=Object.keys(N.ZONE).concat(Object.keys(N.CNAME),["192.168.22.2","77.88.4.131","8.8.8.8"]).map(function(n){return '<option value="'+n+'">';}).join("");
+var TOG=[["pc2fwd","Routage IP activé sur PC2"],["pc5fwd","Routage IP activé sur PC5"],["nat","NAT actif sur PC5 (natd)"],["pat","Redirection de port 80 sur PC5 (PAT)"],["fw1","Pare-feu ipfw actif sur PC1"],["fw2","Pare-feu ipfw actif sur PC2"],["dns1","DNS primaire (named) démarré sur PC2"]];
+$("tg").innerHTML=TOG.map(function(t){return '<label><input type="checkbox" data-k="'+t[0]+'" checked>'+t[1]+'</label>';}).join("");
+Array.prototype.forEach.call($("tg").querySelectorAll("input"),function(c){c.onchange=function(){S.opts[c.getAttribute("data-k")]=c.checked;markOff();go();};});
+function markOff(){nodes.PC2.classList.toggle("off",!S.opts.pc2fwd||!S.opts.dns1||!S.opts.fw2);nodes.PC5.classList.toggle("off",!S.opts.pc5fwd||!S.opts.nat||!S.opts.pat);nodes.PC1.classList.toggle("off",!S.opts.fw1);}
+var PRE=[
+ ["PC6 vers Internet (NAT)","PC6","ping","5.5.5.5"],
+ ["Intranet depuis PC4 (PAT)","PC4","web","www-intranet.prune.org"],
+ ["Isolation : PC4 vers 192.168.22.2","PC4","web","192.168.22.2"],
+ ["Ping entrant bloqué","EXT","ping","77.88.4.131"],
+ ["Site public depuis l'extérieur","EXT","web","www.prune.org"],
+ ["Proxy : URL avec « pirate »","PC4","proxy","pigeon.canard.com/pirate.html"],
+ ["Navigation directe interdite","PC4","web","pigeon.canard.com"],
+ ["Traceroute depuis le réseau invité","PC4","traceroute","8.8.8.8"]
+];
+$("pre").innerHTML=PRE.map(function(p){return '<button type="button">'+p[0]+'</button>';}).join("");
+Array.prototype.forEach.call($("pre").children,function(b,i){b.onclick=function(){var p=PRE[i];$("from").value=p[1];$("act").value=p[2];$("tgt").value=p[3];go();};});
+function go(){
+  var r=Lab.run(S,$("from").value,$("act").value,$("tgt").value);
+  var v=$("vd");v.hidden=false;v.className="v "+(r.ok?"ok":"ko");v.textContent=r.ok?"Réussi":(r.blocked?"Bloqué par le proxy":"Échec");
+  $("out").textContent=r.lines.join("\n");animate(r);
+}
+$("go").onclick=go;$("tgt").addEventListener("keydown",function(e){if(e.key==="Enter")go();});
+try{var th=localStorage.getItem("sky_theme");if(th)document.documentElement.setAttribute("data-theme",th);}catch(e){}
+go();
+})();
+</script>
+</body>
+</html>
