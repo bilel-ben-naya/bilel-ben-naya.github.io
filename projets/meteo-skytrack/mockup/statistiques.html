@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statistiques - SKYTRACK</title>
+  <link rel="stylesheet" href="style.css">
+  <link id="mode-nuit-stylesheet" rel="stylesheet" href="mode_nuit.css">
+</head>
+<body>
+  <header>
+    <h1>SKYTRACK</h1>
+    <p>Statistiques de Consultation</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="tech.html">Page Tech</a>
+    <a href="statistiques.html">Statistiques</a>
+    <a href="apropos.html">À propos</a>
+  </nav>
+
+  <main>
+    <aside>
+      <h3>Dernière ville consultée</h3>
+      <p>[Nom de la ville]</p>
+      <h3>Thème</h3>
+      <label for="theme-toggle" class="theme-toggle-label">
+        <input type="checkbox" id="theme-toggle" class="theme-toggle-checkbox">
+        Mode Nuit/Jour
+      </label>
+      <h3>Image du jour</h3>
+      <figure>
+        <img src="#" alt="image météo" width="100%">
+        <figcaption>Image aléatoire</figcaption>
+      </figure>
+    </aside>
+
+    <section>
+      <div class="stat-block">
+        <h3>Villes les plus consultées</h3>
+        <img src="path/to/graph.png" alt="Graphique des villes" width="100%">
+      </div>
+
+      <div class="stat-block">
+        <h3>Nombre total de visiteurs</h3>
+        <p>[X] visiteurs</p>
+      </div>
+
+      <div>
+        <button onclick="window.location.href='index.html'">Retour à l'accueil</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 - Projet Prévisions Météo | <a href="tech.html">Tech</a></p>
+  </footer>
+</body>
+</html>

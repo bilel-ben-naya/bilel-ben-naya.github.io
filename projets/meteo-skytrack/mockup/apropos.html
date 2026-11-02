@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>À propos - SKYTRACK</title>
+  <link rel="stylesheet" href="style.css">
+  <link id="mode-nuit-stylesheet" rel="stylesheet" href="mode_nuit.css">
+</head>
+<body>
+  <header>
+    <h1>SKYTRACK</h1>
+    <p>À propos du projet</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="tech.html">Page Tech</a>
+    <a href="statistiques.html">Statistiques</a>
+    <a href="apropos.html">À propos</a>
+  </nav>
+
+  <main>
+    <aside>
+      <h3>Dernière ville consultée</h3>
+      <p>[Nom de la ville]</p>
+      <h3>Thème</h3>
+      <label for="theme-toggle" class="theme-toggle-label">
+        <input type="checkbox" id="theme-toggle" class="theme-toggle-checkbox">
+        Mode Nuit/Jour
+      </label>
+      <h3>Image du jour</h3>
+      <figure>
+        <img src="#" alt="image météo" width="100%">
+        <figcaption>Image aléatoire</figcaption>
+      </figure>
+    </aside>
+
+    <section>
+      <h2>Objectifs du projet</h2>
+      <p>Le projet consiste à créer une plateforme web pour fournir les prévisions météo en temps réel pour les villes en France.</p>
+
+      <h2>Technologies utilisées</h2>
+      <ul>
+        <li>HTML5</li>
+        <li>CSS3</li>
+        <li>PHP</li>
+        <li>API météo (OpenWeather, MeteoFrance, etc.)</li>
+      </ul>
+
+      <h2>Équipe de développement</h2>
+      <p>Le projet a été développé par [Nom des membres de l’équipe].</p>
+
+      <div>
+        <button onclick="window.location.href='index.html'">Retour à l'accueil</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 - Projet Prévisions Météo | <a href="tech.html">Tech</a></p>
+  </footer>
+</body>
+</html>

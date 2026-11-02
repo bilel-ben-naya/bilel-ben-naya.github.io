@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Tech - SKYTRACK</title>
+  <link rel="stylesheet" href="style.css">
+  <link id="mode-nuit-stylesheet" rel="stylesheet" href="mode_nuit.css">
+</head>
+<body>
+  <header>
+    <h1>SKYTRACK</h1>
+    <p>Page Tech - API & Géolocalisation</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="tech.html">Page Tech</a>
+    <a href="statistiques.html">Statistiques</a>
+    <a href="apropos.html">À propos</a>
+  </nav>
+
+  <main>
+    <aside>
+      <h3>Dernière ville consultée</h3>
+      <p>[Nom de la ville]</p>
+      <h3>Thème</h3>
+      <label for="theme-toggle" class="theme-toggle-label">
+        <input type="checkbox" id="theme-toggle" class="theme-toggle-checkbox">
+        Mode Nuit/Jour
+      </label>
+      <h3>Image du jour</h3>
+      <figure>
+        <img src="path/to/apod_image.jpg" alt="Image du jour" width="100%">
+        <figcaption>Image de la NASA - APOD</figcaption>
+      </figure>
+    </aside>
+
+    <section>
+      <div class="tech-block">
+        <h3>Géolocalisation par IP</h3>
+        <p>Votre position approximative : [Latitude, Longitude]</p>
+      </div>
+
+      <div class="tech-block">
+        <h3>API - Image du jour de la NASA</h3>
+        <p>L'image d'aujourd'hui de l'API APOD de la NASA.</p>
+        <img src="path/to/apod_image.jpg" alt="Image du jour">
+      </div>
+
+      <div>
+        <button onclick="window.location.href='index.html'">Retour à l'accueil</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 - Projet Prévisions Météo | <a href="tech.html">Tech</a></p>
+  </footer>
+</body>
+</html>

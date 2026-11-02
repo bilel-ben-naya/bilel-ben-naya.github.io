@@ -1,0 +1,20 @@
+id,code,name,slug,x,y
+1,01,Guadeloupe,guadeloupe,0,0
+2,02,Martinique,martinique,0,0
+3,03,Guyane,guyane,0,0
+4,04,"La Réunion","la reunion",0,0
+5,06,Mayotte,mayotte,0,0
+6,11,Île-de-France,"ile de france",0,0
+7,24,"Centre-Val de Loire","centre val de loire",0,0
+8,27,Bourgogne-Franche-Comté,"bourgogne franche comte", 510,510
+9,28,Normandie,normandie,0,0
+10,32,Hauts-de-France,"hauts de france",0,0
+11,44,"Grand Est","grand est",0,0
+12,52,"Pays de la Loire","pays de la loire",0,0
+13,53,Bretagne,bretagne,0,0
+14,75,Nouvelle-Aquitaine,"nouvelle aquitaine",0,0
+15,76,Occitanie,occitanie,0,0
+16,84,Auvergne-Rhône-Alpes,"auvergne rhone alpes", 550,620
+17,93,"Provence-Alpes-Côte d'Azur","provence alpes cote dazur",0,0
+18,94,Corse,corse,0,0
+19,COM,"Collectivités d'Outre-Mer","collectivites doutre mer",0,0

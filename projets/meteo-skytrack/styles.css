@@ -1,0 +1,375 @@
+/* Définition des variables CSS pour le thème jour */
+:root {
+    --background-color: #f0f8ff; /* Bleu ciel */
+    --text-color: #333333; /* Gris foncé */
+    --link-color: #1e90ff; /* Bleu ciel pour les liens */
+    --hover-color: #ffa500; /* Jaune orangé */
+    --highlight-color: #00bfff; /* Bleu clair éclatant pour les highlights */
+    --border-color: #ff6347; /* Tomate, pour les bordures */
+}
+
+/* Application des variables */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s, color 0.3s; /* Transition fluide lors du changement de thème */
+}
+
+/* Positionnement du sélecteur en haut à droite */
+.mode-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* Logo */
+#logo {
+    position: absolute;
+    top: -1%;
+    left: 1%;
+}
+
+/* En-tête */
+header {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    padding: 20px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    height: 400px; /* Hauteur de l'image */
+    background-image: url('images/img1-jour.jpg'); /* L'image change dynamiquement */
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Aligner le contenu en haut */
+}
+
+/* Titre positionné plus haut */
+header h1 {
+    font-size: 3rem;
+    margin-top: 20px; /* Réduire la marge pour positionner le titre plus haut */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Menu */
+.menu-container {
+    position: relative;
+    height: 100%; /* Assurez-vous que le menu se trouve à l'intérieur de la section header */
+}
+
+.menu-table {
+    position: absolute;
+    bottom: 0; /* Placer le menu en bas de l'image */
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0); /* Fond semi-transparent */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.menu-table td {
+    padding: 10px;
+    border: 2px solid #333; /* Bordures foncées pour bien voir les cases */
+}
+
+.menu-table a {
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+    color: white;
+    display: block; /* Remplit la case */
+    padding: 10px;
+}
+
+.menu-table a:hover {
+    background-color: #007BFF; /* Survol en bleu */
+    color: white;
+}
+
+/* Section principale */
+main {
+    padding: 20px;
+}
+
+/* Section Hero (section principale) */
+.hero {
+    background: var(--link-color);
+    color: var(--background-color);
+    padding: 50px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.hero h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2em;
+}
+
+/* Sections secondaires (fonctionnalités) */
+section {
+    background-color: var(--background-color);
+    padding: 40px 20px;
+    text-align: center;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+    font-size: 2.2em;
+    color: var(--text-color);
+    margin-bottom: 15px;
+}
+
+section p {
+    color: var(--text-color);
+}
+
+/* Conteneur pour la carte */
+.map-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#map {
+    width: 80%;  /* Modifier la largeur si nécessaire */
+    max-width: 1000px;  /* Limiter la largeur pour les écrans larges */
+    height: auto;  /* Conserver les proportions */
+}
+
+/* Sélection des départements et villes */
+select {
+    width: 200px;
+    margin: 10px 0;
+    padding: 5px;
+}
+
+/* Style pour la météo */
+#weather-info {
+    font-size: 1.2em;
+    margin-top: 20px;
+}
+
+/* Footer Section */
+footer {
+    background-color: var(--background-color); /* Couleur de fond claire pour le footer */
+    color: var(--text-color); /* Utilisation de la couleur de texte principale */
+    padding: 40px 0;
+    text-align: center;
+    border-top: 1px solid var(--border-color); /* Bordure de séparation */
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap; /* Permet aux sections de s'adapter à des écrans plus petits */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-section {
+    width: 30%; /* Largeur des sections */
+    margin-bottom: 20px;
+}
+
+.footer-section h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: var(--highlight-color); /* Couleur du titre en harmonie avec les autres titres */
+}
+
+.footer-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+    text-decoration: none;
+    color: var(--text-color); /* Couleur des liens */
+    font-size: 1rem;
+}
+
+.footer-section ul li a:hover {
+    color: var(--link-color); /* Couleur du lien au survol */
+}
+
+.footer-section ul li:last-child {
+    font-size: 0.9rem;
+    color: var(--text-color); 
+}
+
+/* Responsive Design pour les petits écrans */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column; /* Empile les sections du footer en colonne */
+        text-align: left;
+    }
+
+    .footer-section {
+        width: 100%; /* Les sections prennent toute la largeur sur mobile */
+    }
+
+    .footer-section h3 {
+        font-size: 1.2rem; /* Taille de police légèrement réduite pour les petits écrans */
+    }
+}
+
+/* Formulaire météo */
+form#meteo-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+form#meteo-form select,
+form#meteo-form button {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    font-size: 1rem;
+    background: white;
+    color: var(--text-color);
+    min-width: 200px;
+}
+
+form#meteo-form button {
+    background-color: var(--link-color);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+form#meteo-form button:hover {
+    background-color: var(--hover-color);
+}
+
+/* Cartes météo actuelles */
+.weather-cards-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin: 2rem auto;
+}
+
+.weather-card-small,
+.weather-card-large {
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    width: 260px;
+}
+
+.weather-card-large {
+    width: 300px;
+}
+
+.weather-icon img {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 10px;
+}
+
+.weather-info .temperature {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.weather-info .description {
+    font-style: italic;
+    color: var(--text-color);
+}
+
+/* Prévisions 7 jours */
+.weekly-forecast {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.daily-forecast-card {
+    background-color: #e3f4ff;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid var(--highlight-color);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+}
+
+.daily-forecast-card .forecast-date {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+.daily-forecast-card img {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 0.5rem;
+}
+
+.forecast-temps span {
+    display: block;
+    font-size: 0.95rem;
+    margin: 2px 0;
+}
+
+.forecast-desc {
+    margin-top: 0.5rem;
+    font-style: italic;
+    color: #333;
+}
+
+/* Messages d'erreur */
+p.error {
+    color: red;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 2rem;
+}
+
+#recent-weather-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.city-weather {
+    background: #f8f8f8;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid var(--highlight-color);
+    color: var(--text-color);
+}
+
+.city-weather img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 0.5rem;
+}

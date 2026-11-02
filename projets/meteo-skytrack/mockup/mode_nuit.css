@@ -1,0 +1,40 @@
+/* mode_nuit.css - Mode Nuit */
+body.night-mode {
+    background-color: #333;
+    color: white;
+  }
+  
+  header.night-mode {
+    background-color: #1e2a47;
+  }
+  
+  nav.night-mode {
+    background-color: #4f5b6e;
+  }
+  
+  main.night-mode {
+    background-color: #444;
+  }
+  
+  section.night-mode {
+    background-color: #555;
+    border-radius: 8px;
+  }
+  
+  footer.night-mode {
+    background-color: #4f5b6e;
+  }
+  
+  .weather-block.night-mode {
+    background-color: #666;
+  }
+  
+  button.night-mode {
+    background-color: #1e2a47;
+    color: white;
+  }
+  
+  button.night-mode:hover {
+    background-color: #2b3b61;
+  }
+  

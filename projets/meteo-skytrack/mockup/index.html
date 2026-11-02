@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SKYTRACK - Prévisions Météo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>SKYTRACK</h1>
+    <p>Choisissez votre région, département et ville</p>
+    <!-- Bouton de changement de thème en haut à droite -->
+    <label for="theme-toggle" class="theme-toggle-label">
+      <input type="checkbox" id="theme-toggle" class="theme-toggle-checkbox">
+      <span class="theme-toggle-btn"></span>
+    </label>
+  </header>
+
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="tech.html">Page Tech</a>
+    <a href="statistiques.html">Statistiques</a>
+    <a href="apropos.html">À propos</a>
+  </nav>
+
+  <main>
+    <aside>
+      <h3>Dernière ville consultée</h3>
+      <p>[Nom de la ville]</p>
+      <h3>Thème</h3>
+      <label for="theme-toggle" class="theme-toggle-label">
+        <input type="checkbox" id="theme-toggle" class="theme-toggle-checkbox">
+        Mode Nuit/Jour
+      </label>
+      <h3>Image du jour</h3>
+      <figure>
+        <img src="#" alt="image météo" width="100%">
+        <figcaption>Image aléatoire</figcaption>
+      </figure>
+    </aside>
+
+    <section>
+      <div class="weather-block">
+        <h2>Prévisions pour [Ville]</h2>
+        <p>Date: [Aujourd'hui]</p>
+        <p>Température: [X]°C</p>
+        <p>Conditions: [Soleil/Pluie/etc]</p>
+      </div>
+
+      <div class="weather-block">
+        <h3>Prévisions des jours suivants</h3>
+        <ul>
+          <li>[Jour] - [X]°C - [Condition]</li>
+          <li>[Jour] - [X]°C - [Condition]</li>
+        </ul>
+      </div>
+
+      <a href="previsions.html">
+        <button>Afficher la météo</button>
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 - Projet Prévisions Météo | <a href="tech.html">Tech</a></p>
+  </footer>
+
+  <script>
+    // Quand la page charge, appliquer le mode nuit si la case est cochée.
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Si le checkbox est coché, appliquer le mode nuit au chargement.
+    if (themeToggle.checked) {
+      body.classList.add('night-mode');
+    }
+
+    // Ajouter un événement au changement de l'état du checkbox
+    themeToggle.addEventListener('change', () => {
+      body.classList.toggle('night-mode', themeToggle.checked);
+    });
+  </script>
+</body>
+</html>
