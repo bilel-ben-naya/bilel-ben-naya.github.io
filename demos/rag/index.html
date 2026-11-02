@@ -70,7 +70,7 @@ button.g{padding:7px 12px;border-radius:8px;border:1px solid var(--line);backgro
 </section>
 
 <section class="card note">
-  <strong>Comment ça marche.</strong> Le document est découpé en passages de 500 caractères avec 50 de recouvrement, comme avec <code>RecursiveCharacterTextSplitter</code> de langchain (le découpage est identique). Les deux passages les plus proches de la question sont retenus, puis envoyés à Llama 3.1 (via l'API Groq) avec la consigne de ne répondre que d'après le texte. Dans mon programme Python la recherche utilise des embeddings multilingues et FAISS ; ici elle utilise par défaut une recherche par mots (BM25), et la recherche sémantique est disponible en option.
+  <strong>Comment ça marche.</strong> Le document est découpé en passages de 500 caractères avec 50 de recouvrement, comme avec <code>RecursiveCharacterTextSplitter</code> de langchain (le découpage est identique). Les deux passages les plus proches de la question sont retenus, puis envoyés à un modèle de langage hébergé par Groq (gpt-oss-20b ici, Llama 3.1 dans mon programme d'origine) avec la consigne de ne répondre que d'après le texte. Dans mon programme Python la recherche utilise des embeddings multilingues et FAISS ; ici elle utilise par défaut une recherche par mots (BM25), et la recherche sémantique est disponible en option.
   <p style="margin:6px 0 0">Ma clé d'API n'est jamais dans cette page : les appels passent par un petit relais qui n'accepte que ces trois usages et limite le volume.</p>
 </section>
 </main>
