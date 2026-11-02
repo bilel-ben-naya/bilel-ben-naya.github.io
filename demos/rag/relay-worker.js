@@ -3,8 +3,8 @@
    Le relais n'accepte que trois usages, avec les mêmes consignes que llm.py : repondre, resumer, classifier.
    Variables : GROQ_API_KEY (secret), ALLOWED_ORIGINS (ex. https://bilel-ben-naya.github.io). */
 
-const MODEL = "llama-3.1-8b-instant";
-const MAX_CHARS = 6000, MAX_TOKENS = 500;
+const MODEL = "openai/gpt-oss-20b"; // remplace llama-3.1-8b-instant (arrêté par Groq). Surchargeable via la variable MODEL.
+const MAX_CHARS = 6000, MAX_TOKENS = 1200;
 const WINDOW_MS = 10 * 60 * 1000, MAX_PER_WINDOW = 20;
 const hits = new Map();
 
@@ -43,7 +43,7 @@ export default {
     const r = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: "Bearer " + env.GROQ_API_KEY },
-      body: JSON.stringify({ model: MODEL, max_tokens: MAX_TOKENS, temperature: 0, messages: [{ role: "system", content: SYS[b.mode] }, { role: "user", content: user }] }),
+      body: JSON.stringify({ model: env.MODEL || MODEL, max_tokens: MAX_TOKENS, temperature: 0, reasoning_effort: "low", messages: [{ role: "system", content: SYS[b.mode] }, { role: "user", content: user }] }),
     });
     if (!r.ok) return json({ error: "Le service de langage ne répond pas (" + r.status + ")." }, 502, origin);
     const d = await r.json();
