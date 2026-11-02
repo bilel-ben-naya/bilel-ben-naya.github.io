@@ -250,7 +250,7 @@ footer{margin-top:88px;border-top:1px solid var(--line);padding:26px 0;color:var
     </section>
 
     <section id="stage">
-      <div class="head rv"><h2 data-i18n="intern_title">Stage DRÄXLMAIER</h2><p class="sub" data-i18n="intern_sub">Sousse Hub, Tunisie. Équipe Digital Business / IA, de mai à juillet 2026. Quatre projets IA.</p></div>
+      <div class="head rv"><h2 data-i18n="intern_title">Stage DRÄXLMAIER</h2><p class="sub" data-i18n="intern_sub">Sousse Hub, Tunisie. Équipe Digital Business / IA, de mai à juillet 2026. Trois projets IA.</p></div>
       <div id="internship"></div>
     </section>
 
@@ -261,7 +261,7 @@ footer{margin-top:88px;border-top:1px solid var(--line);padding:26px 0;color:var
         <li class="rv" style="--d:.1s"><strong data-i18n="tl2_t">Stage chez DRÄXLMAIER</strong><span data-i18n="tl2_d">Sousse Hub, Tunisie. Mai à juillet 2026.</span></li>
         <li class="rv" style="--d:.2s"><strong data-i18n="tl3_t">Licence Informatique</strong><span data-i18n="tl3_d">CY Cergy Paris Université. 2023 à 2026.</span></li>
       </ul>
-      <p class="langs rv" data-i18n="langs">Langues : français, arabe, anglais (niveau professionnel).</p>
+      <p class="langs rv" data-i18n="langs">Langues : français, anglais (niveau professionnel), arabe (niveau intermédiaire).</p>
     </section>
 
     <section id="contact">
@@ -291,10 +291,10 @@ var T = {
     skills_title:"Compétences",skills_sub:"Les technologies que j'ai utilisées dans mes projets.",
     projects_title:"Projets",projects_sub:"Projets personnels et universitaires. Chaque fiche affiche sa démo à côté du texte.",
     legend:"Le point vert indique que le code est déjà en ligne.",
-    intern_title:"Stage DRÄXLMAIER",intern_sub:"Sousse Hub, Tunisie. Équipe Digital Business / IA, de mai à juillet 2026. Quatre projets IA.",
+    intern_title:"Stage DRÄXLMAIER",intern_sub:"Sousse Hub, Tunisie. Équipe Digital Business / IA, de mai à juillet 2026. Trois projets IA.",
     bg_title:"Parcours",tl1_t:"Master 1 Data / IA",tl1_d:"École du Numérique, Université Catholique de Lille. Depuis 2026.",
     tl2_t:"Stage chez DRÄXLMAIER",tl2_d:"Sousse Hub, Tunisie. Mai à juillet 2026.",tl3_t:"Licence Informatique",tl3_d:"CY Cergy Paris Université. 2023 à 2026.",
-    langs:"Langues : français, arabe, anglais (niveau professionnel).",
+    langs:"Langues : français, anglais (niveau professionnel), arabe (niveau intermédiaire).",
     contact_title:"Parlons de votre alternance",contact_sub:"Je cherche une alternance de 24 mois en IA et data, tous postes confondus. Écrivez-moi, je réponds vite.",
     code:"Voir le code",codesoon:"Code bientôt en ligne",demosoon:"Démo en préparation",demofull:"Ouvrir la démo en grand",wfloat:"Agrandir en fenêtre flottante",wfull:"Plein écran",wrest:"Réduire",wclose:"Fermer",team:"Projet d'équipe, ",persons:" personnes"},
   en:{nav_skills:"Skills",nav_projects:"Projects",nav_internship:"Internship",nav_background:"Background",theme:"Theme",
@@ -305,10 +305,10 @@ var T = {
     skills_title:"Skills",skills_sub:"The technologies I used in my projects.",
     projects_title:"Projects",projects_sub:"Personal and university projects. Each page shows its demo next to the text.",
     legend:"A green dot means the code is already online.",
-    intern_title:"DRÄXLMAIER internship",intern_sub:"Sousse Hub, Tunisia. Digital Business / AI team, May to July 2026. Four AI projects.",
+    intern_title:"DRÄXLMAIER internship",intern_sub:"Sousse Hub, Tunisia. Digital Business / AI team, May to July 2026. Three AI projects.",
     bg_title:"Background",tl1_t:"Master 1 Data / AI",tl1_d:"École du Numérique, Université Catholique de Lille. Since 2026.",
     tl2_t:"Internship at DRÄXLMAIER",tl2_d:"Sousse Hub, Tunisia. May to July 2026.",tl3_t:"Bachelor's in Computer Science",tl3_d:"CY Cergy Paris Université. 2023 to 2026.",
-    langs:"Languages: French, Arabic, English (professional level).",
+    langs:"Languages: French, English (professional level), Arabic (intermediate level).",
     contact_title:"Let's talk about your work-study offer",contact_sub:"I am looking for a 24-month work-study contract in AI and data, any role. Write to me, I reply fast.",
     code:"View the code",codesoon:"Code coming soon",demosoon:"Demo in preparation",demofull:"Open the demo full size",wfloat:"Enlarge in a floating window",wfull:"Full screen",wrest:"Shrink",wclose:"Close",team:"Team project, ",persons:" people"}
 };
@@ -324,6 +324,7 @@ var SKILLS = [
 ];
 // Contenu limité à ce que Bilel a confirmé. "demo" : URL d'une démo à intégrer. "code" : dépôt.
 var PROJECTS = [
+  {id:"unite",t:{fr:"UNITE",en:"UNITE"},d:{fr:"Assistant LLM en ligne de commande : résumé de texte, questions sur documents, classification de tickets.",en:"Command-line LLM assistant: text summarization, document Q&A, ticket classification."},tags:["Python","Groq API","LLaMA"],code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/stage-draexlmaier/unite.py",demo:"demos/rag/index.html#r",ratio:"4/5"},
   {id:"meteo",t:{fr:"SkyTrack, site météo",en:"SkyTrack, weather website"},d:{fr:"Prévisions météo pour les communes de France, réalisées à deux avec Alexis SADE dans le module Développement Web : carte cliquable des régions, choix de la région, du département puis de la ville, prévisions sur 7 jours, mode jour et nuit. Écrit à l'origine en PHP, porté en JavaScript pour tourner directement ici.",en:"Weather forecasts for French towns, built with Alexis SADE in the Web Development module: clickable region map, region, department then town selection, 7-day forecast, day and night mode. Originally written in PHP, ported to JavaScript to run right here."},tags:["PHP","JavaScript","HTML / CSS","API REST"],team:2,demo:"demos/meteo/index.html",ratio:"1/1",code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/meteo-skytrack"},
   {id:"xiangqi",t:{fr:"Xiangqi, échecs chinois",en:"Xiangqi, Chinese chess"},d:{fr:"Jeu d'échecs chinois en Java (plateau 11x11) avec interface Swing : plateau avec rivière et palais, règles de déplacement de chaque pièce, partie à deux ou contre un bot. Le bot note chaque coup (valeur des pièces prises, menaces, risque de capture) et écarte ceux qui exposent son général. Projet de génie logiciel livré avec rapport, diagrammes UML et diagramme de Gantt.",en:"Chinese chess in Java with a Swing interface: board with river and palaces, movement rules for every piece, two-player mode or play against a bot. The bot scores each move (value of captured pieces, threats, risk of capture) and rejects moves that expose its general. Software engineering project delivered with a report, UML diagrams and a Gantt chart."},tags:["Java","Swing","UML"],team:3,code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/xiangqi",demo:"demos/xiangqi/index.html",ratio:"1/1"},
   {id:"parking",t:{fr:"Parking connecté intelligent",en:"Smart connected parking"},d:{fr:"Maquette de parking connecté sur Arduino Mega : trois places surveillées par des capteurs à ultrasons avec LED rouge et verte, barrière à servomoteur qui reste ouverte deux secondes après le passage, et supervision sur Blynk. Un serveur FastAPI avec base SQLite (sessions et tarification à la minute) complète le système. La maquette compte trois places, le code s'adapte à un parking bien plus grand.",en:"Connected parking model on an Arduino Mega: three spaces watched by ultrasonic sensors with red and green LEDs, a servo-driven barrier that stays open for two seconds after a vehicle passes, and supervision on Blynk. A FastAPI server with an SQLite database (sessions and per-minute pricing) completes the system. The model has three spaces, and the code scales to a much larger car park."},tags:["Arduino","IoT","Blynk","FastAPI"],team:5,code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/parking-iot",demo:"demos/parking/index.html",ratio:"3/4"},
@@ -335,8 +336,7 @@ var PROJECTS = [
 var INTERN = [
   {id:"opensky",t:{fr:"Scanner d'avions OpenSky",en:"OpenSky aircraft tracker"},d:{fr:"Suivi en direct des avions au-dessus de la Tunisie avec l'API publique OpenSky : version en ligne de commande et tableau de bord Streamlit avec carte interactive.",en:"Live tracking of aircraft over Tunisia with the public OpenSky API: command-line version and a Streamlit dashboard with an interactive map."},tags:["Python","Streamlit","Folium","REST API"],demo:"demos/opensky/index.html",ratio:"4/5",code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/stage-draexlmaier/opensky.py"},
   {id:"tickets",t:{fr:"Classifieur de tickets",en:"Ticket classifier"},d:{fr:"Classe un ticket d'incident informatique dans la bonne équipe (Hardware, Réseau ou Logiciel). TF-IDF et Naive Bayes entraînés sur 499 tickets simulés, 99 % de précision sur des tickets non vus. Interface Streamlit à l'origine, refaite ici pour tourner dans votre navigateur.",en:"Sorts an IT incident ticket into the right team (Hardware, Network or Software). TF-IDF and Naive Bayes trained on 499 simulated tickets, 99% accuracy on unseen tickets. Originally a Streamlit interface, rebuilt here to run in your browser."},tags:["scikit-learn","TF-IDF","Naive Bayes"],demo:"demos/tickets/index.html",ratio:"4/5",code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/stage-draexlmaier"},
-  {id:"rag",t:{fr:"Pipeline RAG",en:"RAG pipeline"},d:{fr:"Questions-réponses sur documents PDF, TXT et DOCX, avec embeddings multilingues.",en:"Question answering over PDF, TXT and DOCX documents, with multilingual embeddings."},tags:["LangChain","FAISS"],code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/stage-draexlmaier/rag.py",demo:"demos/rag/index.html#q",ratio:"4/5"},
-  {id:"unite",t:{fr:"UNITE",en:"UNITE"},d:{fr:"Assistant LLM en ligne de commande : résumé de texte, questions sur documents, classification de tickets.",en:"Command-line LLM assistant: text summarization, document Q&A, ticket classification."},tags:["Python","Groq API","LLaMA"],code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/stage-draexlmaier/unite.py",demo:"demos/rag/index.html#r",ratio:"4/5"}
+  {id:"rag",t:{fr:"Pipeline RAG",en:"RAG pipeline"},d:{fr:"Questions-réponses sur documents PDF, TXT et DOCX, avec embeddings multilingues.",en:"Question answering over PDF, TXT and DOCX documents, with multilingual embeddings."},tags:["LangChain","FAISS"],code:"https://github.com/bilel-ben-naya/bilel-ben-naya.github.io/tree/main/projets/stage-draexlmaier/rag.py",demo:"demos/rag/index.html#q",ratio:"4/5"}
 ];
 
 var lang = "fr";
