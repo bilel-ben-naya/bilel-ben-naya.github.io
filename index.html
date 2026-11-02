@@ -77,6 +77,9 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
 .pulse::after{content:"";position:absolute;inset:0;border-radius:50%;background:#22C55E;animation:ping 1.8s ease-out infinite}
 @keyframes ping{from{transform:scale(1);opacity:.7}to{transform:scale(3);opacity:0}}
 .hero h1{font:800 clamp(2.8rem,7vw,5.2rem)/1 var(--display);letter-spacing:-.035em;margin:0 0 18px}
+.idrow{display:flex;align-items:center;gap:clamp(16px,3vw,32px);margin:0 0 18px}
+.idrow h1{margin:0}
+.me{flex:none;width:clamp(92px,14vw,148px);height:clamp(92px,14vw,148px);border-radius:50%;object-fit:cover;border:4px solid var(--panel);box-shadow:0 0 0 2px var(--accent),var(--shadow)}
 .hero .role{font:600 clamp(1.3rem,2.6vw,1.75rem)/1.3 var(--display);margin:0 0 10px}
 .typed{font:600 clamp(1.1rem,2.2vw,1.35rem)/1.4 var(--body);color:var(--accent);min-height:1.9em;margin:0 0 20px}
 .typed .caret{display:inline-block;width:2px;height:1.1em;background:var(--accent);margin-left:3px;vertical-align:text-bottom;animation:blink 1s steps(1) infinite}
@@ -226,7 +229,7 @@ footer{margin-top:88px;border-top:1px solid var(--line);padding:26px 0;color:var
     <div class="wrap">
       <div>
         <div class="status in1"><span class="pulse"></span><span data-i18n="status">Disponible pour une alternance de 24 mois en IA et data</span></div>
-        <h1 class="in2">Bilel<br>BEN NAYA</h1>
+        <div class="idrow in2"><img class="me" src="moi.jpg" width="480" height="480" alt="Photo de Bilel BEN NAYA" decoding="async"><h1>Bilel<br>BEN NAYA</h1></div>
         <p class="role in3" data-i18n="role">Étudiant en Master 1 Data / IA, orienté intelligence artificielle</p>
         <p class="typed in3"><span id="typedPrefix"></span><span id="typed"></span><span class="caret"></span></p>
         <p class="lead in4" data-i18n="lead">Je travaille sur l'IA appliquée : classification de texte, RAG, assistants LLM. Je sais aussi la relier au monde réel, du capteur Arduino à l'application mobile. Chaque projet ci-dessous est présenté avec son code et sa démo.</p>
